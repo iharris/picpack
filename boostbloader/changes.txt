@@ -1,0 +1,30 @@
+// Version 1.0
+
+// In this version, the reset vector contains a long jump to the
+// bloader.  When boot loading, instructions to clear the PCLATH
+// register are placed in the MOVED_BVECTOR_START location.  This is
+// important because if you are boot loading an app that only gives a short
+// jump for it's reset vector, we need to clear PCLATH so the goto will
+// actually work - normally PCLATH is clear on boot so compilers often
+// don't worry about it.  
+//
+// The 4 byte boot ("reset") vector from the 
+// program that is being downloaded is RELOCATED to the
+// MOVED_BVECTOR_START + 4 location. When the boot loader is finished
+// or if it has nothing to do, it jumps to the MOVED_BVECTOR_START (+ 0)
+// location.  At which point, the PCLATH program memory bank register
+// is cleared, and then the original boot vector is executed, which
+// normally jumps to main().
+//
+// The reason this version came about is that while bloader / screamer
+// were very tricky in using the left over 4th entry of the reset vector
+// for the goto main(), this doesn't work when main() ends up being
+// in the second 2k of program rom, since you need a long jump (setting 
+// pclath before the goto).  BoostC, for example, does this, and really,
+// there's no logical reason why it shouldn't be allowed to.  I certainly
+// needed to go into the second 2k of the 4k program memory, and having everything
+// sorted and running in sourceboost, I didn't want to swap compilers.
+
+// Version 1.1
+
+// Added support for 18f devices

@@ -1,0 +1,39 @@
+[Settings]
+Active Compiler=BoostC
+Target=PIC18F2620
+Type=0
+Warnings=2
+ClockRate=8000000
+[Files]
+File0=serial_demo.c
+Count=6
+File1=..\..\pic_pack_lib\pic_serial.c
+File2=..\..\pic_pack_lib\pic_utils.c
+File3=..\..\pic_pack_lib\pic_serial.h
+File4=..\..\pic_pack_lib\pic_utils.h
+File5=config.h
+File6=C:\pic\documentation\html\pic__rf_8h__dep__incl.md5
+[Compiler]
+Extra=-I "..\..\pic_pack_lib" 
+[Linker]
+Extra=
+[Tools]
+BoostDir=C:\Program Files\SourceBoost\
+Programmer=
+[Debugger]
+DebugFromMain=1
+[Bookmarks]
+Count=0
+[Breakpoints]
+Count=0
+[Plugins]
+Bcd=506F727442000100000001000000
+Button=00706F727462000000000000000000
+Button Block=706F72746200000000000000000000000000
+Led=706F72746200000000000000000000000000
+Led Block=506F727441000100000000000000
+Speed Tester=6B094201040000004E6F6E65
+[Tool State]
+compile=1
+link=1
+program=0

@@ -1,0 +1,57 @@
+Version 1.0
+-----------
+
+19 April 2008
+
+First public release
+
+Version 1.1
+-----------
+
+22 April 2008
+
+Fixed bug in screamer for 20Mhz clocks
+Renamed rtc.c/h ds1307.c/h
+Added ds1307 demos
+Documented ds1307.c/h
+Added SERIAL_IDE_DEBUG define for serial
+Added initialisation for port_shadow in pic_utils
+Fixed turn_analog_inputs_off for 18f2620
+Added platform.h for defining hardware platforms
+
+Version 1.2
+-----------
+
+16 May 2008
+
+pic_pack_lib
+
+ds1631.c/h - rewrote to use i2c base library
+packet.c/h - general update, documentation, a few logic errors fixed,
+  new callbacks, functions better named
+Serial.c/h - added 16bit hex print routine
+pic_utils.c/h - added support for 18f452 for turn_analog_inputs_off()
+protocol.h - tidied up, moved to bit positions to indicate capabilities,
+  expanded relay and dimmer options
+
+demos
+
+packet - All new meshed packet demo, based on SparkFun Terminal Development
+  Node (TDN), but will work on your breadboard of course as well. See tutorial
+  on the website
+
+
+version 1.21
+------------
+
+packet.c/h
+
+pkt_send_payload didn't return the correct status
+
+pic_rf_24l01.c/h
+
+Critical timing error - problem with sending packets on faster processors
+
+convert.c/h
+
+Moved temp conversion routines into seperate files

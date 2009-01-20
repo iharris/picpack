@@ -1,0 +1,43 @@
+[Settings]
+Active Compiler=BoostC
+Target=PIC18F4520
+Type=0
+Warnings=2
+ClockRate=8000000
+[Files]
+File0=..\..\pic_pack_lib\pic_serial.c
+Count=10
+File1=..\..\pic_pack_lib\pic_utils.c
+File2=..\..\pic_pack_lib\pic_serial.h
+File3=..\..\pic_pack_lib\pic_utils.h
+File4=config.h
+File5=lm75_demo.c
+File6=..\..\pic_pack_lib\lm75.c
+File7=..\..\pic_pack_lib\lm75.h
+File8=..\..\pic_pack_lib\i2c.h
+File9=..\..\pic_pack_lib\i2c.c
+[Compiler]
+Extra=-I "..\..\pic_pack_lib" 
+[Linker]
+Extra=
+[Tools]
+BoostDir=C:\Program Files\SourceBoost\
+Programmer=
+[Debugger]
+DebugFromMain=1
+[Bookmarks]
+Count=0
+[Breakpoints]
+Count=0
+[Plugins]
+Bcd=506F727442000100000001000000
+Button=00706F727462000000000000000000
+Button Block=706F72746200000000000000000000000000
+Led=706F72746200000000000000000000000000
+Led Block=506F727441000100000000000000
+Speed Tester=6B094201040000004E6F6E65
+7 Segment LED=00040000007F00000000000000000000000000000000000352413000000000000000000352413100000000000000000352413200000000000000000352413300000000000000000000000000000000000000000000000000000000000000000000000003524230035242310352423203524233035242340352423503524236035242370003526564FF191900
+[Tool State]
+compile=1
+link=1
+program=0

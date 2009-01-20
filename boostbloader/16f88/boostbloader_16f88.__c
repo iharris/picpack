@@ -1,0 +1,44 @@
+[Settings]
+Active Compiler=BoostC
+Target=PIC16F88
+Type=0
+Warnings=1
+ClockRate=8000000
+Profiling=0
+Snapshot=0
+[Files]
+File0=config.h
+Count=4
+File1=..\chipdefs.h
+File2=..\BoostBloader.c
+File3=..\calc.pl
+File4=..\BoostBloader.c
+File5=..\BoostBloader.c
+[Tool State]
+compile=1
+link=1
+program=0
+[Compiler]
+Extra=-Su -Oa -I "..\..\pic_pack_lib"
+[Linker]
+Extra=-rb 3772
+[Tools]
+BoostDir=C:\Program Files\SourceBoost\
+Programmer=
+[Debugger]
+DebugFromMain=1
+[Bookmarks]
+Count=0
+[Breakpoints]
+Count=0
+[Plugins]
+Bcd=506F727442000100000001000000
+Button=00706F727462000000000000000000
+Button Block=706F72746200000000000000000000000000
+Led=706F72746200000000000000000000000000
+Led Block=506F727442000100000001000000
+Speed Tester=6B094201040000004E6F6E65
+[Watch]
+Count=0
+[Watchpoint]
+Count=0

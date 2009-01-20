@@ -1,0 +1,5 @@
+19 April 2008
+
+v 1.91
+
+Fixed 20Mhz oscillator pulldown lookup bug
