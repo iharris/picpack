@@ -3,7 +3,7 @@
 // 
 // usb_config_serial.c
 //
-// All the serial specific USB code lives here
+// Descriptor responses for CDC requests
 //
 // Ian Harris 2008
 // imharris [at] gmail.com
@@ -28,7 +28,7 @@ stall doesn't work on version 2.0, changed to version 1.1
 
 
 */
-
+// Device descriptor
 device_descriptor my_device_descriptor = {
 	sizeof(my_device_descriptor), 	// bytes long
 	dt_DEVICE, 	// DEVICE 01h
@@ -47,6 +47,11 @@ device_descriptor my_device_descriptor = {
 };
 
 
+// The large chunk of descriptors that gets sent
+// once we have sent the device descriptor.
+// There are two interfaces. The first is the comm interface,
+// the seconds is the data interface (over which the actual serial
+// data travels
 
 struct  {
 	configuration_descriptor my_config;
@@ -196,7 +201,7 @@ uns8 string_02[] =
 		'B', 0,
 	};
 
-
+// This is the routine you need to define in order to respond to descriptor requests
 void usb_get_descriptor_callback(uns8 descriptor_type, uns8 descriptor_num,
                                  uns8 **rtn_descriptor_ptr, uns16 *rtn_descriptor_size) {
 	
@@ -238,16 +243,19 @@ void usb_get_descriptor_callback(uns8 descriptor_type, uns8 descriptor_num,
 					descriptor_size = sizeof(string_02);
 					descriptor_ptr = string_02;
 					break;
-					
+				// Add other strings here if you'd like	
 			}		
 			break;
 		case dt_DEVICE_QUALIFIER:
 			#ifdef USB_DEBUG
 				serial_print_str(" DQ ");
 			#endif
-			// we don't hfandle this, send a stall
+			// we don't handle this, send a stall
+			// Should send a stall here :)
+			// Must fix this for USB 2.0 one of these days...
 			break;
 		default:
+			// Whoops, we don't know how to handle this request
 			#ifdef USB_DEBUG
 				serial_print_str("?? ");
 				serial_print_int(descriptor_type);
