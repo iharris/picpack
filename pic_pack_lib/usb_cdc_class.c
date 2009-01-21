@@ -45,8 +45,10 @@ typedef  union _long_union{
 		uns8 as_byte_array[4];
 } long_union;
 
-
-typedef struct _	 {
+/** Line coding struction that defines what (should) happen if we were actually
+    USB to RS232 converter
+*/    
+typedef struct _line_coding	 {
 	long_union	dte_rate;
 	uns8	stop_bits;	// 0=1 stop bit, 1=1.5 stop bits, 2=2 stop bits
 	uns8	parity;		// 0=None, 1=Odd, 2=Even, 3=Mark, 4=Space
@@ -69,6 +71,7 @@ uns8 cdc_rx_end = 0;
 	
 
 uns8 class_data[8];	// we'll dump all our class data in here
+
 
 void usb_handle_class_request_callback(setup_data_packet sdp) {
 
