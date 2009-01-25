@@ -9,13 +9,8 @@
 	Released under the "do whatever you like with this
 	but if it breaks, you get to keep both pieces" license.
     
-   
-*/
 
-
-/*
-
-// Put the following into your config.h
+Put the following into your config.h
 
 // - - - - - - - - - - - - - - - - - - - - 
 // pic_serial defines
@@ -23,19 +18,34 @@
 
 #define SERIAL_TX_BUFFER_SIZE 20
 #define SERIAL_RX_BUFFER_SIZE 4
-// enable this define if you want fine-grained control...
+
+// Use this define if you want fine-grained control of what happens in the serial port
 //#define SERIAL_DEBUG_ON
+
+// Use this define if you are debugging in the IDE simulator and don't want it to hang
+// waiting for serial interrupts that will never come...
 //#define SERIAL_IDE_DEBUG
+
+// Use thie define if you want to drop a character if the TX buffer is full,
+// rather than the default behaviour, which is to wait until the TX buffer has
+// a spare spot.
+//#define SERIAL_DISCARD_ON_TX_FULL_DURING_INT
+
 // - - - - - - - - - - - - - - - - - - - - 
+
+Put the following in your ISR
+
+serial_handle_tx_isr();
+serial_handle_rx_isr();
+
+Put the following in your system setup routine
+
+serial_setup(bit req_brgh, uns8 req_spbrg);
+
 
 */
 
-// Define the following if you want immediate return
-// from routines - good for software debugging
-// under the IDE
-//
 
-//#define __DEBUG__
 
 
 #ifndef __pic_serial_h

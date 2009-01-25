@@ -83,12 +83,18 @@ void usb_cdc_print_int(uns16 i);
 	\brief Transmit any buffered characters over ther USB virtual serial port
  
 	Generally only used internally, this routine will attempt to place any
-	characters in the transmit queue into the USB buffers
+	characters in the transmit queue into the USB buffers. It will fail gracefully
+	if the USB buffer is already owned by the SIE.
 
-	\param i the 16 bit number to be printed
 */
 void usb_cdc_handle_tx();
 
+/**
+	\brief Set up data structures ready for USB CDC use
+ 
+	Configures the default DTE rate, stop bits etc.
+
+*/
 void usb_cdc_setup();
 
 #endif

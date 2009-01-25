@@ -33,9 +33,6 @@ uns8 rx_start = 0;
 /** Receive fifo end point */
 uns8 rx_end = 0;
 
-// If you really want to know what's going on - 
-// #define the serial debug option in your config.h
-
 #ifdef SERIAL_DEBUG
 uns8 rx_soft_overflow = 0;
 uns8 rx_hard_overflow = 0;

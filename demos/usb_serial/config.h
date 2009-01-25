@@ -60,7 +60,7 @@
 // void usb_device_configured_callback() {
 //	}
 
-#define USB_CALLBACK_ON_CTRL_CLASS
+#define USB_CALLBACK_ON_CLASS_CTRL
 // if you define it, you'll need to include these routines in your code:
 //void usb_handle_class_ctrl_read_callback();	
 //void usb_handle_class_ctrl_write_callback(uns8 *data, uns16 count);

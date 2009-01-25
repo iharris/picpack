@@ -214,10 +214,10 @@ uns8 *buffer;
 	bd->count = count;
 	bd->addr = (uns16)buffer;
 	if (first) {
-		clear_bit(bd->stat, DTS);
+		clear_bit(bd->stat, DTS);	// So when it flips, will end up set 
 	}
 
-	toggle_bit(bd->stat, DTS);
+	toggle_bit(bd->stat, DTS);	// flip the DTS bit
 	clear_bit(bd->stat, KEN);	// clear the keep bit
 	clear_bit(bd->stat, INCDIS);	// clear the increment disable
 	set_bit  (bd->stat, DTSEN);
@@ -494,7 +494,7 @@ uns8 end_point, pid;
 					#ifdef USB_DEBUG
 						serial_print_str(" class ");
 					#endif
-				#ifdef USB_CALLBACK_ON_CTRL_CLASS
+				#ifdef USB_CALLBACK_ON_CLASS_CTRL
 					usb_handle_class_request_callback(usb_sdp);
 				#endif	
 			} else {
@@ -541,7 +541,7 @@ uns8 end_point, pid;
 					serial_print_str(" ctrl read data stage class - more to come? ");
 				#endif	
 				// Must be more to come
-				#ifdef USB_CALLBACK_ON_CTRL_CLASS
+				#ifdef USB_CALLBACK_ON_CLASS_CTRL
 					usb_handle_class_ctrl_read_callback();
 				#else
 					nop(); // otherwise boostc bug
@@ -566,7 +566,7 @@ uns8 end_point, pid;
 				#endif
 				usb_send_data_chunk();
 			} else if (control_mode == cm_CTRL_READ_DATA_STAGE_CLASS) {
-				#ifdef USB_CALLBACK_ON_CTRL_CLASS
+				#ifdef USB_CALLBACK_ON_CLASS_CTRL
 					usb_handle_class_ctrl_read_callback();
 				#else
 					nop(); // boostc bug
@@ -587,7 +587,7 @@ uns8 end_point, pid;
 				#endif
 				control_mode = cm_IDLE;
 			} else if (control_mode == cm_CTRL_WRITE_DATA_STAGE_CLASS) {
-				#ifdef USB_CALLBACK_ON_CTRL_CLASS
+				#ifdef USB_CALLBACK_ON_CLASS_CTRL
 					usb_handle_class_ctrl_write_callback((uns8 *)&buffer_0_out, bd0out.count);
 					// !! should include bc bits here for total count
 					// this only works for 8 bit data packets
