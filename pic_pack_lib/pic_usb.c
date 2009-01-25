@@ -199,7 +199,7 @@ uns8 *buffer;
 	
 	if (test_bit(bd->stat, UOWN)) {
 	#ifdef USB_DEBUG
-		serial_print_str(" don't own it! ");
+		serial_print_str(" !don't own it! ");
 	#endif
 		return;
 	}
