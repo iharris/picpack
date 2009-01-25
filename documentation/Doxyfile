@@ -6,7 +6,7 @@
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "Pic Pack"
 PROJECT_NUMBER         = 2.0rc2
-OUTPUT_DIRECTORY       = C:/Programming/pic_new/documentation
+OUTPUT_DIRECTORY       = C:/Programming/PicPack/documentation
 CREATE_SUBDIRS         = YES
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -45,7 +45,7 @@ SIP_SUPPORT            = NO
 IDL_PROPERTY_SUPPORT   = YES
 DISTRIBUTE_GROUP_DOC   = NO
 SUBGROUPING            = YES
-TYPEDEF_HIDES_STRUCT   = NO
+TYPEDEF_HIDES_STRUCT   = YES
 SYMBOL_CACHE_SIZE      = 0
 #---------------------------------------------------------------------------
 # Build related configuration options
@@ -94,7 +94,7 @@ WARN_LOGFILE           = C:/pic_new/documentation/warnings.txt.txt
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = c:/programming/pic_new/pic_pack_lib
+INPUT                  = c:\programming\picpack\pic_pack_lib
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \
@@ -184,7 +184,7 @@ QHP_VIRTUAL_FOLDER     = doc
 QHG_LOCATION           = 
 DISABLE_INDEX          = NO
 ENUM_VALUES_PER_LINE   = 4
-GENERATE_TREEVIEW      = YES
+GENERATE_TREEVIEW      = FRAME
 TREEVIEW_WIDTH         = 250
 FORMULA_FONTSIZE       = 10
 #---------------------------------------------------------------------------
