@@ -61,11 +61,8 @@ extern buffer_descriptor * ep_in_bd_location[USB_HIGHEST_EP + 1];
 extern buffer_descriptor * ep_out_bd_location[USB_HIGHEST_EP + 1];
 
 extern uns8 * ep_in_buffer_location[USB_HIGHEST_EP + 1];
-
 extern uns8 * ep_out_buffer_location[USB_HIGHEST_EP + 1];
-
 extern uns16 ep_in_buffer_size[USB_HIGHEST_EP + 1];
-
 extern uns16 ep_out_buffer_size[USB_HIGHEST_EP + 1];
 
 #endif
