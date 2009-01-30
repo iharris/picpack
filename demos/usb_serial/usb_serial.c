@@ -18,8 +18,6 @@
 #include "config.h"
 #include "pic_utils.h"
 #include "pic_usb.h"
-#include "pic_tick.h"
-#include "pic_timer.h"
 
 #include "usb_cdc_class.h"
 
@@ -71,11 +69,6 @@ uns8 send_to = 0;
 // a check to see if the usb connection has been configured yet
 uns8 usb_configured = 0;
 
-// Interrupt routine - - - - - - - - - -
-void timer_0_callback() {
-	handle_tick();
-}	
-
 	
 void interrupt() {
 	
@@ -85,7 +78,6 @@ void interrupt() {
 	#endif
 	
 	usb_handle_isr();
-	timer_handle_0_isr();
 }
 
 
@@ -162,8 +154,6 @@ void configure_system() {
 		serial_setup(BRGH_HIGH_SPEED, SPBRG_57600);
 	#endif
 	
-	timer_setup_0(TIMER_16BIT_MODE, TIMER_PRESCALER_OFF, 0xffff - 4000); // close enough to 1ms at 16Mhz
-	
 	usb_cdc_setup();
 
 	usb_setup();
@@ -234,8 +224,7 @@ uns16 test_tick;
 
 	usb_cdc_print_str("Commands: a attach to USB bus\n");
 	
-	timer_start_0();	// kick that timer off...
-	
+
 	while(1) {
 
 		if (usb_cdc_rx_avail()) {
@@ -243,12 +232,6 @@ uns16 test_tick;
 		}
 		handle_tasks();	
 		
-		test_tick = tick_get_count();	// find out what we're up to
-		if (tick_calc_diff(tick_marker, test_tick) > 3) {	// every 3 ms
-			tick_marker = test_tick;
-		}	
-  
-
 	}	// while (1)
 	// main
 }
