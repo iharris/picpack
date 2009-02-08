@@ -6,18 +6,18 @@ Warnings=2
 ClockRate=8000000
 [Files]
 File0=..\..\pic_pack_lib\pic_serial.c
-Count=12
+Count=10
 File1=..\..\pic_pack_lib\pic_utils.c
 File2=..\..\pic_pack_lib\pic_serial.h
 File3=..\..\pic_pack_lib\pic_utils.h
 File4=config.h
-File5=..\..\pic_pack_lib\lm75.c
-File6=..\..\pic_pack_lib\lm75.h
-File7=..\..\pic_pack_lib\i2c.h
-File8=..\..\pic_pack_lib\i2c.c
-File9=lm75_lcd_demo.c
-File10=..\..\pic_pack_lib\lcd.c
-File11=..\..\pic_pack_lib\lcd.h
+File5=..\..\pic_pack_lib\lcd.c
+File6=..\..\pic_pack_lib\lcd.h
+File7=.\sure_2416_demo.c
+File8=..\..\pic_pack_lib\sure_2416.c
+File9=..\..\pic_pack_lib\sure_2416.h
+File10=..\..\pic_pack_lib\sure_2416.h
+File11=..\..\pic_pack_lib\sure_2416.h
 [Compiler]
 Extra=-I "..\..\pic_pack_lib" 
 [Linker]

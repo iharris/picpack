@@ -12,13 +12,21 @@
 //#define SERIAL_DEBUG_ON
 
 // - - - - - - - - - - - - - - - - - - - - 
-// pic i2c defines
+// sure 2416 defines
 // - - - - - - - - - - - - - - - - - - - - 
 
-#define i2c_scl_port PORTC
-#define i2c_sda_port PORTC
-#define i2c_scl_pin  3
-#define i2c_sda_pin  4
+
+#define sure_2416_cs1_port PORTA
+#define sure_2416_cs1_pin  0
+
+#define sure_2416_data_port PORTA
+#define sure_2416_data_pin  5
+
+#define sure_2416_wr_port PORTE
+#define sure_2416_wr_pin  2
+
+#define sure_2416_rd_port PORTE
+#define sure_2416_rd_pin  1
 
 // - - - - - - - - - - - - - - - - - - - - 
 // pic lcd defines

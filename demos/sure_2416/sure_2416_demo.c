@@ -18,21 +18,16 @@
 #include "config.h"
 #include "pic_utils.h"
 #include "pic_serial.h"
-#include "lm75.h"
 #include "lcd.h"
+#include "sure_2416.h"
 
 // System includes
 #include "string.h"
 #include "stdlib.h"
 
-// Don't forget your config.h!
-
-#define LM75_ADDRESS 0
 
 // max and min temps
 
-uns16 max_temp = 0;
-uns16 min_temp = 0xffff;
 
 // Interrupt routine - - - - - - - - - -
 void interrupt() {
@@ -43,82 +38,6 @@ void interrupt() {
 
 
 
-uns8 convert_3bits_to_2dec(uns8 data) {
-	
-	switch (data) {
-		case 0: return 00;
-		case 1: return 13;
-		case 2: return 25;
-		case 3: return 38;
-		case 4: return 50;
-		case 5: return 63;
-		case 6: return 75;
-		case 7: return 88;
-	}	
-	return 99;
-}
-
-uns8 convert_3bits_to_1dec(uns8 data) {
-	
-	switch (data) {
-		case 0: return 0;
-		case 1: return 1;
-		case 2: return 3;
-		case 3: return 4;
-		case 4: return 5;
-		case 5: return 6;
-		case 6: return 8;
-		case 7: return 9;
-	}	
-	return 99;
-}
-
-
-
-// Print to the lcd the decoded temperature
-void print_lcd_temp(uns16 raw_temp) {
-uns8 int_part, dec_part;
-
-	// Pull apart integer from decimal values
-	int_part = raw_temp >> 8;
-	dec_part = (raw_temp & 0xff) >> 5;
-	
-	// Print result to two decimal places
-	lcd_write_data_int(int_part);
-	lcd_write_data_str(".");
-	lcd_write_data_int(convert_3bits_to_1dec(dec_part));
-	lcd_write_data_str("\xDF ");
-}
-
-// Request temperature from sensor and print it out
-
-void request_temp() {
-
-uns16 raw_temp;
-
-
-	raw_temp = lm75_get_temp(LM75_ADDRESS); 
-	
-	lcd_write_command(LCD_LINE1);	// goto line 1
-	lcd_write_data_str("Current = ");	// print welcome message
-
-	print_lcd_temp(raw_temp);
-	
-	if (raw_temp > max_temp) {
-		max_temp = raw_temp;
-	}
-	if (raw_temp < min_temp) {
-		min_temp = raw_temp;
-	}
-	lcd_write_command(LCD_LINE2);
-	
-	print_lcd_temp(min_temp);
-	delay_ms(10);
-	lcd_write_data_str(" > ");
-	print_lcd_temp(max_temp);
-	
-		
-}
 
 
 
@@ -132,13 +51,13 @@ void configure_system() {
 
 	turn_analog_inputs_off();	// kill those pesky analogue inputs
 	
-	lm75_setup();
-	lm75_set_config(LM75_ADDRESS, LM75_NORMAL);
 	
 	lcd_setup();	// Setup the pins (output / input)
 	lcd_init ();	// Configure chip ready for display
 
-	serial_setup(BRGH_HIGH_SPEED, SPBRG_9600);
+	sure_2416_setup();
+
+	serial_setup(BRGH_HIGH_SPEED, SPBRG_19200);
 
 	turn_peripheral_ints_on();
 	turn_global_ints_on();
@@ -153,16 +72,23 @@ void main() {
 
 	delay_ms(100);
 
-	serial_print_str("\n\nPIC LM75 + LCD demo\n");
+	serial_print_str("\n\nPicPack Sure 2416 Led display demo\n");
 	serial_print_str( "\n<");
 	serial_print_str(__TIME__);
 	serial_putc(' ');
 	serial_print_str(__DATE__);
 	serial_print_str(">\n");
-
+	sure_2416_send_command(0b00000000);	// sys dis 
+	sure_2416_send_command(0b00101100); // format pmos 16 outs
+	
+	sure_2416_send_command(0b00010100); //master
+	sure_2416_send_command(0b00000001); // sys en
+	sure_2416_send_command(0b00000011); //led on
+	
 	while (1) {
-		request_temp();
-		delay_s(2);
+		delay_ms(250);
+		serial_print_str("writing...\n");
+		sure_2416_write(0,0b00001111);
 	}
 	
 }	// main
