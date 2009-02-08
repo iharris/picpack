@@ -34,9 +34,39 @@
 
 */
 
+#define SURE_2416_CMD_SYS_DISABLE		0b00000000
+#define SURE_2416_CMD_SYS_ENABLE		0b00000001
+
+#define SURE_2416_CMD_NMOS_8_COMMON		0b00100000
+#define SURE_2416_CMD_NMOS_16_COMMON	0b00100100
+#define SURE_2416_CMD_PMOS_8_COMMON		0b00101000
+#define SURE_2416_CMD_PMOS_16_COMMON	0b00101100
+
+#define SURE_2416_CMD_CLK_MASTER_MODE	0b00010100
+#define SURE_2416_CMD_CLK_SLAVE_MODE    0b00010000
+
+#define SURE_2416_CMD_CLK_SOURCE_INT_RC	0b00011000
+#define SURE_2416_CMD_CLK_SOURCE_EXT	0b00011100
+
+#define SURE_2416_CMD_LEDS_OFF			0b00000010
+#define SURE_2416_CMD_LEDS_ON			0b00000011
+
+#define SURE_2416_CMD_BLINK_OFF			0b00001000
+#define SURE_2416_CMD_BLINK_ON			0b00001001			
+
+
 void sure_2416_setup();
+void sure_2416_init();
 void sure_2416_write(uns8 mem_addr, uns8 data);
 void sure_2416_send_command(uns8 command);
+
+void sure_2416_set_brightness(uns8 brightness);
+
+void sure_2416_set_pixel(uns8 x, uns8 y, uns8 colour);
+uns8 sure_2416_get_pixel(uns8 x, uns8 y);
+void sure_2416_horizontal_line(uns8 x, uns8 y, uns8 length, uns8 colour);	// to east direction
+void sure_2416_vertical_line(uns8 x, uns8 y, uns8 length, uns8 colour);	// to the north direction
+void sure_2416_clear();
 
 // - - - - - - - - - - - - - - - - - - - - 
 #ifdef fix_this_later

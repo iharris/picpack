@@ -56,7 +56,8 @@ void configure_system() {
 	lcd_init ();	// Configure chip ready for display
 
 	sure_2416_setup();
-
+	sure_2416_init();
+	
 	serial_setup(BRGH_HIGH_SPEED, SPBRG_19200);
 
 	turn_peripheral_ints_on();
@@ -78,17 +79,34 @@ void main() {
 	serial_putc(' ');
 	serial_print_str(__DATE__);
 	serial_print_str(">\n");
-	sure_2416_send_command(0b00000000);	// sys dis 
-	sure_2416_send_command(0b00101100); // format pmos 16 outs
-	
-	sure_2416_send_command(0b00010100); //master
-	sure_2416_send_command(0b00000001); // sys en
-	sure_2416_send_command(0b00000011); //led on
 	
 	while (1) {
 		delay_ms(250);
 		serial_print_str("writing...\n");
-		sure_2416_write(0,0b00001111);
+		//sure_2416_write(0,0b00001111);
+		delay_s(1);
+		sure_2416_set_pixel(0,0,1);
+
+		delay_s(1);
+		sure_2416_set_pixel(23,0,1);
+		
+		delay_s(1);
+		sure_2416_set_pixel(23,15,1);
+
+		delay_s(1);
+		sure_2416_set_pixel(0,15,1);
+
+		delay_s(1);
+		sure_2416_set_pixel(0,0,0);
+
+		delay_s(1);
+		sure_2416_set_pixel(23,0,0);
+		
+		delay_s(1);
+		sure_2416_set_pixel(23,15,0);
+
+		delay_s(1);
+		sure_2416_set_pixel(0,15,0);
 	}
 	
 }	// main
