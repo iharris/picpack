@@ -1,0 +1,45 @@
+[Settings]
+Active Compiler=BoostC
+Target=PIC18F4520
+Type=0
+Warnings=2
+ClockRate=8000000
+[Files]
+File0=..\..\pic_pack_lib\pic_serial.c
+Count=13
+File1=..\..\pic_pack_lib\pic_utils.c
+File2=..\..\pic_pack_lib\pic_serial.h
+File3=..\..\pic_pack_lib\pic_utils.h
+File4=config.h
+File5=..\..\pic_pack_lib\lcd.c
+File6=..\..\pic_pack_lib\lcd.h
+File7=..\..\pic_pack_lib\sure_2416.c
+File8=..\..\pic_pack_lib\sure_2416.h
+File9=..\..\pic_pack_lib\draw\draw.c
+File10=..\..\pic_pack_lib\draw\draw.h
+File11=..\..\pic_pack_lib\draw\drv_sure_2416.c
+File12=.\draw_sure_2416_demo.c
+[Compiler]
+Extra=-I "..\..\pic_pack_lib" 
+[Linker]
+Extra=
+[Tools]
+BoostDir=C:\Program Files\SourceBoost\
+Programmer=
+[Debugger]
+DebugFromMain=1
+[Bookmarks]
+Count=0
+[Breakpoints]
+Count=0
+[Plugins]
+Bcd=506F727442000100000001000000
+Button=00706F727462000000000000000000
+Button Block=706F72746200000000000000000000000000
+Led=706F72746200000000000000000000000000
+Led Block=506F727441000100000000000000
+Speed Tester=6B094201040000004E6F6E65
+[Tool State]
+compile=1
+link=1
+program=0
