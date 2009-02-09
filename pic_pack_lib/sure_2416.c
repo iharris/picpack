@@ -325,4 +325,9 @@ uns8 common, panel, led_in_panel, inverted_x, out, mem_addr, bit_in_mem_addr, co
 	
 }
 	
-	
+uns8 sure_2416_get_pixel(uns8 x, uns8 y) {
+}
+
+void sure_2416_clear_screen() {
+}
+

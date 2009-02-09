@@ -1,5 +1,5 @@
-#ifndef __sure_6432_h
-#define __sure_6432
+#ifndef __sure_2416_h
+#define __sure_2416_h
 
 #include "config.h"
 
@@ -66,7 +66,7 @@ void sure_2416_set_pixel(uns8 x, uns8 y, uns8 colour);
 uns8 sure_2416_get_pixel(uns8 x, uns8 y);
 void sure_2416_horizontal_line(uns8 x, uns8 y, uns8 length, uns8 colour);	// to east direction
 void sure_2416_vertical_line(uns8 x, uns8 y, uns8 length, uns8 colour);	// to the north direction
-void sure_2416_clear();
+void sure_2416_clear_screen();
 
 // - - - - - - - - - - - - - - - - - - - - 
 #ifdef fix_this_later
