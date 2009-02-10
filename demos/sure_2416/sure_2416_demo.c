@@ -50,18 +50,33 @@ void configure_system() {
 	kill_interrupts();	// turn off interrupts just in case
 
 	turn_analog_inputs_off();	// kill those pesky analogue inputs
+	make_output(PORTB, 0);
+	make_output(PORTB, 1);
+	make_output(PORTB, 2);
+	make_output(PORTB, 3);
 	
+	set_pin(PORTB, 0);
+	set_pin(PORTB, 1);
+	set_pin(PORTB, 2);
+	set_pin(PORTB, 3);
+	delay_s(1);
+	clear_pin(PORTB, 0);
+	clear_pin(PORTB, 1);
+	clear_pin(PORTB, 2);
+	clear_pin(PORTB, 3);
+	delay_s(1);
 	
 	lcd_setup();	// Setup the pins (output / input)
 	lcd_init ();	// Configure chip ready for display
 
 	sure_2416_setup();
-	sure_2416_init();
 	
 	serial_setup(BRGH_HIGH_SPEED, SPBRG_19200);
 
 	turn_peripheral_ints_on();
 	turn_global_ints_on();
+
+	sure_2416_init();
 }
 
 
@@ -79,12 +94,13 @@ void main() {
 	serial_putc(' ');
 	serial_print_str(__DATE__);
 	serial_print_str(">\n");
-	
+			sure_2416_write(0,0b00001111);
+
 	while (1) {
-		delay_ms(250);
+		//delay_ms(250);
 		serial_print_str("writing...\n");
-		//sure_2416_write(0,0b00001111);
-		delay_s(1);
+		sure_2416_write(0,0b00001111);
+		/*delay_s(5);
 		sure_2416_set_pixel(0,0,1);
 
 		delay_s(1);
@@ -106,7 +122,23 @@ void main() {
 		sure_2416_set_pixel(23,15,0);
 
 		delay_s(1);
-		sure_2416_set_pixel(0,15,0);
+		sure_2416_set_pixel(0,15,0);*/
+		uns8 x,y;
+		for(x = 0 ; x < 24 ; x++) {
+			for(y = 0 ; y < 16 ; y++) {
+				sure_2416_set_pixel(x, y, 1);
+				//sure_2416_set_pixel(x, y, 0);
+			}
+		}		
+		delay_ms(100);
+		for(x = 0 ; x < 24 ; x++) {
+			for(y = 0 ; y < 16 ; y++) {
+				//sure_2416_set_pixel(x, y, 1);
+				sure_2416_set_pixel(x, y, 0);
+			}
+		}		
+		delay_ms(100);
+
 	}
 	
 }	// main

@@ -153,7 +153,14 @@ uns8 count;
 	serial_print_str("B");
 	// write mem addr, bits 6 -> 0
 	for(count = 0 ; count < 7 ; count++) {
-		change_pin_var(sure_2416_data_port, sure_2416_data_pin, test_bit(mem_addr, 6));
+		if (test_bit(mem_addr, 6)) {
+			serial_putc('1');
+			set_pin(sure_2416_data_port, sure_2416_data_pin);
+		} else { serial_putc('0');
+			clear_pin(sure_2416_data_port, sure_2416_data_pin);
+		}
+	
+		//change_pin_var(sure_2416_data_port, sure_2416_data_pin, test_bit(mem_addr, 6));
 	delay_ms(1);
 		// pulse wr
 		clear_pin(sure_2416_wr_port, sure_2416_wr_pin);
@@ -202,73 +209,108 @@ uns8 common, panel, led_in_panel, inverted_x, out, mem_addr, bit_in_mem_addr, co
 	// first calculate memory address
 	
 	// y location is top left based
+	/*serial_print_str("set x=");
+	serial_print_int(x);
+	serial_print_str(" y=");
+	serial_print_int(y);
+	serial_print_str(" col=");
+	serial_print_int(colour);
+	serial_print_nl();*/
+	
 	common = 15 - y;
+	/*serial_print_str("common = ");
+	serial_print_int(common);
+	serial_print_nl();*/
 	
 	// x location is kind of messed up
 	panel = x / 8;	// which panel of the three is it that we need to change?
+	/*serial_print_str("panel = ");
+	serial_print_int(panel);
+	serial_print_nl();*/
+
 	led_in_panel = x - (panel * 8); 
+
+	/*serial_print_str("lip = ");
+	serial_print_int(led_in_panel);
+	serial_print_nl();*/
+	
 	inverted_x = 7 - led_in_panel;
-	out = panel * 8 + inverted_x;
+
+	/*serial_print_str("ix = ");
+	serial_print_int(inverted_x);
+	serial_print_nl();*/
 	
+	
+	out = panel * 8 + led_in_panel; //inverted_x;
+	
+	/*serial_print_str("out = ");
+	serial_print_int(out);
+	serial_print_nl();*/
+
 	mem_addr = out * 4 + common / 4;
-	bit_in_mem_addr = common && 0b00000011;
 	
-	clear_pin(sure_2416_cs1_port, sure_2416_cs1_pin);
+	/*serial_print_str("mem = ");
+	serial_print_int_hex(mem_addr);
+	serial_print_nl();*/
+	
+	bit_in_mem_addr = common & 0b00000011;
+	
+	/*serial_print_str("bima = ");
+	serial_print_int(bit_in_mem_addr);
+	serial_print_nl();*/
+
+	set_pin(sure_2416_cs1_port, sure_2416_cs1_pin);
+	//delay_ms(1);
 	set_pin  (sure_2416_wr_port, sure_2416_wr_pin);
 	set_pin  (sure_2416_rd_port, sure_2416_rd_pin);
+	clear_pin(sure_2416_cs1_port, sure_2416_cs1_pin);
 
 	// send WR command
 	// send 1
 	set_pin  (sure_2416_data_port, sure_2416_data_pin);
-	delay_ms(1);
+	//delay_ms(1);
 	// pulse wr
 	clear_pin(sure_2416_wr_port, sure_2416_wr_pin);
-	delay_ms(1);
+	//delay_ms(1);
 	set_pin  (sure_2416_wr_port, sure_2416_wr_pin);
-	delay_ms(1);
+	//delay_ms(1);
 	
 	// send 0
 	clear_pin  (sure_2416_data_port, sure_2416_data_pin);
 	// pulse wr
-	delay_ms(1);
+	//delay_ms(1);
 	clear_pin(sure_2416_wr_port, sure_2416_wr_pin);
-	delay_ms(1);
+	//delay_ms(1);
 	set_pin  (sure_2416_wr_port, sure_2416_wr_pin);
-	delay_ms(1);
+	//delay_ms(1);
 
 	// send 1
 	set_pin  (sure_2416_data_port, sure_2416_data_pin);
 	// pulse wr
-	delay_ms(1);
+	//delay_ms(1);
 	clear_pin(sure_2416_wr_port, sure_2416_wr_pin);
-	delay_ms(1);
+	//delay_ms(1);
 	set_pin  (sure_2416_wr_port, sure_2416_wr_pin);
-	delay_ms(1);
+	//delay_ms(1);
 
 	// write mem addr, bits 6 -> 0
 	for(count = 0 ; count < 7 ; count++) {
-		change_pin_var(sure_2416_data_port, sure_2416_data_pin, test_bit(mem_addr, 6));
-	delay_ms(1);
+		if (test_bit(mem_addr, 6)) {
+			//serial_putc('1');
+			set_pin(sure_2416_data_port, sure_2416_data_pin);
+		} else { //serial_putc('0');
+			clear_pin(sure_2416_data_port, sure_2416_data_pin);
+		}
+
+		//change_pin_var(sure_2416_data_port, sure_2416_data_pin, test_bit(mem_addr, 6));
+	//delay_ms(1);
 		// pulse rd
-		clear_pin(sure_2416_rd_port, sure_2416_rd_pin);
-	delay_ms(1);
-		set_pin  (sure_2416_rd_port, sure_2416_rd_pin);
-	delay_ms(1);
+		clear_pin(sure_2416_wr_port, sure_2416_wr_pin);
+	//delay_ms(1);
+		set_pin  (sure_2416_wr_port, sure_2416_wr_pin);
+	//delay_ms(1);
 		// shift mem addr along
 		mem_addr = mem_addr << 1;
-	}
-
-	// Read data, bits 0 -> 3 (different from mem addr format)
-	for(count = 0 ; count < 4 ; count++) {
-		change_pin_var(sure_2416_data_port, sure_2416_data_pin, test_bit(data, 0));
-		delay_ms(1);
-		// pulse wr
-		clear_pin(sure_2416_wr_port, sure_2416_wr_pin);
-	delay_ms(1);
-		set_pin  (sure_2416_wr_port, sure_2416_wr_pin);
-	delay_ms(1);
-		// shift mem addr along
-		data = data >> 1;
 	}
 
 	// Retrieve 4 bits
@@ -277,19 +319,23 @@ uns8 common, panel, led_in_panel, inverted_x, out, mem_addr, bit_in_mem_addr, co
 	make_input(sure_2416_data_port, sure_2416_data_pin);
 
 	for(count = 0 ; count < 4 ; count++) {
-		delay_ms(1);
-		// pulse wr
-		clear_pin(sure_2416_wr_port, sure_2416_wr_pin);
-		delay_ms(1);
+		//delay_ms(1);
+		// pulse rd
+		clear_pin(sure_2416_rd_port, sure_2416_rd_pin);
+		//delay_ms(1);
 
-		data = data << 1;
-		data.0 = test_pin(sure_2416_data_port, sure_2416_data_pin);
+		data = data >> 1;
+		data.3 = test_pin(sure_2416_data_port, sure_2416_data_pin);
 
-		set_pin  (sure_2416_wr_port, sure_2416_wr_pin);
-		delay_ms(1);
+		set_pin  (sure_2416_rd_port, sure_2416_rd_pin);
+		//delay_ms(1);
 		// shift mem addr along
-		mem_addr = mem_addr << 1;
+
 	}
+
+	//serial_print_str("data = ");
+	//serial_print_int_hex(data);
+	//serial_print_nl();
 
 	make_output(sure_2416_data_port, sure_2416_data_pin);
 
@@ -299,27 +345,36 @@ uns8 common, panel, led_in_panel, inverted_x, out, mem_addr, bit_in_mem_addr, co
 	} else {
 		clear_bit(data, bit_in_mem_addr);
 	}	
+	//serial_print_str("new data = ");
+	//serial_print_int_hex(data);
+	//serial_print_nl();
 	
 	// Now write it back out again
 	
 	// write data, bits 0 -> 3 (different from mem addr format)
 	for(count = 0 ; count < 4 ; count++) {
-		change_pin_var(sure_2416_data_port, sure_2416_data_pin, test_bit(data, 0));
-		delay_ms(1);
+		//change_pin_var(sure_2416_data_port, sure_2416_data_pin, test_bit(data, 0));
+		if (test_bit(data, 0)) {
+			//serial_putc('1');
+			set_pin(sure_2416_data_port, sure_2416_data_pin);
+		} else { //serial_putc('0');
+			clear_pin(sure_2416_data_port, sure_2416_data_pin);
+		}
+		//delay_ms(1);
 		// pulse wr
 		clear_pin(sure_2416_wr_port, sure_2416_wr_pin);
-		delay_ms(1);
+		//delay_ms(1);
 		set_pin  (sure_2416_wr_port, sure_2416_wr_pin);
-		delay_ms(1);
+		//delay_ms(1);
 		// shift mem addr along
 		data = data >> 1;
 	}
 	// reset CS
-	serial_print_str("D");
-	delay_ms(1);
+	//serial_print_str("D");
+	//delay_ms(1);
 
 	set_pin(sure_2416_cs1_port, sure_2416_cs1_pin);
-	delay_ms(1);
+	//delay_ms(1);
 	clear_pin(sure_2416_cs1_port, sure_2416_cs1_pin);
 	
 	
