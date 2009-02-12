@@ -1,1 +1,1 @@
-7,38400,8,"16F88","C:\pic\demos\packet\packet_demo.hex","C:\pic\demos\temp_lcd_packet\temp_lcd_packet.hex","C:\pic\demos\packet_listener\packet_listener_demo.hex",9600,8,"N",1,"asc",#FALSE#,#TRUE#
+8,38400,12,"16F876A","C:\Programming\PicPack\demos\sure_2416\sure_2416_demo.hex","C:\pic\demos\temp_lcd_packet\temp_lcd_packet.hex","C:\pic\demos\packet_listener\packet_listener_demo.hex",19200,8,"N",1,"asc",#FALSE#,#TRUE#
