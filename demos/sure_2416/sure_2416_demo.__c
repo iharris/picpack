@@ -4,7 +4,7 @@ Target=PIC18F4520
 Type=0
 Warnings=2
 ClockRate=8000000
-Profiling=0
+Profiling=1
 Snapshot=0
 [Files]
 File0=..\..\pic_pack_lib\pic_serial.c
