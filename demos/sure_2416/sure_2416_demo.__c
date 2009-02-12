@@ -4,6 +4,8 @@ Target=PIC18F4520
 Type=0
 Warnings=2
 ClockRate=8000000
+Profiling=1
+Snapshot=0
 [Files]
 File0=..\..\pic_pack_lib\pic_serial.c
 Count=10
@@ -43,3 +45,13 @@ Speed Tester=6B094201040000004E6F6E65
 compile=1
 link=1
 program=0
+[Watch]
+Count=0
+[Watchpoint]
+Count=0
+[Register]
+Core=1
+Ports=1
+Interrupt=1
+Eeprom=1
+Misc=1

@@ -66,7 +66,9 @@ void sure_2416_set_pixel(uns8 x, uns8 y, uns8 colour);
 uns8 sure_2416_get_pixel(uns8 x, uns8 y);
 void sure_2416_horizontal_line(uns8 x, uns8 y, uns8 length, uns8 colour);	// to east direction
 void sure_2416_vertical_line(uns8 x, uns8 y, uns8 length, uns8 colour);	// to the north direction
-void sure_2416_clear_screen();
+void sure_2416_clear();
+void sure_2416_fill(uns8 colour);
+void sure_2416_fill2(uns8 colour);
 
 // - - - - - - - - - - - - - - - - - - - - 
 #ifdef fix_this_later
