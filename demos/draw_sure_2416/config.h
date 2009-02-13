@@ -34,9 +34,9 @@
 // - - - - - - - - - - - - - - - - - - - - 
 
 // y
-#define DRAW_PIXELS_HIGH 24
+#define DRAW_PIXELS_HIGH 16
 // x
-#define DRAW_PIXELS_WIDE 16
+#define DRAW_PIXELS_WIDE 24
 
 #define DRAW_BITS_PER_PIXEL 1
 

@@ -22,10 +22,11 @@
 void drv_paint() {
 
 uns8 count;
-uns8 x, xbit, xbyte, y;
-uns8 * buffer;
+uns8 x, y, inv_y;
+uns16 buffer_loc;
+uns8 byte_loc, bit_loc;
 
-	sure_2416_send_command(SURE_2416_CMD_LEDS_OFF);
+	//sure_2416_send_command(SURE_2416_CMD_SYS_DISABLE);
 	clear_pin(sure_2416_cs1_port, sure_2416_cs1_pin);
 	
 	// send WR command
@@ -61,12 +62,14 @@ uns8 * buffer;
 		// shift mem addr along
 
 	}
-	xbit = 0;
-	xbyte = 0;
+/*
 	for(x = 0 ; x < DRAW_PIXELS_WIDE  ; x++) {
 		for(y = 0 ; y < DRAW_PIXELS_HIGH ; y++) {
-			buffer = draw_buffers[y];
-			if (test_bit(buffer[xbyte], xbit)) {
+			inv_y = DRAW_PIXELS_HIGH - 1 - y;
+			buffer_loc = inv_y * DRAW_PIXELS_WIDE + x;
+			byte_loc = buffer_loc / DRAW_PIXELS_PER_BYTE;
+			bit_loc = buffer_loc & (DRAW_PIXELS_PER_BYTE -1);
+			if (test_bit(draw_buffer0[byte_loc], bit_loc)) {
 				set_pin(sure_2416_data_port, sure_2416_data_pin);
 			} else {
 				clear_pin(sure_2416_data_port, sure_2416_data_pin);
@@ -74,16 +77,36 @@ uns8 * buffer;
 			clear_pin(sure_2416_wr_port, sure_2416_wr_pin);
 			set_pin  (sure_2416_wr_port, sure_2416_wr_pin);
 		}
-		xbit++;
-		if (xbit == 8) {
-			xbit = 0;
-			xbyte++;
-		}	
+	}
+*/	uns8 xbyte = 0x2d;
+	uns8 xbit = 0b00000001;
+	
+	for(x = 0 ; x < DRAW_PIXELS_WIDE  ; x++) {
+		for(y = 0 ; y < DRAW_PIXELS_HIGH ; y++) {
+		if (draw_buffer0[xbyte] & xbit) {
+				set_pin(sure_2416_data_port, sure_2416_data_pin);
+			} else {
+				clear_pin(sure_2416_data_port, sure_2416_data_pin);
+			}	
+			clear_pin(sure_2416_wr_port, sure_2416_wr_pin);
+			set_pin  (sure_2416_wr_port, sure_2416_wr_pin);
+			if (xbyte < 3) {
+				if (xbit == 0b10000000) {
+					xbyte = xbyte + 0x2e;
+					xbit = 0b00000001;
+				} else {
+					xbit = xbit << 1;
+					xbyte = xbyte + 0x2d;
+				}
+			} else {		
+				xbyte = xbyte - 3;
+			}	
+		}
 	}
 	// reset CS
 
 	set_pin(sure_2416_cs1_port, sure_2416_cs1_pin);
-	sure_2416_send_command(SURE_2416_CMD_LEDS_ON);
+	//sure_2416_send_command(SURE_2416_CMD_SYS_ENABLE);
 
 	
 }	

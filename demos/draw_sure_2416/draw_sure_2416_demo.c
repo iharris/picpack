@@ -23,7 +23,8 @@
 // System includes
 #include "string.h"
 #include "stdlib.h"
-
+#include "sure_2416.h"
+#include "draw\draw_screen_buffer.h"
 
 // max and min temps
 
@@ -54,13 +55,15 @@ void configure_system() {
 	lcd_setup();	// Setup the pins (output / input)
 	lcd_init ();	// Configure chip ready for display
 
-	draw_setup();
-	draw_init();
 	
 	serial_setup(BRGH_HIGH_SPEED, SPBRG_19200);
 
 	turn_peripheral_ints_on();
 	turn_global_ints_on();
+
+	draw_setup();
+	draw_init();
+
 }
 
 
@@ -81,31 +84,43 @@ void main() {
 	
 	while (1) {
 		delay_ms(250);
-		serial_print_str("writing...\n");
-		//sure_2416_write(0,0b00001111);
-		delay_s(1);
-		draw_set_pixel(0,0,1);
+		serial_print_debug("buffer_size=", DRAW_TOTAL_BUFFER_SIZE);
+		draw_print_buffer();
 
+		//sure_2416_fill2(1);
+		//delay_s(1);
+		//sure_2416_fill2(0);
+		
+		draw_set_pixel(0,0,1);
+		draw_paint();
+		
 		delay_s(1);
 		draw_set_pixel(23,0,1);
+		draw_paint();
 		
 		delay_s(1);
 		draw_set_pixel(23,15,1);
+		draw_paint();
 
 		delay_s(1);
 		draw_set_pixel(0,15,1);
+		draw_paint();
 
 		delay_s(1);
 		draw_set_pixel(0,0,0);
+		draw_paint();
 
 		delay_s(1);
 		draw_set_pixel(23,0,0);
+		draw_paint();
 		
 		delay_s(1);
 		draw_set_pixel(23,15,0);
+		draw_paint();
 
 		delay_s(1);
 		draw_set_pixel(0,15,0);
+		draw_paint();
 	}
 	
 }	// main
