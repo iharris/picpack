@@ -28,6 +28,9 @@
 #ifndef __draw_h
 #define __draw_h
 
+ 
+#define DRAW_PIXELS_PER_BYTE 8 / DRAW_BITS_PER_PIXEL
+
 #ifdef DRAW_DEBUG
 	#include "pic_serial.h"
 #endif	
@@ -44,13 +47,6 @@ uns8 draw_get_pixel(uns8 x, uns8);
 void draw_line(uns8 x1, uns8 y1, uns8 x2, uns8 y2);
 void draw_circle(uns8 x, uns8 y, uns8 r);
 void draw_rect(uns8 x, uns8 y, uns8 width, uns8 height);
-
-void drv_setup();
-void drv_init();
-void drv_set_pixel(uns8 x, uns8 y, uns8 colour);
-uns8 drv_get_pixel(uns8 x, uns8);
-
-// internal routines
 
 
 #endif

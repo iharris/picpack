@@ -6,7 +6,7 @@ Warnings=2
 ClockRate=8000000
 [Files]
 File0=..\..\pic_pack_lib\pic_serial.c
-Count=13
+Count=15
 File1=..\..\pic_pack_lib\pic_utils.c
 File2=..\..\pic_pack_lib\pic_serial.h
 File3=..\..\pic_pack_lib\pic_utils.h
@@ -19,6 +19,8 @@ File9=..\..\pic_pack_lib\draw\draw.c
 File10=..\..\pic_pack_lib\draw\draw.h
 File11=..\..\pic_pack_lib\draw\drv_sure_2416.c
 File12=.\draw_sure_2416_demo.c
+File13=..\..\pic_pack_lib\draw\draw_screen_buffer.h
+File14=..\..\pic_pack_lib\draw\draw_screen_buffer.c
 [Compiler]
 Extra=-I "..\..\pic_pack_lib" 
 [Linker]

@@ -33,9 +33,13 @@
 // Draw defines
 // - - - - - - - - - - - - - - - - - - - - 
 
+// y
 #define DRAW_PIXELS_HIGH 24
+// x
 #define DRAW_PIXELS_WIDE 16
+
 #define DRAW_BITS_PER_PIXEL 1
+
 #define DRAW_DEBUG
 
 
