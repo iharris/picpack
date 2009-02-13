@@ -45,8 +45,8 @@ void draw_set_pixel(uns8 x, uns8 y, uns8 colour);
 uns8 draw_get_pixel(uns8 x, uns8);
 #define draw_paint() drv_paint()
 
-void draw_line(uns8 x1, uns8 y1, uns8 x2, uns8 y2);
-void draw_circle(uns8 x, uns8 y, uns8 r);
+void draw_line(uns8 x0, uns8 y0, uns8 x1, uns8 y1, uns8 colour);
+void draw_circle(int x_centre, int y_centre, int r, uns8 colour);
 void draw_rect(uns8 x, uns8 y, uns8 width, uns8 height);
 void draw_print_buffer();
 // driver routines

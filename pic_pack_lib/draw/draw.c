@@ -96,3 +96,86 @@ uns16	 buffer_loc;
 	}
 }			
 
+void draw_line(uns8 x0, uns8 y0, uns8 x1, uns8 y1, uns8 colour) {
+
+    int dy = y1 - y0;
+    int dx = x1 - x0;
+    int stepx, stepy;
+
+    if (dy < 0) { dy = -dy;  stepy = -1; } else { stepy = 1; }
+    if (dx < 0) { dx = -dx;  stepx = -1; } else { stepx = 1; }
+    dy <<= 1;                                                  // dy is now 2*dy
+    dx <<= 1;                                                  // dx is now 2*dx
+
+    draw_set_pixel(x0, y0, colour);
+    if (dx > dy) {
+        int fraction = dy - (dx >> 1);                         // same as 2*dy - dx
+        while (x0 != x1) {
+            if (fraction >= 0) {
+                y0 += stepy;
+                fraction -= dx;                                // same as fraction -= 2*dx
+            }
+            x0 += stepx;
+            fraction += dy;                                    // same as fraction -= 2*dy
+			draw_set_pixel(x0, y0, colour);
+        }
+    } else {
+        int fraction = dx - (dy >> 1);
+        while (y0 != y1) {
+            if (fraction >= 0) {
+                x0 += stepx;
+                fraction -= dy;
+            }
+            y0 += stepy;
+            fraction += dx;
+			draw_set_pixel(x0, y0, colour);
+        }
+    }
+}
+
+
+void draw_circle_points(int cx, int cy, int x, int y, uns8 colour) {
+
+        
+        if (x == 0) {
+            draw_set_pixel(cx, cy + y, colour);
+            draw_set_pixel(cx, cy - y, colour);
+            draw_set_pixel(cx + y, cy, colour);
+            draw_set_pixel(cx - y, cy, colour);
+        } else 
+        if (x == y) {
+            draw_set_pixel( cx + x, cy + y, colour);
+            draw_set_pixel(cx - x, cy + y, colour);
+            draw_set_pixel(cx + x, cy - y, colour);
+            draw_set_pixel(cx - x, cy - y, colour);
+        } else 
+        if (x < y) {
+            draw_set_pixel(cx + x, cy + y, colour);
+            draw_set_pixel(cx - x, cy + y, colour);
+            draw_set_pixel(cx + x, cy - y, colour);
+            draw_set_pixel(cx - x, cy - y, colour);
+            draw_set_pixel(cx + y, cy + x, colour);
+            draw_set_pixel(cx - y, cy + x, colour);
+            draw_set_pixel(cx + y, cy - x, colour);
+            draw_set_pixel(cx - y, cy - x, colour);
+        }
+    }
+
+void draw_circle(int x_centre, int y_centre, int r, uns8 colour) {
+    int x = 0;
+    int y = r;
+    int p = (5 - r*4)/4;
+
+    draw_circle_points(x_centre, y_centre, x, y, colour);
+    while (x < y) {
+        x++;
+        if (p < 0) {
+            p += 2*x+1;
+        } else {
+            y--;
+            p += 2*(x-y)+1;
+        }
+        draw_circle_points(x_centre, y_centre, x, y, colour);
+    }
+
+}

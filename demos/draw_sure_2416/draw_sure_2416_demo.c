@@ -84,8 +84,8 @@ void main() {
 	
 	while (1) {
 		delay_ms(250);
-		serial_print_debug("buffer_size=", DRAW_TOTAL_BUFFER_SIZE);
-		draw_print_buffer();
+		//serial_print_debug("buffer_size=", DRAW_TOTAL_BUFFER_SIZE);
+		//draw_print_buffer();
 
 		//sure_2416_fill2(1);
 		//delay_s(1);
@@ -121,6 +121,40 @@ void main() {
 		delay_s(1);
 		draw_set_pixel(0,15,0);
 		draw_paint();
+
+		delay_s(1);
+		draw_line(0, 0, 23, 15, 1);
+		draw_paint();
+
+		delay_s(1);
+		draw_line(0, 15, 23, 0, 1);
+		draw_paint();
+
+		delay_s(1);
+		draw_line(0, 0, 23, 15, 0);
+		draw_paint();
+
+		delay_s(1);
+		draw_line(0, 15, 23, 0, 0);
+		draw_paint();
+
+		delay_s(1);
+		draw_circle(12, 8, 3, 1);
+		draw_paint();
+
+		delay_s(1);
+		draw_circle(12, 8, 7, 1);
+		draw_paint();
+
+		delay_s(1);
+		draw_circle(12, 8, 3, 0);
+		draw_paint();
+
+		delay_s(1);
+		draw_circle(12, 8, 7, 0);
+		draw_paint();
+
+
 	}
 	
 }	// main
