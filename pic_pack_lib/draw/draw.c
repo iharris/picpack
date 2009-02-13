@@ -5,18 +5,21 @@
 
 // DRAW_PIXELS_HIGH
 
+void draw_clear_screen() {
+uns8 count;
+	for(count = 0 ; count < sizeof(draw_buffer0) ; count++) {
+		draw_buffer0[count] = 0;
+	}	
+}
+
 void draw_setup() {
 	drv_setup();
 }
 
 void draw_init() {
-uns8 count;
 	drv_init();
-	serial_print_debug("buffer_size=", DRAW_TOTAL_BUFFER_SIZE);
-	for(count = 0 ; count < sizeof(draw_buffer0) ; count++) {
-		draw_buffer0[count] = 0;
-	}	
-}
+	draw_clear_screen();
+}	
 
 void draw_set_pixel(uns8 x, uns8 y, uns8 colour) {
 uns8 *buffer;
@@ -55,9 +58,14 @@ uns8 draw_get_pixel(uns8 x, uns8 y) {
 }	
 
 
-void draw_rect(uns8 x, uns8 y, uns8 width, uns8 height) {
+void draw_rect(uns8 x, uns8 y, uns8 width, uns8 height, uns8 colour) {
+uns8 dx, dy;
 
-
+	for(dy = y ; dy < y + height ; dy++) {
+		for(dx = x ; dx < x + width ; dx++) {
+			draw_set_pixel(dx, dy, colour);
+		}
+	}	
 }	
 
 void draw_print_buffer() {
@@ -134,48 +142,47 @@ void draw_line(uns8 x0, uns8 y0, uns8 x1, uns8 y1, uns8 colour) {
 }
 
 
-void draw_circle_points(int cx, int cy, int x, int y, uns8 colour) {
+void draw_circle_points (int ctr_x, int ctr_y, int pt_x, int pt_y, uns8 colour) {
+	// the eight symmetric points
+	//draw_set_pixel (ctr_x + pt_x, ctr_y + pt_y, colour);
+	//draw_set_pixel (ctr_x - pt_x, ctr_y + pt_y, colour);
+	draw_line(ctr_x - pt_x, ctr_y + pt_y, ctr_x + pt_x, ctr_y + pt_y, colour);
+	
+	//draw_set_pixel (ctr_x + pt_x, ctr_y - pt_y, colour);
+	//draw_set_pixel (ctr_x - pt_x, ctr_y - pt_y, colour);
+	draw_line(ctr_x - pt_x, ctr_y - pt_y, ctr_x + pt_x, ctr_y - pt_y, colour);
+	
+	//draw_set_pixel (ctr_x + pt_y, ctr_y + pt_x, colour);
+	//draw_set_pixel (ctr_x - pt_y, ctr_y + pt_x, colour);
+	draw_line(ctr_x + pt_y, ctr_y + pt_x, ctr_x - pt_y, ctr_y + pt_x, colour);
+	
+	//draw_set_pixel (ctr_x + pt_y, ctr_y - pt_x, colour);
+	//draw_set_pixel (ctr_x - pt_y, ctr_y - pt_x, colour);
 
-        
-        if (x == 0) {
-            draw_set_pixel(cx, cy + y, colour);
-            draw_set_pixel(cx, cy - y, colour);
-            draw_set_pixel(cx + y, cy, colour);
-            draw_set_pixel(cx - y, cy, colour);
-        } else 
-        if (x == y) {
-            draw_set_pixel( cx + x, cy + y, colour);
-            draw_set_pixel(cx - x, cy + y, colour);
-            draw_set_pixel(cx + x, cy - y, colour);
-            draw_set_pixel(cx - x, cy - y, colour);
-        } else 
-        if (x < y) {
-            draw_set_pixel(cx + x, cy + y, colour);
-            draw_set_pixel(cx - x, cy + y, colour);
-            draw_set_pixel(cx + x, cy - y, colour);
-            draw_set_pixel(cx - x, cy - y, colour);
-            draw_set_pixel(cx + y, cy + x, colour);
-            draw_set_pixel(cx - y, cy + x, colour);
-            draw_set_pixel(cx + y, cy - x, colour);
-            draw_set_pixel(cx - y, cy - x, colour);
-        }
-    }
-
-void draw_circle(int x_centre, int y_centre, int r, uns8 colour) {
-    int x = 0;
-    int y = r;
-    int p = (5 - r*4)/4;
-
-    draw_circle_points(x_centre, y_centre, x, y, colour);
-    while (x < y) {
-        x++;
-        if (p < 0) {
-            p += 2*x+1;
-        } else {
-            y--;
-            p += 2*(x-y)+1;
-        }
-        draw_circle_points(x_centre, y_centre, x, y, colour);
-    }
+	draw_line(ctr_x + pt_y, ctr_y - pt_x, ctr_x - pt_y, ctr_y - pt_x, colour);
 
 }
+
+void draw_circle(int x_centre, int y_centre, int r, uns8 colour) {
+	int x,y;
+	int p = 1 - r;         // Initial value of decision parameter.
+
+	x = 0;
+	y = r;
+	
+	draw_circle_points(x_centre, y_centre, x, y, colour);
+    
+	while (x < y) {
+		x++;
+		if (p < 0)
+			p += 2 * x + 1;
+		else {
+			y--;
+			p += 2 * (x - y) + 1;
+		}
+		draw_circle_points (x_centre, y_centre, x, y, colour);
+	}
+
+}
+
+

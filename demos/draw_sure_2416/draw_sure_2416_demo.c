@@ -139,21 +139,41 @@ void main() {
 		draw_paint();
 
 		delay_s(1);
-		draw_circle(12, 8, 3, 1);
+		draw_circle(12, 8, 1, 1);
 		draw_paint();
 
 		delay_s(1);
-		draw_circle(12, 8, 7, 1);
+		draw_circle(12, 7, 2, 1);
 		draw_paint();
 
 		delay_s(1);
-		draw_circle(12, 8, 3, 0);
+		draw_circle(12, 7, 3, 1);
 		draw_paint();
 
 		delay_s(1);
-		draw_circle(12, 8, 7, 0);
+		draw_circle(12, 7, 4, 1);
 		draw_paint();
+		delay_s(1);
+		draw_circle(12, 7, 5, 1);
+		draw_paint();
+		delay_s(1);
+		draw_circle(12, 7, 6, 1);
+		draw_paint();
+		delay_s(1);
+		draw_circle(12, 7, 7, 1);
+		draw_paint();
+		
+		delay_s(1);
+		draw_clear_screen();
 
+		draw_rect(1, 1, 21, 13, 1);
+		draw_paint();
+		delay_s(1);
+		
+		draw_circle(12, 8, 5, 0);
+		draw_paint();
+		delay_s(1);
+		draw_clear_screen();
 
 	}
 	
