@@ -63,6 +63,7 @@ serial_setup(bit req_brgh, uns8 req_spbrg);
 #define serial_handle_rx_isr() \
 	if (pir1.RCIF) { serial_rx_isr(); clear_bit( pir1, RCIF ); }
 
+#define serial_print_debug(string, variable) serial_print_str(string); serial_print_int(variable); serial_print_nl();
 
 /** serial_load_tx
  
