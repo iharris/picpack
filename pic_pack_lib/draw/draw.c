@@ -3,7 +3,7 @@
 #include "config.h"
 #include "draw\draw_screen_buffer.h"
 
-// DRAW_PIXELS_HIGH
+
 
 void draw_clear_screen() {
 uns8 count;
@@ -69,7 +69,7 @@ uns8 dx, dy;
 }	
 
 void draw_print_buffer() {
-
+#ifdef DRAW_DEBUG
 uns8	inv_y, x , y,
 		 byte_loc, bit_loc;
 uns16	 buffer_loc;
@@ -95,13 +95,18 @@ uns16	 buffer_loc;
 			}	
 			
 			if (test_bit(draw_buffer0[byte_loc], bit_loc)) {
-				serial_putc('1');
+				
+					serial_putc('1');
+					
 			} else {
 				serial_putc('0');
 			}
 		}
-		serial_print_str("|\n");
+		
+			serial_print_str("|\n");
+		
 	}
+#endif	
 }			
 
 void draw_line(uns8 x0, uns8 y0, uns8 x1, uns8 y1, uns8 colour) {
@@ -142,25 +147,49 @@ void draw_line(uns8 x0, uns8 y0, uns8 x1, uns8 y1, uns8 colour) {
 }
 
 
+void draw_circle_lines (int ctr_x, int ctr_y, int pt_x, int pt_y, uns8 colour) {
+	draw_line(ctr_x - pt_x, ctr_y + pt_y, ctr_x + pt_x, ctr_y + pt_y, colour);
+	draw_line(ctr_x - pt_x, ctr_y - pt_y, ctr_x + pt_x, ctr_y - pt_y, colour);
+	draw_line(ctr_x + pt_y, ctr_y + pt_x, ctr_x - pt_y, ctr_y + pt_x, colour);
+	draw_line(ctr_x + pt_y, ctr_y - pt_x, ctr_x - pt_y, ctr_y - pt_x, colour);
+}
+
+void draw_filled_circle(int x_centre, int y_centre, int r, uns8 colour) {
+	int x,y;
+	int p = 1 - r;         // Initial value of decision parameter.
+
+	x = 0;
+	y = r;
+	
+	draw_circle_lines(x_centre, y_centre, x, y, colour);
+    
+	while (x < y) {
+		x++;
+		if (p < 0)
+			p += 2 * x + 1;
+		else {
+			y--;
+			p += 2 * (x - y) + 1;
+		}
+		draw_circle_lines (x_centre, y_centre, x, y, colour);
+	}
+
+}
+
+
 void draw_circle_points (int ctr_x, int ctr_y, int pt_x, int pt_y, uns8 colour) {
 	// the eight symmetric points
-	//draw_set_pixel (ctr_x + pt_x, ctr_y + pt_y, colour);
-	//draw_set_pixel (ctr_x - pt_x, ctr_y + pt_y, colour);
-	draw_line(ctr_x - pt_x, ctr_y + pt_y, ctr_x + pt_x, ctr_y + pt_y, colour);
-	
-	//draw_set_pixel (ctr_x + pt_x, ctr_y - pt_y, colour);
-	//draw_set_pixel (ctr_x - pt_x, ctr_y - pt_y, colour);
-	draw_line(ctr_x - pt_x, ctr_y - pt_y, ctr_x + pt_x, ctr_y - pt_y, colour);
-	
-	//draw_set_pixel (ctr_x + pt_y, ctr_y + pt_x, colour);
-	//draw_set_pixel (ctr_x - pt_y, ctr_y + pt_x, colour);
-	draw_line(ctr_x + pt_y, ctr_y + pt_x, ctr_x - pt_y, ctr_y + pt_x, colour);
-	
-	//draw_set_pixel (ctr_x + pt_y, ctr_y - pt_x, colour);
-	//draw_set_pixel (ctr_x - pt_y, ctr_y - pt_x, colour);
+	draw_set_pixel (ctr_x + pt_x, ctr_y + pt_y, colour);
+	draw_set_pixel (ctr_x - pt_x, ctr_y + pt_y, colour);
 
-	draw_line(ctr_x + pt_y, ctr_y - pt_x, ctr_x - pt_y, ctr_y - pt_x, colour);
-
+	draw_set_pixel (ctr_x + pt_x, ctr_y - pt_y, colour);
+	draw_set_pixel (ctr_x - pt_x, ctr_y - pt_y, colour);
+	
+	draw_set_pixel (ctr_x + pt_y, ctr_y + pt_x, colour);
+	draw_set_pixel (ctr_x - pt_y, ctr_y + pt_x, colour);
+	
+	draw_set_pixel (ctr_x + pt_y, ctr_y - pt_x, colour);
+	draw_set_pixel (ctr_x - pt_y, ctr_y - pt_x, colour);
 }
 
 void draw_circle(int x_centre, int y_centre, int r, uns8 colour) {
@@ -185,4 +214,58 @@ void draw_circle(int x_centre, int y_centre, int r, uns8 colour) {
 
 }
 
+#define FONT_FIRST_CHAR 32
+#define FONT_LAST_CHAR 127
+extern char PicPack5x7_bitmap_0[1];
+extern char PicPack5x7_bitmap_1[1];
+extern uns16 PicPack5x7_index[1];
 
+void draw_print_str(uns8 x, uns8 y, uns8 colour, char *str) {
+
+uns8 my_char;
+uns16 index_pos;
+uns16 index_pos_next;
+uns16 count, s_count, y_origin;
+uns8 sliver;
+	y_origin = y;
+	while (*str != 0) {
+		// first look up character in index
+		my_char = *str;
+		serial_print_str("Char=");
+		serial_putc(my_char);
+		serial_print_nl();
+		serial_print_debug("Char=", my_char);
+		my_char = my_char - 32;
+
+		index_pos = PicPack5x7_index[my_char];
+		serial_print_debug("index_pos=", index_pos);
+		index_pos_next = PicPack5x7_index[my_char + 1];
+		serial_print_debug("index_pos_next=", index_pos_next);
+			for(count = index_pos ; count < index_pos_next ; count++) {
+				serial_print_debug("count=", count);
+				if (count < 256) {
+					sliver = PicPack5x7_bitmap_0[count];
+				} else {
+					sliver = PicPack5x7_bitmap_1[count-256];
+				}
+				serial_print_debug("sliver=", sliver);
+				// Now iterate over sliver
+				s_count = 0;
+				while (s_count < 7) {
+					serial_print_debug("s_count=", s_count);
+					if (test_bit(sliver, 6)) {
+						draw_set_pixel(x, y + s_count, colour);
+					}	
+					sliver <<= 1;
+					s_count++;
+				}
+				x++;
+				// Need to add a bit here to only
+				// increment to new line when we have got to height chars
+				
+			}      	
+			x++;
+		str++;
+	}
+}    
+	

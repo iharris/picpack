@@ -70,7 +70,11 @@ void configure_system() {
 
 
 void main() {
-	
+
+	char inf[] = {
+		12,12,12,12,12,
+	};
+		
 	configure_system();
 
 	delay_ms(100);
@@ -83,13 +87,7 @@ void main() {
 	serial_print_str(">\n");
 	
 	while (1) {
-		delay_ms(250);
-		//serial_print_debug("buffer_size=", DRAW_TOTAL_BUFFER_SIZE);
-		//draw_print_buffer();
-
-		//sure_2416_fill2(1);
-		//delay_s(1);
-		//sure_2416_fill2(0);
+		/*delay_ms(250);
 		
 		draw_set_pixel(0,0,1);
 		draw_paint();
@@ -163,7 +161,7 @@ void main() {
 		draw_circle(12, 7, 7, 1);
 		draw_paint();
 		
-		delay_s(1);
+		delay_s(1);*/
 		draw_clear_screen();
 
 		draw_rect(1, 1, 21, 13, 1);
@@ -174,6 +172,12 @@ void main() {
 		draw_paint();
 		delay_s(1);
 		draw_clear_screen();
+		
+		draw_print_str(0,0, 1, "Hello");
+		draw_paint();
+		delay_s(1);
+		draw_clear_screen();
+		
 
 	}
 	
