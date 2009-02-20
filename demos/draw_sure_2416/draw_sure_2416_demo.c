@@ -172,9 +172,24 @@ void main() {
 		draw_paint();
 		delay_s(1);
 		draw_clear_screen();
-		
-		draw_print_str(0,0, 1, "Hello");
-		draw_paint();
+		uns8 x, width, count, start_pos;
+		for (count = 0; count < 80; count++) {
+
+			if (count < 24) {
+				x = 23 - count;
+				width = count + 1;
+				start_pos  = 0;
+			} else {
+					start_pos = count - 23;
+					width = 24;
+					x = 0;
+			}	
+			draw_clear_screen();
+			draw_print_str(x, 0, width, start_pos, /* colour */ 1, "Hello there");
+			draw_paint();
+			delay_ms(75);
+	
+		}	
 		delay_s(1);
 		draw_clear_screen();
 		

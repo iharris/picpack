@@ -216,56 +216,64 @@ void draw_circle(int x_centre, int y_centre, int r, uns8 colour) {
 
 #define FONT_FIRST_CHAR 32
 #define FONT_LAST_CHAR 127
+#define FONT_HEIGHT 7
 extern char PicPack5x7_bitmap_0[1];
 extern char PicPack5x7_bitmap_1[1];
 extern uns16 PicPack5x7_index[1];
 
-void draw_print_str(uns8 x, uns8 y, uns8 colour, char *str) {
+void draw_print_str(uns8 x, uns8 y, uns8 width, uns8 start_pixel, uns8 colour, char *str) {
 
 uns8 my_char;
 uns16 index_pos;
 uns16 index_pos_next;
-uns16 count, s_count, y_origin;
-uns8 sliver;
+uns16 count, s_count;
+uns8 sliver, x_origin, y_origin, pixel;
 	y_origin = y;
+	x_origin = x;
+	pixel = 0;
 	while (*str != 0) {
 		// first look up character in index
 		my_char = *str;
-		serial_print_str("Char=");
-		serial_putc(my_char);
-		serial_print_nl();
-		serial_print_debug("Char=", my_char);
 		my_char = my_char - 32;
 
+
 		index_pos = PicPack5x7_index[my_char];
-		serial_print_debug("index_pos=", index_pos);
 		index_pos_next = PicPack5x7_index[my_char + 1];
-		serial_print_debug("index_pos_next=", index_pos_next);
 			for(count = index_pos ; count < index_pos_next ; count++) {
-				serial_print_debug("count=", count);
 				if (count < 256) {
 					sliver = PicPack5x7_bitmap_0[count];
 				} else {
 					sliver = PicPack5x7_bitmap_1[count-256];
 				}
-				serial_print_debug("sliver=", sliver);
 				// Now iterate over sliver
-				s_count = 0;
-				while (s_count < 7) {
-					serial_print_debug("s_count=", s_count);
-					if (test_bit(sliver, 6)) {
-						draw_set_pixel(x, y + s_count, colour);
-					}	
-					sliver <<= 1;
-					s_count++;
+				if (pixel >= start_pixel) {
+					s_count = 0;
+					while (s_count < 7) {
+						if (test_bit(sliver, 6)) {
+							draw_set_pixel(x, y + s_count, colour);
+						}	
+						sliver <<= 1;
+						s_count++;
+					}
+					x++;
 				}
-				x++;
+				if (x - x_origin == width) {
+					return;
+				}	
+				pixel++;	
 				// Need to add a bit here to only
 				// increment to new line when we have got to height chars
 				
 			}      	
-			x++;
 		str++;
+		if (pixel >= start_pixel) {
+			x++;
+		}
+		pixel++;
+			
+		if (x - x_origin == width) {
+			return;
+		}	
 	}
 }    
 	
