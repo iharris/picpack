@@ -1,22 +1,22 @@
 [Settings]
 Active Compiler=BoostC
-Target=PIC18F4520
+Target=PIC16F88
 Type=0
 Warnings=2
 ClockRate=8000000
 [Files]
 File0=..\..\pic_pack_lib\pic_serial.c
-Count=12
+Count=10
 File1=..\..\pic_pack_lib\pic_utils.c
 File2=..\..\pic_pack_lib\pic_serial.h
 File3=..\..\pic_pack_lib\pic_utils.h
 File4=config.h
 File5=..\..\pic_pack_lib\i2c.h
 File6=..\..\pic_pack_lib\i2c.c
-File7=..\..\pic_pack_lib\lcd.c
-File8=..\..\pic_pack_lib\lcd.h
-File9=..\..\pic_pack_lib\ar1000.c
-File10=..\..\pic_pack_lib\ar1000.h
+File7=..\..\pic_pack_lib\ar1000.c
+File8=..\..\pic_pack_lib\ar1000.h
+File9=.\ar1000_demo.c
+File10=.\ar1000_demo.c
 File11=.\ar1000_demo.c
 [Compiler]
 Extra=-I "..\..\pic_pack_lib" 

@@ -24,6 +24,19 @@ void i2c_write_eeprom(uns8 device_address, uns8 mem_address, uns8 data)
     i2c_stop();
 }
 
+void i2c_write_eeprom_16bit(uns8 device_address, uns8 mem_address, uns16 data)
+{
+    //i2c_ack_polling(device_address);
+    i2c_start();
+    i2c_send_byte(device_address);
+
+    //send_byte(address.high8); //Uppder Address - Needed for >= 32k EEProms
+    i2c_send_byte(mem_address);
+    i2c_send_byte(data >> 8);
+    i2c_send_byte(data & 0x00ff);
+    i2c_stop();
+}
+
 uns8 i2c_read_eeprom(uns8 device_address, uns8 mem_address)
 {
 uns8 data;
@@ -57,12 +70,10 @@ uns16 i2c_read_eeprom_16bit(uns8 device_address, uns8 mem_address)
     uns16 data;
     
     //i2c_ack_polling(device_address);
-    
     i2c_start();
     i2c_send_byte(device_address);
     //send_byte(address.high8); // Upper Address - Needed for >= 32k EEProms
     i2c_send_byte(mem_address);
-    i2c_stop();
 
     i2c_start();
     i2c_send_byte(device_address | 0b00000001); // Read bit must be set
@@ -94,16 +105,24 @@ uns16 i2c_read_eeprom_16bit(uns8 device_address, uns8 mem_address)
 
 void i2c_start(void)
 {
-    i2c_write_sda();
-    
+	serial_print_str("<S>");
+
+    clear_pin(i2c_scl_port, i2c_scl_pin);
     delay_us(DELAY_AMOUNT);
-    
+
+    i2c_write_sda();
+
+    set_pin(i2c_sda_port, i2c_sda_pin);
+    delay_us(DELAY_AMOUNT);
+    set_pin(i2c_scl_port, i2c_scl_pin);
+    delay_us(DELAY_AMOUNT);
     clear_pin(i2c_sda_port, i2c_sda_pin);
     delay_us(DELAY_AMOUNT);
 }
 
 void i2c_stop(void)
 {
+	serial_print_str("<P>");
     clear_pin(i2c_scl_port, i2c_scl_pin);
     delay_us(DELAY_AMOUNT);
 
@@ -135,13 +154,16 @@ uns8 i2c_receive_byte(void)
         in_byte = in_byte << 1;
         in_byte.0 = test_pin(i2c_sda_port, i2c_sda_pin);
     }
-
+	serial_print_str(" rec=");
+	serial_print_int_hex(in_byte);
     return(in_byte);
 }
 
 void i2c_send_byte(uns8 data)
 {
    uns8 count;
+    serial_print_str(" send=");
+    serial_print_int_hex(data);
 
     i2c_write_sda();
 
@@ -160,6 +182,7 @@ void i2c_send_byte(uns8 data)
     i2c_read_sda();
     delay_us(DELAY_AMOUNT);
     set_pin(i2c_scl_port, i2c_scl_pin);
+    delay_us(DELAY_AMOUNT);
 }
 
 void i2c_setup() {

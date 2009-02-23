@@ -7,7 +7,7 @@
 // pic_serial defines
 // - - - - - - - - - - - - - - - - - - - - 
 
-#define SERIAL_TX_BUFFER_SIZE 16
+#define SERIAL_TX_BUFFER_SIZE 64
 #define SERIAL_RX_BUFFER_SIZE 4
 //#define SERIAL_DEBUG_ON
 
@@ -15,10 +15,19 @@
 // pic i2c defines
 // - - - - - - - - - - - - - - - - - - - - 
 
-#define i2c_scl_port PORTC
-#define i2c_sda_port PORTC
-#define i2c_scl_pin  3
-#define i2c_sda_pin  4
+#define i2c_scl_port PORTA
+#define i2c_scl_pin  0
+#define i2c_sda_port PORTA
+#define i2c_sda_pin  6
+
+#define rf_ce_port PORTB
+#define rf_ce_pin  1
+
+#define rf_dr1_port PORTB
+#define rf_dr1_pin  0
+
+#define rf_cs_port PORTB
+#define rf_cs_pin 3
 
 // - - - - - - - - - - - - - - - - - - - - 
 // pic lcd defines
@@ -47,7 +56,7 @@
 // General platform definitions
 // - - - - - - - - - - - - - - -
 #define PLATFORM_TYPE SURE_PICDEM_2
-#define PLATFORM_CLOCK 12000000
+#define PLATFORM_CLOCK 8000000
 
 
 #endif

@@ -75,6 +75,12 @@ uns8 i2c_read_eeprom(uns8 device_address, uns8 mem_address);
 */
 void i2c_write_eeprom(uns8 device_address, uns8 mem_address, uns8 data);
 
+/** \brief Write a 16 bit value over I2C buss
+
+	Write a byte to a given device address at the memory address
+*/
+void i2c_write_eeprom_16bit(uns8 device_address, uns8 mem_address, uns16 data);
+
 /** 
 	\brief Read 16 bits of data over I2C buss
 	
