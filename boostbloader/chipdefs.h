@@ -219,3 +219,29 @@
 
 
 
+#ifdef _PIC18F87J50
+    #warning "Compiling for PIC18F87J50"
+    #define pic_mem_128k
+    #define pic_18
+    #define erase_before_write
+    #define min_erase_chunk 1024
+    #define max_write_chunk	64
+    #define BLOADER_START 0x1fde4
+    #define BLOADER_START_HIGH 0x1fd
+    #define BLOADER_START_LOW  0xe4
+    #warning "Did you set -rb 130532 in Settings | Options | Linker?"
+    #define MOVED_BVECTOR_START 0xfbf8
+    #define MOVED_BVECTOR_HIGH  0xfb
+    #define MOVED_BVECTOR_LOW   0xf8
+    #define JUMP_TO_BVECTOR1 0xeffc
+    #define JUMP_TO_BVECTOR2 0xf07d
+    #pragma DATA 0x0000,  0xf2, 0xEF, 0xfe, 0xf0
+    #define JUMP_TO_BLOADER1 0xef
+    #define JUMP_TO_BLOADER2 0xf2
+    #define JUMP_TO_BLOADER3 0xf0
+    #define JUMP_TO_BLOADER4 0xfe
+    #define SERIAL_TRIS_SETUP() trisc = 0b10000000;  // trisc 7=1,6=0
+#endif
+
+
+
