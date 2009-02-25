@@ -14,16 +14,17 @@
 
 
 
-             #chip, family, memory, bootloader_size, min_erase_chunk, max_write_chunk, tris setting 
-print_config("PIC16F88",   "pic_16", 4096,  320, 32, 4,  "trisb = 0b00100100;  // trisb 5,2 = 1");
-print_config("PIC16F876A", "pic_16", 8192,  249, 0,  4,  "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC16F877A", "pic_16", 8192,  249, 0,  4,  "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F2620", "pic_18", 65536, 520, 64, 64, "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F4520", "pic_18", 32768, 520, 64, 32, "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F4550", "pic_18", 32768, 520, 64, 32, "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F2520", "pic_18", 32768, 520, 64, 32, "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F452",  "pic_18", 32768, 534, 64, 8,  "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F252",  "pic_18", 32768, 536, 64, 8,  "trisc = 0b11000000;  // trisc 7,6 = 1");
+             #chip, 	   family, memory, bootloader_size, min_erase_chunk, max_write_chunk, tris setting 
+print_config("PIC16F88",     "pic_16", 4096,   320,   32,    4,  "trisb = 0b00100100;  // trisb 5,2 = 1");
+print_config("PIC16F876A",   "pic_16", 8192,   249,   0,     4,  "trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC16F877A",   "pic_16", 8192,   249,   0,     4,  "trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F2620",   "pic_18", 65536,  520,   64,   64,  "trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F4520",   "pic_18", 32768,  520,   64,   32,  "trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F4550",   "pic_18", 32768,  520,   64,   32,  "trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F2520",   "pic_18", 32768,  520,   64,   32,  "trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F452",    "pic_18", 32768,  534,   64,    8,  "trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F252",    "pic_18", 32768,  536,   64,    8,  "trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F87J50",  "pic_18", 131072, 536,   1024, 64,  "trisc = 0b10000000;  // trisc 7=1,6=0");
 
 sub print_config {
 
@@ -68,10 +69,11 @@ if ($family eq "pic_16") {
 } else {
 	
 	#// for 18f2620, 18f4520 which has to erase on 64 byte (32 word) boundaries:
-	#// MOVED_BVECTOR_START  = (BLOADER_START & 0xFFC0) - 8
 
 	if ($min_erase_chunk == 64) {
 		$moved_bvector_start = ($bloader_start & 0xffc0) - 8;
+	} elsif ($min_erase_chunk == 1024) {
+		$moved_bvector_start = ($bloader_start & 0xfc00) - 8;
 	} else {
 		printf "!!- Well, don't know what to do with this erase chunk (%d) for moved_bvector_start\n", $min_erase_chunk;
 	}

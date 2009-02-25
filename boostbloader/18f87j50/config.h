@@ -1,0 +1,4 @@
+#include "platform.h"
+
+#define PLATFORM_TYPE OLIMEX_PIC_LCD3310
+#define PLATFORM_CLOCK 48000000

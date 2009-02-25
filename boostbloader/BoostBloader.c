@@ -41,8 +41,8 @@
 	#pragma DATA    _CONFIG7L, _EBTR0_OFF_7L & _EBTR1_OFF_7L & _EBTR2_OFF_7L & _EBTR3_OFF_7L
 	#pragma DATA    _CONFIG7H, _EBTRB_OFF_7H
  #else
-   #if defined(_PIC18F4550) 
- 
+   #if defined(_PIC18F4550)
+   
 	#pragma DATA	_CONFIG1L, _PLLDIV_5_1L & _CPUDIV_OSC4_PLL6_1L & _USBDIV_2_1L
 	#pragma DATA    _CONFIG1H, _FOSC_HSPLL_HS_1H & _FCMEN_OFF_1H & _IESO_OFF_1H
 	#pragma DATA    _CONFIG2L, _PWRT_ON_2L & _BOR_OFF_2L  & _VREGEN_OFF_2L
@@ -56,9 +56,19 @@
 	#pragma DATA    _CONFIG7L, _EBTR0_OFF_7L & _EBTR1_OFF_7L & _EBTR2_OFF_7L & _EBTR3_OFF_7L
 	#pragma DATA    _CONFIG7H, _EBTRB_OFF_7H
 
- 
- 
-   #else
+   #else 
+      #if defined(_PIC18F87J50)
+	
+		#pragma DATA	_CONFIG1L, _DEBUG_OFF_1L & _XINST_OFF_1L & _STVREN_OFF_1L & _PLLDIV_5_1L & _WDT_OFF_1L
+
+		#pragma DATA    _CONFIG1H, _CP0_OFF_1H & _CPUDIV_OSC1__1H
+		
+		#pragma DATA    _CONFIG2L, _IESO_OFF_2L & _FCMEN_OFF_2L & _FOSC_HSPLL_2L
+		#pragma DATA    _CONFIG2H, _WDTPS_32768_2H
+		#pragma DATA    _CONFIG3L, _WAIT_OFF_3L & _BW_8_3L & _MODE_MM_3L & _EASHFT_OFF_3L 
+		#pragma DATA    _CONFIG3H, _MSSP_MSK7_3H & _PPMX_DEFAULT_3H & _ECCPMX_DEFAULT_3H & _CCP2MX_DEFAULT_3H
+
+	  #else
    
 	 //#pragma DATA    _CONFIG1H, _OSC_HS_1H //_OSC_HSPLL_1H //
 	   #pragma DATA    _CONFIG1H, _OSC_HS_1H & _IESO_OFF_1H
@@ -73,10 +83,14 @@
 	   #pragma DATA    _CONFIG7L, _EBTR0_OFF_7L & _EBTR1_OFF_7L & _EBTR2_OFF_7L & _EBTR3_OFF_7L
 	   #pragma DATA    _CONFIG7H, _EBTRB_OFF_7H
 	#endif
+	#endif
  #endif
 #endif
 
 // Your set up - you need to put a PLATFORM_CLOCK def in your config.h
+#if PLATFORM_CLOCK == 48000000
+	#define SPBRG_9600 255
+#endif
 
 #if PLATFORM_CLOCK == 40000000
 	#define SPBRG_9600 255
