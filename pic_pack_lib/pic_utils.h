@@ -82,6 +82,10 @@ volatile uns8 tris_array[NUMBER_PORTS] @TRISA;
 #ifdef _PIC18F4550
 	#define turn_analog_inputs_off() adcon1 = 15
 #endif
+#ifdef _PIC18F87J50
+	#define turn_analog_inputs_off() clear_bit(adcon0, ADON);
+#endif
+
 
 #ifndef turn_analog_inputs_off()
 	#define turn_analog_inputs_off() \
