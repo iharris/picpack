@@ -26,6 +26,7 @@ void i2c_write_eeprom(uns8 device_address, uns8 mem_address, uns8 data)
 
 void i2c_write_eeprom_16bit(uns8 device_address, uns8 mem_address, uns16 data)
 {
+	serial_print_str("!");
     //i2c_ack_polling(device_address);
     i2c_start();
     i2c_send_byte(device_address);
@@ -165,6 +166,7 @@ void i2c_send_byte(uns8 data)
     serial_print_str(" send=");
     serial_print_int_hex(data);
 
+    clear_pin(i2c_scl_port, i2c_scl_pin);
     i2c_write_sda();
 
     for( count = 0 ; count < 8 ; count++ )

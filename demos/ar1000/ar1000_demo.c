@@ -73,7 +73,7 @@ void process_rx() {
 	if (rec == '\r') {	// did we press return?
 		first_char = serial_buffer[0];
 		switch (first_char) {
-			case 'a':
+			case 't':
 				do_task = 1;
 				break;
 		    case 'x':
@@ -82,8 +82,11 @@ void process_rx() {
 			case 'c':
 				do_task = 3;
 				break;
-			case 'n':
+			case 'i':
 				do_task = 4;
+				break;
+			case 'r':
+				do_task = 5;
 				break;
 			default:
 				// More complicated example
@@ -147,8 +150,8 @@ READCHAN before next seek)
 void handle_tasks() {
 	switch (do_task) {
 		case 1:
-			serial_print_str("Task 1: send_to=");
-			serial_print_int(send_to);
+			serial_print_str("Seek!");
+			ar1000_seek(761, 1);
 			serial_print_str("\n");
 			break;
 		case 2:
@@ -168,8 +171,13 @@ void handle_tasks() {
 			}	
 			break;
 		case 4:
-			serial_print_str("Seek\n");
-			ar1000_seek(1); // seek up
+			serial_print_str("init\n");
+			ar1000_init(); 
+			break;
+		case 5:
+			serial_print_str("test\n");
+			//ar1000_seek2(); 
+			ar1000_test();
 			break;
 	} // switch		
 
@@ -191,7 +199,8 @@ void configure_system() {
 	
 	serial_setup(BRGH_HIGH_SPEED, SPBRG_19200);
 
-	ar1000_setup();
+	ar1000_setup_io();
+	//ar1000_init();
 	
 	turn_peripheral_ints_on();
 	turn_global_ints_on();

@@ -45,7 +45,7 @@
 
 #define AR1000_R2 2
 /** Tune channel enable */
-#define R2_TUNE_ENABLE
+#define R2_TUNE_ENABLE 9
 // Channel is 8-0 (from 0 - 511 if I read the datasheet right)
 // Frequency (MHz) = 69 + 0.1 * CHAN. or 690 + CHAN
 
@@ -140,22 +140,28 @@
 
 
 
-
-
-
+/**
+	\brief Setup AR1000 ports and pins
+	
+	#define so as not to break existing code with new naming standard
+	
+*/
+#define ar1000_setup() ar1000_setup_io()
 
 /**
 	\brief Setup AR1000 ports and pins
 	
 */
-void ar1000_setup(void);
-
-void ar1000_set_register(uns8 reg, uns8 data);
-uns8 ar1000_get_register(uns8 reg);
-void ar1000_write_registers();
-void ar1000_read_registers();
+void  ar1000_setup_io();
+void  ar1000_init();
+void  ar1000_set_register(uns8 reg, uns8 data);
+uns8  ar1000_get_register(uns8 reg);
+void  ar1000_write_registers();
+void  ar1000_read_registers();
 uns16 ar1000_read_register(uns8 reg);
-void ar1000_write_register(uns8 reg, uns16 data);
-void ar1000_seek(bit seek_up);
-void ar1000_tune();
-
+void  ar1000_write_register(uns8 reg, uns16 data);
+void  ar1000_tune(uns16 frequency);
+void  ar1000_set_seek_threshold(uns8 new_seek_threshold);
+void  ar1000_seek(uns16 frequency, bit seek_up);
+void ar1000_seek2();
+void ar1000_test(); 
