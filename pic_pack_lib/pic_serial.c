@@ -78,6 +78,12 @@ void serial_setup(bit req_brgh, uns8 req_spbrg)
     set_bit(trisc,7);
 	#define TRIS_SET
 #endif
+#ifdef _PIC18F87J50
+    clear_bit(trisc,6);
+    set_bit(trisc,7);
+	#define TRIS_SET
+#endif
+
 
 #ifndef TRIS_SET
 	#warning "You must set tris bits for serial use yourself, I don't know your pic"
