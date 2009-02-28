@@ -41,7 +41,7 @@
 
 	
 
-void draw_setup();
+void draw_setup_io();
 void draw_init();
 
 void draw_clear_screen();
@@ -59,7 +59,8 @@ void draw_print_buffer();
 // driver routines
 
 void drv_paint();
-void drv_setup();
+#define drv_setup() drv_setup_io()
+void drv_setup_io();
 void drv_init();
 
 #endif

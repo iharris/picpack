@@ -53,7 +53,7 @@ void configure_system() {
 	turn_peripheral_ints_on();
 	turn_global_ints_on();
 
-	draw_setup();
+	draw_setup_io();
 	draw_init();
 
 }

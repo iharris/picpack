@@ -3,8 +3,19 @@
 #include "config.h"
 #include "draw\draw_screen_buffer.h"
 
+/* Draw buffer addressing
 
+4
 
+3
+
+2
+
+1
+
+0
+	0	1	2	3	4
+*/
 void draw_clear_screen() {
 uns8 count;
 	for(count = 0 ; count < sizeof(draw_buffer0) ; count++) {
@@ -12,8 +23,8 @@ uns8 count;
 	}	
 }
 
-void draw_setup() {
-	drv_setup();
+void draw_setup_io() {
+	drv_setup_io();
 }
 
 void draw_init() {
