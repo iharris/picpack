@@ -1,4 +1,4 @@
-#include "sure_2416.h"
+#include "pcd8544.h"
 #include "pic_serial.h"
 
 void pcd8544_setup_io() {
@@ -71,9 +71,7 @@ uns8 count;
 		change_pin(pcd8544_sdin_port, pcd8544_sdin_pin, b.7);
 		b = b << 1;
 		// toggle the clock
-		set_pin(pcd8544_sclk_port, pcd8544_sck_pin);
-		clear_pin(pcd8544_sclk_port, pcd8544_sck_pin);
+		set_pin(pcd8544_sclk_port, pcd8544_sclk_pin);
+		clear_pin(pcd8544_sclk_port, pcd8544_sclk_pin);
 	}	
-}	
-
-
+}

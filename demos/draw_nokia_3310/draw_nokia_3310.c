@@ -19,7 +19,7 @@
 #include "config.h"
 #include "pic_utils.h"
 #include "pic_serial.h"
-#include "lcd.h"
+
 #include "draw\draw.h"
 // System includes
 #include "string.h"
@@ -48,11 +48,6 @@ void configure_system() {
 
 	turn_analog_inputs_off();	// kill those pesky analogue inputs
 	
-	
-	lcd_setup();	// Setup the pins (output / input)
-	lcd_init ();	// Configure chip ready for display
-
-	
 	serial_setup(BRGH_HIGH_SPEED, SPBRG_19200);
 
 	turn_peripheral_ints_on();
@@ -71,6 +66,9 @@ void main() {
 	char inf[] = {
 		12,12,12,12,12,
 	};
+		
+	// turn on PLL?	
+	// osccon bit OSTS
 		
 	configure_system();
 

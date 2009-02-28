@@ -1,12 +1,12 @@
 [Settings]
 Active Compiler=BoostC
-Target=PIC18F4520
+Target=PIC18F87J50
 Type=0
 Warnings=2
 ClockRate=8000000
 [Files]
 File0=..\..\pic_pack_lib\pic_utils.c
-Count=13
+Count=14
 File1=..\..\pic_pack_lib\pic_utils.h
 File2=config.h
 File3=..\..\pic_pack_lib\draw\draw.c
@@ -19,7 +19,7 @@ File9=..\..\pic_pack_lib\pic_serial.h
 File10=..\..\pic_pack_lib\pcd8544.h
 File11=..\..\pic_pack_lib\pcd8544.c
 File12=.\draw_nokia_3310.c
-File13=.\draw_nokia_3310.c
+File13=..\..\pic_pack_lib\draw\drv_pcd8544.c
 File14=.\draw_nokia_3310.c
 File15=..\..\pic_pack_lib\spi.c
 File16=..\..\pic_pack_lib\spi.c

@@ -28,7 +28,7 @@
 #define pcd8544_res_pin   3
 
 #define pcd8544_sclk_port  PORTC
-#define pcd9544_sclk_pin   3
+#define pcd8544_sclk_pin   3
 
 #define pcd8544_sdin_port PORTC
 #define pcd8544_sdin_pin  5
@@ -46,43 +46,20 @@
 // - - - - - - - - - - - - - - - - - - - - 
 
 // y
-#define DRAW_PIXELS_HIGH 16
+#define DRAW_PIXELS_HIGH 48
 // x
-#define DRAW_PIXELS_WIDE 24
+#define DRAW_PIXELS_WIDE 84
 
 #define DRAW_BITS_PER_PIXEL 1
 
 #define DRAW_DEBUG
 
 
-// - - - - - - - - - - - - - - - - - - - - 
-// pic lcd defines
-// - - - - - - - - - - - - - - - - - - - - 
-
-#define lcd_e_port   PORTA
-#define lcd_e_pin   1
-
-#define lcd_rs_port  PORTA
-#define lcd_rs_pin  3
-
-#define lcd_rw_port  PORTA
-#define lcd_rw_pin  2
-
-#define lcd_db7_port PORTD
-#define lcd_db7_pin 7
-#define lcd_db6_port PORTD
-#define lcd_db6_pin 6
-#define lcd_db5_port PORTD
-#define lcd_db5_pin 5
-#define lcd_db4_port PORTD
-#define lcd_db4_pin 4
-
-
 // - - - - - - - - - - - - - - -
 // General platform definitions
 // - - - - - - - - - - - - - - -
-#define PLATFORM_TYPE SURE_PICDEM_2
-#define PLATFORM_CLOCK 12000000
+#define PLATFORM_TYPE OLIMEX_PIC_LCD3310
+#define PLATFORM_CLOCK 48000000
 
 
 #endif

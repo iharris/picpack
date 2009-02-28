@@ -23,7 +23,7 @@
 #define pcd8544_res_pin   3
 
 #define pcd8544_sclk_port  PORTC
-#define pcd9544_sclk_pin   3
+#define pcd8544_sclk_pin   3
 
 #define pcd8544_sdin_port PORTC
 #define pcd8544_sdin_pin  5
@@ -39,6 +39,7 @@
 #define pcd8544_setup() pcd8544_setup_io()
 void pcd8544_setup_io();
 void pcd8544_init();
+void pcd8544_send_byte(uns8 b);
 void pcd8544_write(uns8 mem_addr, uns8 data);
 void pcd8544_send_command(uns8 command);
 void pcd8544_set_pixel(uns8 x, uns8 y, uns8 colour);

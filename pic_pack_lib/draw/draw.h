@@ -5,7 +5,7 @@
 //
 // Graphics routines
 //
-// Ian Harris 2008
+// Ian Harris 2009
 // imharris [at] gmail.com
 //
 // Released under the "do whatever you like with this
