@@ -19,6 +19,8 @@
 #include "pic_utils.h"
 #include "pic_serial.h"
 #include "ar1000.h"
+#include "lcd.h"
+#include "ds1307.h"
 
 
 // System includes
