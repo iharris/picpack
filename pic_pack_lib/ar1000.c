@@ -258,7 +258,7 @@ void ar1000_seek_more() {
     ar1000_init();
 }
 
-uns8 volume_lookup[] = {
+rom uns8 vol_lookup[] = {
 0x0F,
 0xCF,
 0xDF,
@@ -282,50 +282,56 @@ uns8 volume_lookup[] = {
 0xF1,
 0xF0};
 
+
+
 void ar1000_set_volume(uns8 volume) {
 
 uns16 reg, temp;
 uns8  vol;
+uns16 vol1, vol2;
 
 	if (volume > 21) { return; }
-	vol = volume_lookup[volume];
-	serial_print_str("l=");
-	serial_print_int_hex(vol);
-	reg = vol >> 4;
-	//reg = reg << 12;
+	vol = vol_lookup[volume];
+	vol2 = vol >> 4;
+	vol1 = vol & 0x0f;
+
 	
-	// i2c_write_eeprom_16bit(AR1000_DEV_ID, AR1000_R14, reg);
-	regs[14] = reg;
-	reg = regs[3]; //i2c_read_eeprom_16bit(AR1000_DEV_ID, AR1000_R3);
-	
-	serial_print_int_hex_16bit(reg);
-	serial_putc('-');
-	
-	if (test_bit(vol, 3)) {
-		set_bit(reg, 10);
-	} else {
-		clear_bit(reg, 10);
-	}
-	if (test_bit(vol, 2)) {
-		set_bit(reg, 9);
-	} else {
-		clear_bit(reg, 9);
-	}
-	if (test_bit(vol, 1)) {
-		set_bit(reg, 8);
-	} else {
-		clear_bit(reg, 8);
-	}
-	if (test_bit(vol, 0)) {
-		set_bit(reg, 7);
-	} else {
-		clear_bit(reg, 7);
-	}
+	regs[3] = (regs[3] & ~0x0780) | (vol1 << 7);
+	//write(3, register_values[3]);
+
+	regs[14] = (regs[14] & ~0xF000) | (vol2 << 12);
+	//write(14, register_values[14]);
 		
 	//serial_print_str(" AR3=");
-	serial_print_int_hex_16bit(reg);
-	regs[3] = reg;
+	//serial_print_int_hex_16bit(reg);
+	//regs[3] = reg;
 	ar1000_init();
-}	
+}
+
+// Volume Control
+// there are two different fields about volume control in AR1000E
+//  Volume   :  D7  ~D10 in register R3
+//  Volume2 :  D12~D15 in register R14
+//  22 combinations of ( volume2 + volume)  are  recommended.
+//
+//
+/*
+void set_vol (uint8_t vol)
+{
+	register_values[1]  |= 0x0200;
+	write(1, register_values[1]);
+
+	register_values[3] = (register_values[3] & ~0x0780) | (v1[vol] << 7);
+	write(3, register_values[3]);
+
+	register_values[14] = (register_values[14] & ~0xF000)| (v2[vol] << 12);
+	write(14, register_values[14]);
+
+	 // clear hmute bit
+    register_values[1] &= ~0x0200;
+    write(1,register_values[1]);
+
+
+*/
 //	l=0F 80 12 0012000F0780 
 //  l=DF FFFF 787F 000F 0780    
