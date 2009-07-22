@@ -12,8 +12,10 @@
 
 #include <system.h>
 #include "pic_utils.h"
-#include "chipdefs.h"
 #include "config.h"
+
+#include "..\chipdefs.h"
+
 
 #ifdef _PIC16
 #ifdef _PIC16F88
@@ -56,8 +58,18 @@
 	#pragma DATA    _CONFIG7L, _EBTR0_OFF_7L & _EBTR1_OFF_7L & _EBTR2_OFF_7L & _EBTR3_OFF_7L
 	#pragma DATA    _CONFIG7H, _EBTRB_OFF_7H
 
- 
- 
+   #else
+   
+   #if defined(_PIC18F67J50) 
+	#pragma DATA	_CONFIG1L, _DEBUG_OFF_1L & _XINST_OFF_1L & _STVREN_OFF_1L & _PLLDIV_5_1L & _WDT_OFF_1L
+	#pragma DATA    _CONFIG1H, _CP0_OFF_1H & _CPUDIV_OSC1__1H
+	
+	#pragma DATA    _CONFIG2L, _IESO_OFF_2L & _FCMEN_OFF_2L & _FOSC_HSPLL_2L
+	#pragma DATA    _CONFIG2H, _WDTPS_32768_2H
+	#pragma DATA    _CONFIG3L, _WAIT_OFF_3L & _BW_8_3L & _MODE_MM_3L & _EASHFT_OFF_3L
+	#pragma DATA    _CONFIG3H, _MSSP_MSK7_3H & _PPMX_DEFAULT_3H & _ECCPMX_DEFAULT_3H & _CCP2MX_DEFAULT_3H
+  
+
    #else
    
 	 //#pragma DATA    _CONFIG1H, _OSC_HS_1H //_OSC_HSPLL_1H //
@@ -74,6 +86,7 @@
 	   #pragma DATA    _CONFIG7H, _EBTRB_OFF_7H
 	#endif
  #endif
+#endif
 #endif
 
 // Your set up - you need to put a PLATFORM_CLOCK def in your config.h
@@ -107,13 +120,19 @@
 
 void putc(uns8 nate);
 uns8 getc(void);
-
+#ifdef _PIC18F67J50
+void onboard_program_erase(uns8 high_program_address, uns16 program_address);
+#else
 void onboard_program_erase(uns16 program_address);
+#endif
 void onboard_program_write(void);
 
 // Global variables
 
 uns8 incoming_buffer[16]; //Presume no record will be longer than 16 bytes
+#ifdef _PIC18F67J50
+uns8 high_memory_address;
+#endif
 uns16 memory_address;
 uns8 record_length;
 
@@ -125,6 +144,12 @@ uns8 record_length;
 void main(void)
 {
 
+// 18f67j50
+
+#ifdef _PIC18F67J50
+	set_bit(osctune, PLLEN);
+#endif
+
     uns8 i, temp;
     uns8 check_sum = 0;
 
@@ -135,6 +160,15 @@ void main(void)
 #if PLATFORM_TYPE == SURE_PICDEM_2
 	trisb = 0b00000000;
 	latb =  0b00001110;	// Turn on a led on the dev board
+#endif
+#if PLATFORM_TYPE == OLIMEX_PIC_MT
+	clear_bit(trisb, 4);
+	#ifdef _PIC16
+		clear_bit(portb, 4);
+	#endif
+	#ifdef _PIC18	
+		clear_bit(latb, 4);	// Turn on a led on the dev board
+	#endif
 #endif
 #if PLATFORM_TYPE == OLIMEX_BOARD
 	trisa = 0b00000000;
@@ -150,15 +184,27 @@ void main(void)
 	portb.1 = 1;
 #endif
 
-
+#if PLATFORM_TYPE == PIC_MT_BOARD
+	trisb = 0b00000000;
+	latb.4 = 0;
+#endif
+#if PLATFORM_TYPE == SFE_TDN_V1
+	trisb = 0b00000000;
+	portb.1 = 1;
+#endif
 
 	// This routine comes from chipdefs.h
-	SERIAL_TRIS_SETUP()
-    
-    spbrg = SPBRG_9600;	// Automatically set for 9600 bps
+	SERIAL_TRIS_SETUP();
 
+#ifdef _PIC18F67J50    
+    spbrg1 = SPBRG_9600;	// Automatically set for 9600 bps
+    txsta1 = 0b00100100; // 8-bit asych mode, high speed uart enabled
+    rcsta1 = 0b10010000; // Serial port enable, 8-bit asych continous receive mode
+#else 
+    spbrg = SPBRG_9600;	// Automatically set for 9600 bps
     txsta = 0b00100100; // 8-bit asych mode, high speed uart enabled
     rcsta = 0b10010000; // Serial port enable, 8-bit asych continous receive mode
+#endif
 
     for(i = 0 ; i < 255 ; i++);
 
@@ -316,6 +362,14 @@ JUMP_VECTOR:
 #if PLATFORM_TYPE == SURE_PICDEM_2
 	latb =  0b00001111;	// Turn off the led
 #endif
+#if PLATFORM_TYPE == OLIMEX_PIC_MT
+	#ifdef _PIC16
+		set_bit(portb, 4);
+	#endif
+	#ifdef _PIC18	
+		set_bit(latb, 4);
+	#endif
+#endif
 #if PLATFORM_TYPE == OLIMEX_BOARD
 	#ifdef _PIC16
 		porta.0 = 0;	// Turn off the dev board led
@@ -377,7 +431,32 @@ void onboard_program_erase(uns16 program_address)
 
 #endif
 
-#ifdef _PIC18
+#ifdef PIC18
+
+#ifdef _PIC18F67J50
+
+void onboard_program_erase(uns8 program_address_high, uns16 program_address)
+{
+	tblptru = program_address_high;
+	HIBYTE(tblptrh, program_address); //Set the address
+    LOBYTE(tblptrl, program_address); //Set the address
+
+    //set_bit(eecon1, EEPGD); //Point to Flash Program data block
+    //clear_bit(eecon1, CFGS); // Access Flash program memory
+    
+    set_bit(eecon1, WREN); //Enable EE Writes
+    set_bit(eecon1, FREE); //Allow program memory changes
+
+    //Specific Program Erase/EEPROM write steps
+    eecon2 = 0x55;
+    eecon2 = 0xAA;
+    set_bit(eecon1, WR);
+
+    clear_bit(eecon1, WREN);
+} 
+
+#else
+
 void onboard_program_erase(uns16 program_address)
 {
 	tblptru = 0;
@@ -396,8 +475,9 @@ void onboard_program_erase(uns16 program_address)
 
     clear_bit(eecon1, WREN);
 } 
-#endif
 
+#endif
+#endif
 
 #ifdef _PIC16
 //Write e_data to the onboard eeprom at e_address
@@ -485,6 +565,44 @@ void onboard_program_write(void)
 
 #else
 
+#ifdef _PIC18F67J50
+void onboard_program_write(void)
+{
+    uns8 i;
+    uns8 block_count;
+    
+	tblptru = high_memory_address;	
+	HIBYTE(tblptrh, memory_address); //Set the address
+    LOBYTE(tblptrl, memory_address); //Set the address
+
+    for(i = 0 ; i < record_length ; i += 2)
+    {
+		// seem to need to swap the bytes around
+	   tablat = incoming_buffer[i+1]; //Give it the data
+		asm TBLWT*+
+	   tablat = incoming_buffer[i]; //Give it the data
+		asm TBLWT*+
+		
+
+    }
+
+	// dummy decrement
+	// ensure we're still in the right 64 byte block
+	asm TBLRD*-
+
+    set_bit  (eecon1, WREN); //Enable EE Writes
+
+    //Specific EEPROM write steps
+    eecon2 = 0x55;
+    eecon2 = 0xAA;
+    set_bit(eecon1, WR);
+    //Specific EEPROM write steps
+ 
+	// Not required for 18f2620 ??
+	clear_bit(eecon1, WREN); //Disable EEPROM Writes
+
+}  
+#else
 void onboard_program_write(void)
 {
     uns8 i;
@@ -523,6 +641,8 @@ void onboard_program_write(void)
 	clear_bit(eecon1, WREN); //Disable EEPROM Writes
 
 }  
+
+#endif
 #endif
 #endif
 

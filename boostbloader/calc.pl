@@ -25,6 +25,9 @@ print_config("PIC18F2520", "pic_18", 32768, 520, 64, 32, "trisc = 0b11000000;  /
 print_config("PIC18F452",  "pic_18", 32768, 534, 64, 8,  "trisc = 0b11000000;  // trisc 7,6 = 1");
 print_config("PIC18F252",  "pic_18", 32768, 536, 64, 8,  "trisc = 0b11000000;  // trisc 7,6 = 1");
 
+// 128k less 8 words (16 bytes) for stored config
+print_config("PIC18F67J50","pic_18", 131056,536, 1024, 64,  "trisc = 0b10000000;  // trisc 7 = 1, 6=0");
+
 sub print_config {
 
 my ($chip, $family, $memory, $bl_size, $min_erase_chunk, $max_write_chunk, $serial_tris_setup) = @_;
