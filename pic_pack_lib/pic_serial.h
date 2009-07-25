@@ -63,6 +63,7 @@ serial_setup(bit req_brgh, uns8 req_spbrg);
 #define serial_handle_rx_isr() \
 	if (pir1.RCIF) { serial_rx_isr(); clear_bit( pir1, RCIF ); }
 
+#define serial_print_debug(string, variable) serial_print_str(string); serial_print_int(variable); serial_print_nl();
 
 /** serial_load_tx
  
@@ -224,6 +225,14 @@ uns8 serial_tx_empty();
 	in the fifo queue, false (zero) otherwise
 */
 uns8 serial_rx_avail();
+
+#if PLATFORM_CLOCK == 48000000
+	#define SPBRG_9600 255
+	#define SPBRG_19200 129
+	#define SPBRG_38400 64
+	#define SPBRG_57600 42
+	#define SPBRG_115200 21
+#endif
 
 #if PLATFORM_CLOCK == 40000000
 	#define SPBRG_9600 255

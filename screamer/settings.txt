@@ -1,1 +1,1 @@
-13,9600,20,"16F88","C:\pic\demos\packet\packet_demo.hex","C:\Programming\PicPack\demos\ar1000\ar1000_demo.hex","C:\Programming\PicPack\demos\mega_flasher\mega_flasher.hex",9600,8,"N",1,"asc",#FALSE#,#TRUE#
+8,38400,12,"16F876A","C:\Programming\PicPack\demos\sure_2416\sure_2416_demo.hex","C:\Programming\PicPack\demos\draw_sure_2416\draw_sure_2416_demo.hex","C:\pic\demos\packet_listener\packet_listener_demo.hex",19200,8,"N",1,"asc",#FALSE#,#TRUE#
