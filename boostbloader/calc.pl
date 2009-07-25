@@ -12,25 +12,27 @@
 # 5 May 2008
 # Added 18f2520 thanks to Peter Lawson
 
+print "#ifndef __chipdefs_h\n";
+print "#define __chipdefs_h\n";
 
+             #chip, family, memory, bootloader_size, min_erase_chunk, min_write_chunk, max_write_chunk, avoid_top_of_mem, tris setting 
+print_config("PIC16F88",   "pic_16", 4096,  320, 32, 4, 4,  0,"trisb = 0b00100100;  // trisb 5,2 = 1");
+print_config("PIC16F876A", "pic_16", 8192,  249, 0,  4, 4,  0,"trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC16F877A", "pic_16", 8192,  249, 0,  4, 4,  0,"trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F2620", "pic_18", 65536, 520, 64, 1, 64, 0,"trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F4520", "pic_18", 32768, 520, 64, X, 32, 0,"trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F4550", "pic_18", 32768, 520, 64, X, 32, 0,"trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F2520", "pic_18", 32768, 520, 64, X, 32, 0,"trisc = 0b11000000;  // trisc 7,6 = 1");
+print_config("PIC18F452",  "pic_18", 32768, 534, 64, X, 8,  0,"trisc = 0b11000000;  // trisc 7,6 = 1");
 
-             #chip, family, memory, bootloader_size, min_erase_chunk, max_write_chunk, tris setting 
-print_config("PIC16F88",   "pic_16", 4096,  320, 32, 4,  "trisb = 0b00100100;  // trisb 5,2 = 1");
-print_config("PIC16F876A", "pic_16", 8192,  249, 0,  4,  "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC16F877A", "pic_16", 8192,  249, 0,  4,  "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F2620", "pic_18", 65536, 520, 64, 64, "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F4520", "pic_18", 32768, 520, 64, 32, "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F4550", "pic_18", 32768, 520, 64, 32, "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F2520", "pic_18", 32768, 520, 64, 32, "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F452",  "pic_18", 32768, 534, 64, 8,  "trisc = 0b11000000;  // trisc 7,6 = 1");
-print_config("PIC18F252",  "pic_18", 32768, 536, 64, 8,  "trisc = 0b11000000;  // trisc 7,6 = 1");
+#// 128k less 8 words (16 bytes) for stored config
+print_config("PIC18F67J50","pic_18", 131072,536, 1024, X, 64,  8, "trisc = 0b10000000;  // trisc 7 = 1, 6=0");
 
-// 128k less 8 words (16 bytes) for stored config
-print_config("PIC18F67J50","pic_18", 131056,536, 1024, 64,  "trisc = 0b10000000;  // trisc 7 = 1, 6=0");
+print "#endif\n";
 
 sub print_config {
 
-my ($chip, $family, $memory, $bl_size, $min_erase_chunk, $max_write_chunk, $serial_tris_setup) = @_;
+my ($chip, $family, $memory, $bl_size, $min_erase_chunk, $min_write_chunk, $max_write_chunk, $avoid_tom, $serial_tris_setup) = @_;
 my ($mem_div);
 
 
@@ -41,7 +43,7 @@ if ($family == "pic_18") {
 }	
 
 # Allow 3 instructions grace, boostloader gets a bit confused otherwise
-my ($bloader_start) = $memory - 3 - $bl_size;
+my ($bloader_start) = $memory - 3 - $bl_size - $avoid_tom;
 if ($mem_div == 2) {
 	$bloader_start = $bloader_start >> 1;
 	$bloader_start = $bloader_start << 1; # Chop off this bit
@@ -57,7 +59,8 @@ if ($min_erase_chunk > 0) {
 }
 printf "    #define max_write_chunk	$max_write_chunk\n";
 printf "    #define BLOADER_START 0x%.4x\n", $bloader_start;
-printf "    #define BLOADER_START_HIGH 0x%.2x\n", $bloader_start >> 8; 
+printf "    #define BLOADER_UPPER 0x%.2x\n", $bloader_start >> 16;
+printf "    #define BLOADER_START_HIGH 0x%.2x\n", ($bloader_start >> 8) & 0xff; 
 printf "    #define BLOADER_START_LOW  0x%.2x\n", $bloader_start & 0xff;
 printf "    #warning \"Did you set -rb ".$bloader_start." in Settings | Options | Linker?\"\n";
 if ($family eq "pic_16") {
@@ -73,15 +76,17 @@ if ($family eq "pic_16") {
 	#// for 18f2620, 18f4520 which has to erase on 64 byte (32 word) boundaries:
 	#// MOVED_BVECTOR_START  = (BLOADER_START & 0xFFC0) - 8
 
-	if ($min_erase_chunk == 64) {
-		$moved_bvector_start = ($bloader_start & 0xffc0) - 8;
-	} else {
-		printf "!!- Well, don't know what to do with this erase chunk (%d) for moved_bvector_start\n", $min_erase_chunk;
-	}
+	if ($min_erase_chunk > 0) { #// was 0xffc0
+		$moved_bvector_start = ($bloader_start & (0xfffff - ($min_erase_chunk -1))) - 8;
+	} 
+	#//else {
+	#//	printf "!!- Well, don't know what to do with this erase chunk (%d) for moved_bvector_start\n", $min_erase_chunk;
+	#//}
 }
 
 printf "    #define MOVED_BVECTOR_START 0x%.4x\n", $moved_bvector_start;
-printf "    #define MOVED_BVECTOR_HIGH  0x%.2x\n", $moved_bvector_start >> 8;
+printf "    #define MOVED_BVECTOR_UPPER 0x%.2x\n", $moved_bvector_start >> 16;
+printf "    #define MOVED_BVECTOR_HIGH  0x%.2x\n", ($moved_bvector_start >> 8) & 0xff;
 printf "    #define MOVED_BVECTOR_LOW   0x%.2x\n", $moved_bvector_start & 0xff;
 
 my ($jump_to_bvector, $jump_to_bvector1, $jump_to_bvector2);
@@ -99,8 +104,8 @@ if ($family eq "pic_16") {
 	
 	#// To Calculate: 
 	#// EF00 + ((MOVED_BVECTOR_START >> 1) & 0x00ff)
-	#// F000 + ((MOVED_BVECTOR_START >> 1) & 0xff00) >> 8)
-	#// Assuming no greater than 64k program space (32k words)
+	#// F000 + ((MOVED_BVECTOR_START >> 1) & 0x7ff00) >> 8)
+
 
 	$jump_to_bvector1 = 0xef00 + (($moved_bvector_start >> 1) & 0x00ff);
 	$jump_to_bvector2 = 0xf000 + (($moved_bvector_start >> 1) >> 8);

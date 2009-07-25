@@ -15,4 +15,7 @@
 #define SFE_TDN_V1    3
 /** Tech Toys HK Pic 17f4550 Eval Dev 4a */
 #define TECH_TOYS_PIC18F4550 4
+/** Olimex PIC_LCD3310 board */
+#define OLIMEX_PIC_LCD3310 5
+
 #endif

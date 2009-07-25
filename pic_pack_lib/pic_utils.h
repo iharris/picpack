@@ -36,8 +36,6 @@
 	#define NUMBER_PORTS 5
 #endif
 
-
-
 // Commonly used data types, to make everything more portable
 	
 #define int8  char
@@ -54,8 +52,6 @@
 extern   uns8 port_shadow[NUMBER_PORTS];
 volatile uns8 port_array[NUMBER_PORTS] @PORTA;
 volatile uns8 tris_array[NUMBER_PORTS] @TRISA;
-
-
 
 // A function to turn off those pesky analog inputs
 // since there's no common way amoung chips
@@ -180,26 +176,33 @@ void change_pin_var(uns8 port, uns8 pin, bit value);
 #define end_crit_sec() \
 	intcon.GIE = store_gie
 
-#if PLATFORM_CLOCK == 4000000
-	#pragma CLOCK_FREQ 4000000
-	#define GOT_CLOCK
-#endif
-#if PLATFORM_CLOCK == 16000000
-	#pragma CLOCK_FREQ 16000000
-	#define GOT_CLOCK
-#endif
-#if PLATFORM_CLOCK == 12000000
-	#pragma CLOCK_FREQ 12000000
-	#define GOT_CLOCK
-#endif
 #if PLATFORM_CLOCK == 20000000
 	#pragma CLOCK_FREQ 20000000
 	#define GOT_CLOCK
 #endif
+
+
+#if PLATFORM_CLOCK == 4000000
+	#pragma CLOCK_FREQ 4000000
+	#define GOT_CLOCK
+#endif
+
+#if PLATFORM_CLOCK == 16000000
+	#pragma CLOCK_FREQ 16000000
+	#define GOT_CLOCK
+#endif
+
+#if PLATFORM_CLOCK == 12000000
+	#pragma CLOCK_FREQ 12000000
+	#define GOT_CLOCK
+#endif
+
+
 #if PLATFORM_CLOCK == 8000000
 	#pragma CLOCK_FREQ 8000000
 	#define GOT_CLOCK
 #endif
+
 #if PLATFORM_CLOCK == 4000000
 	#pragma CLOCK_FREQ 4000000
 	#define GOT_CLOCK

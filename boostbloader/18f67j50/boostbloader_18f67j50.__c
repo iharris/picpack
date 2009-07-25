@@ -6,12 +6,14 @@ Warnings=1
 ClockRate=8000000
 [Files]
 File0=config.h
-Count=4
+Count=8
 File1=..\BoostBloader.c
 File2=..\calc.pl
 File3=..\chipdefs.h
-File4=..\BoostBloader.c
-File5=..\BoostBloader.c
+File4=..\baud_rate_config.h
+File5=..\configbits.h
+File6=..\..\pic_pack_lib\pic_flash.c
+File7=..\..\pic_pack_lib\pic_flash.h
 [Tool State]
 compile=1
 link=1
@@ -19,7 +21,7 @@ program=0
 [Compiler]
 Extra=-Su -Oa -I "..\..\pic_pack_lib\"
 [Linker]
-Extra=-rb 127844
+Extra=-rb 130254
 [Tools]
 BoostDir=C:\Program Files\SourceBoost\
 Programmer=

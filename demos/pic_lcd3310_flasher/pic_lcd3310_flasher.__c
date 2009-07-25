@@ -1,24 +1,22 @@
 [Settings]
 Active Compiler=BoostC
-Target=PIC18F2620
+Target=PIC18F67J50
+ClockRate=48000000
 Type=0
-Warnings=1
-ClockRate=8000000
+Warnings=2
+Profiling=0
+Snapshot=0
 [Files]
-File0=..\BoostBloader.c
-Count=4
-File1=..\chipdefs.h
-File2=..\calc.pl
-File3=config.h
-File4=..\chipdefs.h
-[Tool State]
-compile=1
-link=1
-program=0
+File0=..\..\pic_pack_lib\pic_utils.c
+Count=5
+File1=..\..\pic_pack_lib\pic_utils.h
+File2=config.h
+File3=.\pic_lcd3310_flasher.c
+File4=..\..\pic_pack_lib\config_bits.h
 [Compiler]
-Extra=-Oa -Su -I "..\..\pic_pack_lib\" -obj ".\" 
+Extra=-I "..\..\pic_pack_lib"  
 [Linker]
-Extra=-rb 65012 -d ".\"
+Extra=-d ".\"
 [Tools]
 BoostDir=C:\Program Files\SourceBoost\
 Programmer=
@@ -32,7 +30,17 @@ Count=0
 Bcd=506F727442000100000001000000
 Button=00706F727462000000000000000000
 Button Block=706F72746200000000000000000000000000
-Led=706F72746200000000000000000000000000
+Led=506F72744500020000000100000001000000
 Led Block=506F727442000100000001000000
 Speed Tester=6B094201040000004E6F6E65
 7 Segment LED=00040000007F00000000000000000000000000000000000352413000000000000000000352413100000000000000000352413200000000000000000352413300000000000000000000000000000000000000000000000000000000000000000000000003524230035242310352423203524233035242340352423503524236035242370003526564FF191900
+[Watch]
+Count=0
+[Watchpoint]
+Count=0
+[Register]
+Core=1
+Ports=1
+Interrupt=1
+Eeprom=1
+Misc=1
