@@ -42,6 +42,7 @@ void pcd8544_init();
 void pcd8544_send_byte(uns8 b);
 void pcd8544_write(uns8 mem_addr, uns8 data);
 void pcd8544_send_command(uns8 command);
+void pcd8544_send_data(uns8 data);	
 void pcd8544_set_pixel(uns8 x, uns8 y, uns8 colour);
 void pcd8544_clear();
 

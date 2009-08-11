@@ -4,26 +4,29 @@
 #include "pic_utils.h"
 #include "draw\draw.h"
 
+uns8 get_draw_buffer(uns16 address);
+void set_draw_buffer(uns16 address, uns8 data);
+
 // We have DRAW_PIXELS_WIDE by DRAW_PIXELS_HIGH / DRAW_PIXELS_PER_BYTE
 
 #define DRAW_TOTAL_BUFFER_SIZE DRAW_PIXELS_WIDE * DRAW_PIXELS_HIGH / DRAW_PIXELS_PER_BYTE
 
-#if DRAW_TOTAL_BUFFER_SIZE < 256
+#if DRAW_TOTAL_BUFFER_SIZE <= 256
 	extern uns8 draw_buffer0[DRAW_TOTAL_BUFFER_SIZE];
 	#define DRAW_BUFFERS 1
 #else
 	extern uns8 draw_buffer0[256];
-	#if DRAW_TOTAL_BUFFER_SIZE < 512
+	#if DRAW_TOTAL_BUFFER_SIZE <= 512
 		extern uns8 draw_buffer1[DRAW_TOTAL_BUFFER_SIZE - 256];
 		#define DRAW_BUFFERS 2
 	#else
 		extern uns8 draw_buffer1[256];
-		#if DRAW_TOTAL_BUFFER_SIZE < 768
+		#if DRAW_TOTAL_BUFFER_SIZE <= 768
 			extern uns8 draw_buffer2[DRAW_TOTAL_BUFFER_SIZE - 512];
 			#define DRAW_BUFFERS 3
 		#else
 			extern uns8 draw_buffer2[256]; 
-			#if DRAW_TOTAL_BUFFER_SIZE < 1024
+			#if DRAW_TOTAL_BUFFER_SIZE <= 1024
 				extern uns8 draw_buffer3[DRAW_TOTAL_BUFFER_SIZE - 768];
 				#define DRAW_BUFFERS 4
 			#else

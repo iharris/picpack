@@ -7,8 +7,8 @@
 // pic_serial defines
 // - - - - - - - - - - - - - - - - - - - - 
 
-#define SERIAL_TX_BUFFER_SIZE 16
-#define SERIAL_RX_BUFFER_SIZE 4
+#define SERIAL_TX_BUFFER_SIZE 32
+#define SERIAL_RX_BUFFER_SIZE 8
 //#define SERIAL_DEBUG_ON
 
 // Nokia 3310

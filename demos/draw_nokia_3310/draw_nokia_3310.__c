@@ -1,6 +1,6 @@
 [Settings]
 Active Compiler=BoostC
-Target=PIC18F87J50
+Target=PIC18F67J50
 Type=0
 Warnings=2
 ClockRate=8000000
@@ -26,7 +26,7 @@ File16=..\..\pic_pack_lib\spi.c
 [Compiler]
 Extra=-I "..\..\pic_pack_lib"  
 [Linker]
-Extra=
+Extra=-d ".\"
 [Tools]
 BoostDir=C:\Program Files\SourceBoost\
 Programmer=

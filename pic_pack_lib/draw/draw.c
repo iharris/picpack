@@ -16,11 +16,62 @@
 0
 	0	1	2	3	4
 */
+
 void draw_clear_screen() {
+
 uns8 count;
-	for(count = 0 ; count < sizeof(draw_buffer0) ; count++) {
-		draw_buffer0[count] = 0;
-	}	
+	
+	#if DRAW_TOTAL_BUFFER_SIZE < 256
+		count = 0;
+		do {
+			draw_buffer0[count] = 0;
+			count++;
+		} while (count < DRAW_TOTAL_BUFFER_SIZE);
+	#else
+		count = 0;
+		do {
+			draw_buffer0[count] = 0;
+			count++;
+		} while (count != 0);
+		#if DRAW_TOTAL_BUFFER_SIZE < 512
+			do {
+				draw_buffer1[count] = 0;
+				count++;
+			} while (count < DRAW_TOTAL_BUFFER_SIZE - 256);
+		#else
+			do {
+				draw_buffer1[count] = 0;
+				count++;
+			} while (count != 0);
+
+			#if DRAW_TOTAL_BUFFER_SIZE < 768
+				do {
+					draw_buffer2[count] = 0;
+					count++;
+				} while (count < DRAW_TOTAL_BUFFER_SIZE - 512);
+			#else
+				do {
+					draw_buffer2[count] = 0;
+					count++;
+				} while (count != 0);
+				#if DRAW_TOTAL_BUFFER_SIZE < 1024
+					do {
+						draw_buffer3[count] = 0;
+						count++;
+					} while (count < DRAW_TOTAL_BUFFER_SIZE - 768);
+				#else
+					do {
+						draw_buffer3[count] = 0;
+						count++;
+					} while (count != 0);
+				#endif
+			#endif
+			
+		#endif		
+		
+	#endif
+	
+
 }
 
 void draw_setup_io() {
@@ -32,37 +83,69 @@ void draw_init() {
 	draw_clear_screen();
 }	
 
-void draw_set_pixel(uns8 x, uns8 y, uns8 colour) {
-uns8 *buffer;
-uns16 buffer_loc;
-uns8 loc_byte, loc_bit;
-uns8 bit_count;
-	
-	buffer = &draw_buffer0;	// do differently if we have more than one buffer
-	
-	buffer_loc = y * DRAW_PIXELS_WIDE + x;
 
+
+void draw_set_pixel(uns8 x, uns8 y, uns8 colour) {
+
+uns8 *buffer;
+uns16 buffer_loc, loc_byte;
+uns8  loc_bit, loc_in_buffer, buffer_num;
+uns8  bit_count;
+	// inverse here
+	y = DRAW_PIXELS_HIGH - 1 - y;
+	buffer_loc = y * DRAW_PIXELS_WIDE + x;
+//	buffer = &draw_buffer0;	// do differently if we have more than one buffer
 	loc_byte = buffer_loc / DRAW_PIXELS_PER_BYTE;
 	loc_bit = buffer_loc & (DRAW_PIXELS_PER_BYTE -1);
 	
-	bit_count = DRAW_BITS_PER_PIXEL;
-	
-	while (bit_count > 0) {
-		if (test_bit(colour, --bit_count)) {
-			set_bit(buffer[loc_byte], loc_bit);
-		} else {
-			clear_bit(buffer[loc_byte], loc_bit);
-		}
-		loc_bit--;
+	loc_in_buffer = loc_byte & 0xff;
+	buffer_num = loc_byte >> 8;
+	if (buffer_num == 0) {
+		buffer = &draw_buffer0;
 	}
-//	if (colour) {
-//		set_bit(draw_buffer0[loc_byte], loc_bit);
-//	} else {
-//		clear_bit(draw_buffer0[loc_byte], loc_bit);
-//	}
+	#if DRAW_TOTAL_BUFFER_SIZE > 256
 	
+	else if (buffer_num == 1) {
+		buffer = &draw_buffer1;
+
+	}
+		#if DRAW_TOTAL_BUFFER_SIZE > 512
+		else if (buffer_num == 2) {
+			buffer = &draw_buffer2;
+
+		}
+			#if DRAW_TOTAL_BUFFER_SIZE > 768
+			else if (buffer_num == 3) {
+			buffer = &draw_buffer3;
+
+			}
+			#endif
+		#endif
+	#endif
+	#if DRAW_BITS_PER_PIXEL > 1
+	
+		bit_count = DRAW_BITS_PER_PIXEL;
+	
+		while (bit_count > 0) {
+			bit_count--;
+			if (test_bit(colour, bit_count)) {
+				set_bit(buffer[loc_in_buffer], loc_bit);
+			} else {
+				clear_bit(buffer[loc_in_buffer], loc_bit);
+			}
+			loc_bit--;
+		}
+	#else
+	
+		if (colour) {
+			set_bit(buffer[loc_in_buffer], loc_bit);
+		} else {
+			clear_bit(buffer[loc_in_buffer], loc_bit);
+		}	
+	#endif	
 
 }
+
 	
 uns8 draw_get_pixel(uns8 x, uns8 y) {
 	return 0;
@@ -99,11 +182,11 @@ uns16	 buffer_loc;
 			byte_loc = buffer_loc / DRAW_PIXELS_PER_BYTE;
 			bit_loc = buffer_loc & (DRAW_PIXELS_PER_BYTE -1);
 
-			if (bit_loc == 0) {
-				serial_putc(' ');
-				serial_print_int_hex(byte_loc);
-				serial_putc(' ');
-			}	
+			//if (bit_loc == 0) {
+			//	serial_putc(' ');
+			//	serial_print_int_hex(byte_loc);
+			//	serial_putc(' ');
+			//}	
 			
 			if (test_bit(draw_buffer0[byte_loc], bit_loc)) {
 				
@@ -114,7 +197,7 @@ uns16	 buffer_loc;
 			}
 		}
 		
-			serial_print_str("|\n");
+		serial_print_str("|\n");
 		
 	}
 #endif	
