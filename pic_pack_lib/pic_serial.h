@@ -227,11 +227,11 @@ uns8 serial_tx_empty();
 uns8 serial_rx_avail();
 
 #if PLATFORM_CLOCK == 48000000
-	#define SPBRG_9600 255
-	#define SPBRG_19200 129
-	#define SPBRG_38400 64
-	#define SPBRG_57600 42
-	#define SPBRG_115200 21
+	#define SPBRG_9600 312
+	#define SPBRG_19200 155
+	#define SPBRG_38400 77
+	#define SPBRG_57600 51
+	#define SPBRG_115200 25
 #endif
 
 #if PLATFORM_CLOCK == 40000000

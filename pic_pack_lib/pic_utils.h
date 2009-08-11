@@ -35,6 +35,14 @@
 	#undef NUMBER_PORTS
 	#define NUMBER_PORTS 5
 #endif
+#ifdef PORTF
+	#undef NUMBER_PORTS
+	#define NUMBER_PORTS 6
+#endif
+#ifdef PORTG
+	#undef NUMBER_PORTS
+	#define NUMBER_PORTS 7
+#endif
 
 // Commonly used data types, to make everything more portable
 	
@@ -78,7 +86,7 @@ volatile uns8 tris_array[NUMBER_PORTS] @TRISA;
 #ifdef _PIC18F4550
 	#define turn_analog_inputs_off() adcon1 = 15
 #endif
-#ifdef _PIC18F87J50
+#ifdef _PIC18F67J50
 	#define turn_analog_inputs_off() clear_bit(adcon0, ADON);
 #endif
 

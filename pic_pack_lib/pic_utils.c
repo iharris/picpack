@@ -21,6 +21,13 @@ uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0};
 uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0, 0};
 #endif
 
+#if NUMBER_PORTS == 6
+uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0, 0, 0};
+#endif
+
+#if NUMBER_PORTS == 7
+uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0, 0, 0, 0};
+#endif
 
 void set_pin_var(uns8 port, uns8 pin) {
 	uns8 array_location = port - PORTA;

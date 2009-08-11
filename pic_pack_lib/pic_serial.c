@@ -78,7 +78,7 @@ void serial_setup(bit req_brgh, uns8 req_spbrg)
     set_bit(trisc,7);
 	#define TRIS_SET
 #endif
-#ifdef _PIC18F87J50
+#ifdef _PIC18F67J50
     clear_bit(trisc,6);
     set_bit(trisc,7);
 	#define TRIS_SET
@@ -90,7 +90,9 @@ void serial_setup(bit req_brgh, uns8 req_spbrg)
 	#warning "Please send your tris bits in so they can be included in the library"
 #endif
 
-    txsta.BRGH = req_brgh;	// set baud rate generator (high/low speed)
+	kill_interrupts();
+	
+	txsta.BRGH = req_brgh;	// set baud rate generator (high/low speed)
 
     spbrg = req_spbrg;	// set serial port baud rate generator value
 
@@ -99,7 +101,7 @@ void serial_setup(bit req_brgh, uns8 req_spbrg)
 
 	// Configure tx
 	
-	kill_interrupts();
+
    
     clear_bit(txsta, TX9);	// Turn off 9 bit receiption
     clear_bit(txsta, TX9D);	// Clear 9th bit data
