@@ -28,7 +28,7 @@ File16=..\..\pic_pack_lib\pic_serial.c
 [Compiler]
 Extra=-I "..\..\pic_pack_lib" 
 [Linker]
-Extra=
+Extra=-d ".\"
 [Tools]
 BoostDir=C:\Program Files\SourceBoost\
 Programmer=
