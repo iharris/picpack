@@ -57,10 +57,14 @@
 // Shadow storage so we don't have to worry about read then write problems
 // on PIC 16 architecture chips
 
-extern   uns8 port_shadow[NUMBER_PORTS];
-volatile uns8 port_array[NUMBER_PORTS] @PORTA;
-volatile uns8 tris_array[NUMBER_PORTS] @TRISA;
-
+#ifdef _PIC16
+	extern   uns8 port_shadow[NUMBER_PORTS];
+	volatile uns8 port_array[NUMBER_PORTS] @PORTA;
+	volatile uns8 tris_array[NUMBER_PORTS] @TRISA;
+#else
+	volatile uns8 port_array[NUMBER_PORTS] @LATA;
+	volatile uns8 tris_array[NUMBER_PORTS] @TRISA;
+#endif
 // A function to turn off those pesky analog inputs
 // since there's no common way amoung chips
 // Add yours here - and send it in for inclusion!
@@ -128,6 +132,8 @@ volatile uns8 tris_array[NUMBER_PORTS] @TRISA;
 // If you want to use variables in the place of port and pin numbers
 // then use the set_pin_var variants.
 
+#ifdef _PIC16
+
 #define set_pin(port, pin) \
  set_bit(port_shadow[port - PORTA], pin); \
  port_array[port - PORTA] = port_shadow[port - PORTA]; 
@@ -156,6 +162,44 @@ void clear_pin_var(uns8 port, uns8 pin);
 void toggle_pin_var(uns8 port, uns8 pin);
 #define test_pin_var(port, pin) test_pin(port, pin)
 void change_pin_var(uns8 port, uns8 pin, bit value);
+
+
+#else
+
+// PIC18
+#define set_pin(port, pin) \
+ set_bit(port_array[port - PORTA], pin);
+
+#define clear_pin(port, pin) \
+ clear_bit(port_array[port - PORTA], pin);
+ 
+#define toggle_pin(port, pin) \
+    port_array[port - PORTA] ^= (1 << (pin));
+     	
+
+#define test_pin(port, pin) \
+	 ((port_array[port - PORTA] & (1 << pin)) != 0)
+
+#define change_pin(port, pin, value) \
+	if (value) { \
+		set_pin(port, pin); \
+	} else { \
+		clear_pin(port, pin); \
+	}	
+
+#define set_pin_var(port, pin) \
+	set_pin(port, pin)
+#define clear_pin_var(port, pin) \
+	clear_pin(port, pin)
+#define toggle_pin_var(port, pin) \
+	toggle_pin(port, pin)
+#define test_pin_var(port, pin) test_pin(port, pin)
+#define change_pin_var(port, pin, value) \
+	change_pin(port, pin, value)
+
+
+#endif
+
 
 // Routines to use the same port and pin assignments as above
 // to make pins inputs or outputs

@@ -4,30 +4,32 @@
 // Use shadowed ports to prevent read-before-write problems
 
 // This is the one place the port_shadow variable actually gets declared
+#ifdef _PIC16
 
-#if NUMBER_PORTS == 2
-uns8 port_shadow[NUMBER_PORTS] = {0, 0};
-#endif
+	#if NUMBER_PORTS == 2
+	uns8 port_shadow[NUMBER_PORTS] = {0, 0};
+	#endif
 
-#if NUMBER_PORTS == 3
-uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0};
-#endif
+	#if NUMBER_PORTS == 3
+	uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0};
+	#endif
 
-#if NUMBER_PORTS == 4
-uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0};
-#endif
+	#if NUMBER_PORTS == 4
+	uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0};
+	#endif
+	
+	#if NUMBER_PORTS == 5
+	uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0, 0};
+	#endif
+	
+	#if NUMBER_PORTS == 6
+	uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0, 0, 0};
+	#endif
+	
+	#if NUMBER_PORTS == 7
+	uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0, 0, 0, 0};
+	#endif
 
-#if NUMBER_PORTS == 5
-uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0, 0};
-#endif
-
-#if NUMBER_PORTS == 6
-uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0, 0, 0};
-#endif
-
-#if NUMBER_PORTS == 7
-uns8 port_shadow[NUMBER_PORTS] = {0, 0, 0, 0, 0, 0, 0};
-#endif
 
 void set_pin_var(uns8 port, uns8 pin) {
 	uns8 array_location = port - PORTA;
@@ -58,4 +60,4 @@ void change_pin_var(uns8 port, uns8 pin, bit value) {
     port_array[array_location] = port_shadow[array_location]; 
 }
 
-  
+#endif
