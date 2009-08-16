@@ -1,12 +1,12 @@
 //-----------------------------------------------------
 // Pic Pack library
 // 
-// lm75_lcd_demo.c
+// draw_sure_2416.c
 //
-// Demonstration routines showing the use of the LM75
-// temperature sensor
+// Demonstration routines showing the draw library
+// used with the Sure Electronics 2416 board
 //
-// Ian Harris 2008
+// Ian Harris 2009
 // imharris [at] gmail.com
 //
 // Released under the "do whatever you like with this
@@ -18,12 +18,11 @@
 #include "config.h"
 #include "pic_utils.h"
 #include "pic_serial.h"
-#include "lcd.h"
 #include "draw\draw.h"
 // System includes
 #include "string.h"
 #include "stdlib.h"
-#include "sure_2416.h"
+#include "ht1632.h"
 #include "draw\draw_screen_buffer.h"
 
 // max and min temps
@@ -37,10 +36,6 @@ void interrupt() {
 }
 
 
-
-
-
-
 // configure_system
 //
 // Get the pic ready for everything we want to do
@@ -52,16 +47,12 @@ void configure_system() {
 	turn_analog_inputs_off();	// kill those pesky analogue inputs
 	
 	
-	lcd_setup();	// Setup the pins (output / input)
-	lcd_init ();	// Configure chip ready for display
-
-	
 	serial_setup(BRGH_HIGH_SPEED, SPBRG_19200);
 
 	turn_peripheral_ints_on();
 	turn_global_ints_on();
 
-	draw_setup();
+	draw_setup_io();
 	draw_init();
 
 }
@@ -71,9 +62,6 @@ void configure_system() {
 
 void main() {
 
-	char inf[] = {
-		12,12,12,12,12,
-	};
 		
 	configure_system();
 
@@ -185,7 +173,7 @@ void main() {
 					x = 0;
 			}	
 			draw_clear_screen();
-			draw_print_str(x, 0, width, start_pos, /* colour */ 1, "Hello there");
+			draw_print_str(x, 7, width, start_pos, /* colour */ 1, "Hello there");
 			draw_paint();
 			delay_ms(75);
 	

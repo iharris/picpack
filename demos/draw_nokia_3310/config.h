@@ -52,6 +52,13 @@
 
 #define DRAW_BITS_PER_PIXEL 1
 
+#define DRAW_HW_Y_ORIGIN TOP_LEFT
+// or BOTTOM_LEFT
+
+#define DRAW_HW_BUFFER_ORIENTATION Y
+// or Y
+
+
 #define DRAW_DEBUG
 
 

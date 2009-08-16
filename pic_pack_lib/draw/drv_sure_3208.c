@@ -1,11 +1,11 @@
 //--------------------------------------------------------
 // Pic Pack library
 // 
-// draw_drv_sure_2416.h
+// draw_drv_sure_3207.h
 //
-// Sure 2416 drivers for the Draw library
+// Sure 3208 drivers for the Draw library
 //
-// Ian Harris 2009
+// Ian Harris 2008
 // imharris [at] gmail.com
 //
 // Released under the "do whatever you like with this
@@ -79,11 +79,27 @@ uns8 data;
 			set_pin  (ht1632_wr_port, ht1632_wr_pin);
 		}
 	}
-*/	/*uns8 xbyte = 0x2d;
+*/	
+	buffer_loc = 0;
+	for (count = 0; count < 32; count++) {
+		data = draw_buffer0[count];
+		for (bit_loc = 0; bit_loc < 8; bit_loc++) {
+			if (data.0) {
+				set_pin(ht1632_data_port, ht1632_data_pin);
+			} else {
+				clear_pin(ht1632_data_port, ht1632_data_pin);
+			}
+			data = data >> 1;	
+			clear_pin(ht1632_wr_port, ht1632_wr_pin);
+			set_pin  (ht1632_wr_port, ht1632_wr_pin);
+		}	
+	}	
+
+	/*uns8 xbyte = 0x2d;
 	uns8 xbit = 0b00000001;
 	
 	for(x = 0 ; x < DRAW_PIXELS_WIDE  ; x++) {
-		for(y = 0 ; y < DRAW_PIXELS_HIGH ; y++) {
+		for(y = 0 ; y < 16 ; y++) {
 		if (draw_buffer0[xbyte] & xbit) {
 				set_pin(ht1632_data_port, ht1632_data_pin);
 			} else {
@@ -104,23 +120,7 @@ uns8 data;
 			}	
 		}
 	}
-*/
-	buffer_loc = 0;
-	for (count = 0; count < 48; count++) {
-		data = draw_buffer0[count];
-		for (bit_loc = 0; bit_loc < 8; bit_loc++) {
-			if (data.0) {
-				set_pin(ht1632_data_port, ht1632_data_pin);
-			} else {
-				clear_pin(ht1632_data_port, ht1632_data_pin);
-			}
-			data = data >> 1;	
-			clear_pin(ht1632_wr_port, ht1632_wr_pin);
-			set_pin  (ht1632_wr_port, ht1632_wr_pin);
-		}	
-	}	
-	
-	// reset CS
+*/	// reset CS
 
 	set_pin(ht1632_cs1_port, ht1632_cs1_pin);
 	//ht1632_send_command(HT1632_CMD_SYS_ENABLE);
@@ -142,8 +142,7 @@ void drv_setup_io() {
 }
 
 void drv_init() {
-	// 2416 board is configured as 16 COMMONs
-	ht1632_init(HT1632_CMD_PMOS_16_COMMON);
+	ht1632_init();
 }	
 
 #endif

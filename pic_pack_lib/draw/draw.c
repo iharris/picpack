@@ -5,22 +5,54 @@
 
 /* Draw buffer addressing
 
-4
+4 | U V W X Y
+3 | P Q R S T
+2 | K L M N O
+1 | F G H I J
+0 | A B C D E
+	---------
+	0 1 2 3 4
+DRAW_HW_Y_ORIGIN == BOTTOM_LEFT
+DRAW_HW_BUFFER_ORIENTATION == HORIZONTAL
 
-3
+0 | A B C D E
+1 | F G H I J
+2 | K L M N O
+3 | P Q R S T
+4 | U V W X Y
+	---------
+	0 1 2 3 4
+DRAW_HW_Y_ORIGIN == TOP_LEFT
+DRAW_HW_BUFFER_ORIENTATION == HORIZONTAL
 
-2
+0 | E J O T Y
+1 | D I N S X
+2 | C H M R W
+3 | B G L Q V
+4 | A F K P U
+	---------
+	0 1 2 3 4
+DRAW_HW_Y_ORIGIN == BOTTOM_LEFT
+DRAW_HW_BUFFER_ORIENTATION == VERTICAL
 
-1
 
-0
-	0	1	2	3	4
+0 | A F K P U
+1 | B G L Q V
+2 | C H M R W
+3 | D I N S X
+4 | E J O T Y
+	---------
+	0 1 2 3 4
+DRAW_HW_Y_ORIGIN == TOP_LEFT
+DRAW_HW_BUFFER_ORIENTATION == VERTICAL
+
 */
 
 void draw_clear_screen() {
 
 uns8 count;
-	
+
+
 	#if DRAW_TOTAL_BUFFER_SIZE < 256
 		count = 0;
 		do {
@@ -83,8 +115,6 @@ void draw_init() {
 	draw_clear_screen();
 }	
 
-
-
 void draw_set_pixel(uns8 x, uns8 y, uns8 colour) {
 
 uns8 *buffer;
@@ -92,9 +122,31 @@ uns16 buffer_loc, loc_byte;
 uns8  loc_bit, loc_in_buffer, buffer_num;
 uns8  bit_count;
 	// inverse here
-	y = DRAW_PIXELS_HIGH - 1 - y;
-	buffer_loc = y * DRAW_PIXELS_WIDE + x;
-//	buffer = &draw_buffer0;	// do differently if we have more than one buffer
+	// y = DRAW_PIXELS_HIGH - 1 - y;
+	
+    #if DRAW_HW_Y_ORIGIN == TOP_LEFT
+		#if DRAW_HW_BUFFER_ORIENTATION == HORIZONTAL
+			buffer_loc = y * DRAW_PIXELS_WIDE + x;
+		#else
+		// DRAW_HW_BUFFER_ORIENTATION == VERTICAL
+			buffer_loc = x * DRAW_PIXELS_HIGH + y;
+		#endif
+    #else
+    // DRAW_HW_Y_ORIENTATION == BOTTOM_LEFT
+		#if DRAW_HW_BUFFER_ORIENTATION == HORIZONTAL
+			buffer_loc = y * DRAW_PIXELS_WIDE + x;
+		#else
+		// DRAW_HW_BUFFER_ORIENTATION == VERTICAL
+			buffer_loc = x * DRAW_PIXELS_HIGH + y;
+		#endif
+    #endif
+    /*serial_print_int(x);
+    serial_putc(' ');
+    serial_print_int(y);
+    serial_print_str("->");
+    serial_print_int(buffer_loc);
+    serial_print_nl();
+	*/
 	loc_byte = buffer_loc / DRAW_PIXELS_PER_BYTE;
 	loc_bit = buffer_loc & (DRAW_PIXELS_PER_BYTE -1);
 	
@@ -344,7 +396,12 @@ uns8 sliver, x_origin, y_origin, pixel;
 					s_count = 0;
 					while (s_count < 7) {
 						if (test_bit(sliver, 6)) {
-							draw_set_pixel(x, y + s_count, colour);
+							#if DRAW_HW_Y_ORIGIN == BOTTOM_LEFT
+								draw_set_pixel(x, y + s_count, colour);
+							#else
+							// DRAW_HW_Y_ORIGIN == TOP_LEFT
+								draw_set_pixel(x, y - s_count, colour);
+							#endif
 						}	
 						sliver <<= 1;
 						s_count++;

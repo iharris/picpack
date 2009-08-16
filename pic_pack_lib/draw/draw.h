@@ -21,6 +21,14 @@
 #define DRAW_PIXELS_HIGH 24
 #define DRAW_PIXELS_WIDE 16
 #define DRAW_BITS_PER_PIXEL 1
+
+#define DRAW_HW_Y_ORIGIN TOP_LEFT
+// or BOTTOM_LEFT
+
+#define DRAW_HW_BUFFER_ORIENTATION VERTICAL
+// or HORIZONTAL
+
+
 //#define DRAW_DEBUG
 */
 
@@ -30,6 +38,11 @@
 
 #include "pic_utils.h"
 
+#define HORIZONTAL 0
+#define VERTICAL   1
+
+#define TOP_LEFT	0
+#define BOTTOM_LEFT	1
  
 #define DRAW_PIXELS_PER_BYTE 8 / DRAW_BITS_PER_PIXEL
 
@@ -59,6 +72,7 @@ void draw_print_buffer();
 // driver routines
 
 void drv_paint();
+// For backwards compatibility:
 #define drv_setup() drv_setup_io()
 void drv_setup_io();
 void drv_init();

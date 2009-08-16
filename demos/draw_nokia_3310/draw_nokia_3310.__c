@@ -24,7 +24,7 @@ File14=.\draw_nokia_3310.c
 File15=..\..\pic_pack_lib\spi.c
 File16=..\..\pic_pack_lib\spi.c
 [Compiler]
-Extra=-I "..\..\pic_pack_lib"  
+Extra=-I "..\..\pic_pack_lib" -obj ".\"  
 [Linker]
 Extra=-d ".\"
 [Tools]

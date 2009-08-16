@@ -196,6 +196,7 @@ void main() {
 		draw_circle(12, 8, 5, 0);
 		draw_paint();
 		delay_s(1);
+		
 		draw_clear_screen();
 		uns8 x, width, count, start_pos;
 		for (count = 0; count < 80; count++) {
