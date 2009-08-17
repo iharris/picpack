@@ -1,1 +1,1 @@
-8,38400,12,"16F876A","C:\Programming\PicPack\demos\sure_2416\sure_2416_demo.hex","C:\Programming\PicPack\demos\draw_sure_2416\draw_sure_2416_demo.hex","C:\pic\demos\packet_listener\packet_listener_demo.hex",19200,8,"N",1,"asc",#FALSE#,#TRUE#
+23,38400,20,"16F876A","C:\Programming\PicPack\demos\sure_2416\sure_2416_demo.hex","C:\Programming\PicPack\demos\Olimex_flasher_18f\olimex_flasher_18f.hex","C:\pic\demos\packet_listener\packet_listener_demo.hex",19200,8,"N",1,"asc",#FALSE#,#TRUE#
