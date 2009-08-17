@@ -4,7 +4,7 @@
 // draw_sure_2416.c
 //
 // Demonstration routines showing the draw library
-// used with mutiply linked Sure Electronics 2416 board
+// used with the Sure Electronics 2416 board
 //
 // Ian Harris 2009
 // imharris [at] gmail.com
@@ -22,7 +22,7 @@
 // System includes
 #include "string.h"
 #include "stdlib.h"
-#include "ht1632.h"
+#include "sure_6432.h"
 #include "draw\draw_screen_buffer.h"
 
 // max and min temps
@@ -152,7 +152,7 @@ void main() {
 		delay_s(1);*/
 		draw_clear_screen();
 
-		draw_rect(1, 1, 94, 13, 1);
+		draw_rect(1, 1, 21, 13, 1);
 		draw_paint();
 		delay_s(1);
 		
@@ -161,17 +161,17 @@ void main() {
 		delay_s(1);
 		draw_clear_screen();
 		uns8 x, width, count, start_pos;
-		for (count = 0; count < 184; count++) {
+		for (count = 0; count < 80; count++) {
 
-			if (count < 96) {
-				x = 95 - count;
+			if (count < 24) {
+				x = 23 - count;
 				width = count + 1;
 				start_pos  = 0;
 			} else {
-					start_pos = count - 95;
-					width = 96;
+					start_pos = count - 23;
+					width = 24;
 					x = 0;
-			}
+			}	
 			draw_clear_screen();
 			draw_print_str(x, 7, width, start_pos, /* colour */ 1, "Hello there");
 			draw_paint();

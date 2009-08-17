@@ -16,19 +16,9 @@
 // sure 2416 defines
 // - - - - - - - - - - - - - - - - - - - - 
 
-#define ht1632_displays 4
 
-#define ht1632_cs1_port PORTB
+#define ht1632_cs1_port PORTA
 #define ht1632_cs1_pin  0
-
-#define ht1632_cs2_port PORTB
-#define ht1632_cs2_pin  1
-
-#define ht1632_cs3_port PORTB
-#define ht1632_cs3_pin  2
-
-#define ht1632_cs4_port PORTB
-#define ht1632_cs4_pin  3
 
 #define ht1632_data_port PORTA
 #define ht1632_data_pin  5
@@ -46,8 +36,8 @@
 
 // y
 #define DRAW_PIXELS_HIGH 16
-// x (4 x 24) = 96
-#define DRAW_PIXELS_WIDE 96
+// x
+#define DRAW_PIXELS_WIDE 24
 
 #define DRAW_BITS_PER_PIXEL 1
 

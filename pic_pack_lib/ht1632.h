@@ -19,9 +19,23 @@
 // HT1632 defines
 // - - - - - - - - - - - - - - - - - - - - 
 
+// If you have more then 1 display daisy chained, define
+// the number of displays, and a matching number of ht1632_csX_port 
+// and ht1632_csX_pin defines:
 
-#define ht1632_cs1_port PORTA
+// #define ht1632_displays 4
+
+#define ht1632_cs1_port PORTB
 #define ht1632_cs1_pin  0
+
+#define ht1632_cs2_port PORTB
+#define ht1632_cs2_pin  1
+
+#define ht1632_cs3_port PORTB
+#define ht1632_cs3_pin  2
+
+#define ht1632_cs4_port PORTB
+#define ht1632_cs4_pin  2
 
 #define ht1632_data_port PORTA
 #define ht1632_data_pin  5

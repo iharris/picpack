@@ -4,6 +4,18 @@
 void ht1632_setup_io() {
 	
 	make_output(ht1632_cs1_port, ht1632_cs1_pin);
+	
+	#if ht1632_displays > 1
+		make_output(ht1632_cs2_port, ht1632_cs2_pin);
+	#endif	
+	#if ht1632_displays > 2
+		make_output(ht1632_cs3_port, ht1632_cs3_pin);
+	#endif	
+	#if ht1632_displays > 3
+		make_output(ht1632_cs4_port, ht1632_cs4_pin);
+	#endif	
+	
+	
 	make_output(ht1632_data_port, ht1632_data_pin);
 	make_output(ht1632_wr_port, ht1632_wr_pin);
 	make_output(ht1632_rd_port, ht1632_rd_pin);
@@ -11,6 +23,15 @@ void ht1632_setup_io() {
 	set_pin(ht1632_wr_port, ht1632_wr_pin);
 	set_pin(ht1632_rd_port, ht1632_rd_pin);
 	set_pin(ht1632_cs1_port, ht1632_cs1_pin);  
+	#if ht1632_displays > 1
+		set_pin(ht1632_cs2_port, ht1632_cs2_pin);  
+	#endif	
+	#if ht1632_displays > 2
+		set_pin(ht1632_cs3_port, ht1632_cs3_pin);  
+	#endif	
+	#if ht1632_displays > 3
+		set_pin(ht1632_cs4_port, ht1632_cs4_pin);  
+	#endif	
 
 }
 
@@ -30,6 +51,9 @@ void ht1632_send_command(uns8 command) {
 uns8 count;
 	
 	clear_pin(ht1632_cs1_port, ht1632_cs1_pin);
+	clear_pin(ht1632_cs2_port, ht1632_cs2_pin);
+	clear_pin(ht1632_cs3_port, ht1632_cs3_pin);
+	clear_pin(ht1632_cs4_port, ht1632_cs4_pin);
 	
 	// send  command
 	// send 1
@@ -71,14 +95,11 @@ uns8 count;
 		clear_pin(ht1632_wr_port, ht1632_wr_pin);
 		set_pin  (ht1632_wr_port, ht1632_wr_pin);
 
-	// reset CS??
-
-// don't think we need this
-//	set_pin(ht1632_cs1_port, ht1632_cs1_pin);
-//	delay_ms(1);
-//	clear_pin(ht1632_cs1_port, ht1632_cs1_pin);
 
 	set_pin(ht1632_cs1_port, ht1632_cs1_pin);
+	set_pin(ht1632_cs2_port, ht1632_cs2_pin);
+	set_pin(ht1632_cs3_port, ht1632_cs3_pin);
+	set_pin(ht1632_cs4_port, ht1632_cs4_pin);
 }
 	
 void ht1632_write(uns8 mem_addr, uns8 data) {

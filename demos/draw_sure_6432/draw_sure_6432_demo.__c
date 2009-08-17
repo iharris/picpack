@@ -1,30 +1,30 @@
 [Settings]
 Active Compiler=BoostC
-Target=PIC18F4520
+Target=PIC18F2620
 Type=0
 Warnings=2
 ClockRate=8000000
 [Files]
 File0=..\..\pic_pack_lib\pic_utils.c
-Count=15
+Count=11
 File1=..\..\pic_pack_lib\pic_utils.h
 File2=config.h
-File3=..\..\pic_pack_lib\sure_2416.h
-File4=..\..\pic_pack_lib\draw\draw.c
-File5=..\..\pic_pack_lib\draw\draw.h
-File6=..\..\pic_pack_lib\draw\drv_sure_2416.c
-File7=..\..\pic_pack_lib\draw\draw_screen_buffer.h
-File8=..\..\pic_pack_lib\draw\draw_screen_buffer.c
-File9=..\..\pic_pack_lib\draw\draw_font_picpack_5x7.c
-File10=..\..\pic_pack_lib\pic_serial.c
-File11=..\..\pic_pack_lib\pic_serial.h
-File12=..\..\pic_pack_lib\ht1632.c
-File13=..\..\pic_pack_lib\ht1632.h
-File14=.\draw_multi_sure_2416_demo.c
+File3=..\..\pic_pack_lib\draw\draw.c
+File4=..\..\pic_pack_lib\draw\draw.h
+File5=..\..\pic_pack_lib\draw\draw_screen_buffer.h
+File6=..\..\pic_pack_lib\draw\draw_screen_buffer.c
+File7=..\..\pic_pack_lib\draw\draw_font_picpack_5x7.c
+File8=..\..\pic_pack_lib\pic_serial.c
+File9=..\..\pic_pack_lib\pic_serial.h
+File10=.\draw_sure_6432_demo.c
+File11=.\draw_sure_6432_demo.c
+File12=.\draw_sure_6432_demo.c
+File13=.\draw_sure_6432_demo.c
+File14=.\draw_sure_6432_demo.c
 File15=..\..\pic_pack_lib\ht1632.h
 File16=..\..\pic_pack_lib\ht1632.h
 [Compiler]
-Extra=-I "..\..\pic_pack_lib" -obj ".\"  
+Extra=-I "..\..\pic_pack_lib"  
 [Linker]
 Extra=-d ".\"
 [Tools]
