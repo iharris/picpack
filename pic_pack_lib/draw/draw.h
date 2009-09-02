@@ -44,7 +44,7 @@
 #define TOP_LEFT	0
 #define BOTTOM_LEFT	1
  
-#define DRAW_PIXELS_PER_BYTE 8 / DRAW_BITS_PER_PIXEL
+#define DRAW_PIXELS_PER_BYTE (8 / DRAW_BITS_PER_PIXEL)
 
 #ifdef DRAW_DEBUG
 	#include "pic_serial.h"

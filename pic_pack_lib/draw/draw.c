@@ -51,8 +51,7 @@ DRAW_HW_BUFFER_ORIENTATION == VERTICAL
 void draw_clear_screen() {
 
 uns8 count;
-
-
+	
 	#if DRAW_TOTAL_BUFFER_SIZE < 256
 		count = 0;
 		do {
@@ -75,28 +74,31 @@ uns8 count;
 				draw_buffer1[count] = 0;
 				count++;
 			} while (count != 0);
-
-			#if DRAW_TOTAL_BUFFER_SIZE < 768
-				do {
-					draw_buffer2[count] = 0;
-					count++;
-				} while (count < DRAW_TOTAL_BUFFER_SIZE - 512);
-			#else
-				do {
-					draw_buffer2[count] = 0;
-					count++;
-				} while (count != 0);
-				#if DRAW_TOTAL_BUFFER_SIZE < 1024
+			#if DRAW_TOTAL_BUFFER_SIZE > 512
+				#if DRAW_TOTAL_BUFFER_SIZE < 768
 					do {
-						draw_buffer3[count] = 0;
+						draw_buffer2[count] = 0;
 						count++;
-					} while (count < DRAW_TOTAL_BUFFER_SIZE - 768);
+					} while (count < DRAW_TOTAL_BUFFER_SIZE - 512);
 				#else
+					// > 768
 					do {
-						draw_buffer3[count] = 0;
+						draw_buffer2[count] = 0;
 						count++;
 					} while (count != 0);
-				#endif
+					
+					#if DRAW_TOTAL_BUFFER_SIZE < 1024
+						do {
+							draw_buffer3[count] = 0;
+							count++;
+						} while (count < DRAW_TOTAL_BUFFER_SIZE - 768);
+					#else
+						do {
+							draw_buffer3[count] = 0;
+							count++;
+						} while (count != 0);
+					#endif
+				#endif	
 			#endif
 			
 		#endif		
@@ -114,6 +116,8 @@ void draw_init() {
 	drv_init();
 	draw_clear_screen();
 }	
+
+ 
 
 void draw_set_pixel(uns8 x, uns8 y, uns8 colour) {
 
@@ -147,11 +151,35 @@ uns8  bit_count;
     serial_print_int(buffer_loc);
     serial_print_nl();
 	*/
-	loc_byte = buffer_loc / DRAW_PIXELS_PER_BYTE;
-	loc_bit = buffer_loc & (DRAW_PIXELS_PER_BYTE -1);
+	buffer_loc = buffer_loc * DRAW_BITS_PER_PIXEL;	         
+//	loc_byte = buffer_loc / DRAW_PIXELS_PER_BYTE;
+	loc_byte = buffer_loc / 8;
+	loc_bit = (buffer_loc & (0x07));
 	
+/*byte	0	     1        2   
+bit		0 2 4 6  0 2 4 6  0 2 4 6
+pix	    0 1 2 3  4 5 6 7  8 9 a b 
+bit pos 0 2 4 6  8 a c e
+*/
 	loc_in_buffer = loc_byte & 0xff;
 	buffer_num = loc_byte >> 8;
+	
+	/*serial_print_str(" x=");
+	serial_print_int(x);
+	serial_print_str(" y=");
+	serial_print_int(y);
+	serial_print_str(" buffer_loc=");
+	serial_print_int(buffer_loc);
+	serial_print_str(" loc_byte=");
+	serial_print_int(loc_byte);
+	serial_print_str(" loc_bit=");
+	serial_print_int(loc_bit);
+	serial_print_str(" LIB=");
+	serial_print_int(loc_in_buffer);
+	serial_print_str(" bnum=");
+	serial_print_int(buffer_num);
+	serial_print_str("\n");
+	*/
 	if (buffer_num == 0) {
 		buffer = &draw_buffer0;
 	}
@@ -176,16 +204,16 @@ uns8  bit_count;
 	#endif
 	#if DRAW_BITS_PER_PIXEL > 1
 	
-		bit_count = DRAW_BITS_PER_PIXEL;
+		bit_count = 0;
 	
-		while (bit_count > 0) {
-			bit_count--;
+		while (bit_count < DRAW_BITS_PER_PIXEL) {
 			if (test_bit(colour, bit_count)) {
 				set_bit(buffer[loc_in_buffer], loc_bit);
 			} else {
 				clear_bit(buffer[loc_in_buffer], loc_bit);
 			}
-			loc_bit--;
+			bit_count++;
+			loc_bit++;
 		}
 	#else
 	
@@ -359,6 +387,56 @@ void draw_circle(int x_centre, int y_centre, int r, uns8 colour) {
 	}
 
 }
+
+/*
+    private final void circlePoints(int cx, int cy, int x, int y, int pix)
+    {
+        int act = Color.red.getRGB();
+        
+        if (x == 0) {
+            raster.setPixel(act, cx, cy + y);
+            raster.setPixel(pix, cx, cy - y);
+            raster.setPixel(pix, cx + y, cy);
+            raster.setPixel(pix, cx - y, cy);
+        } else 
+        if (x == y) {
+            raster.setPixel(act, cx + x, cy + y);
+            raster.setPixel(pix, cx - x, cy + y);
+            raster.setPixel(pix, cx + x, cy - y);
+            raster.setPixel(pix, cx - x, cy - y);
+        } else 
+        if (x < y) {
+            raster.setPixel(act, cx + x, cy + y);
+            raster.setPixel(pix, cx - x, cy + y);
+            raster.setPixel(pix, cx + x, cy - y);
+            raster.setPixel(pix, cx - x, cy - y);
+            raster.setPixel(pix, cx + y, cy + x);
+            raster.setPixel(pix, cx - y, cy + x);
+            raster.setPixel(pix, cx + y, cy - x);
+            raster.setPixel(pix, cx - y, cy - x);
+        }
+    }
+
+    public void circleMidpoint(int xCenter, int yCenter, int radius, Color c)
+    {
+        int pix = c.getRGB();
+        int x = 0;
+        int y = radius;
+        int p = (5 - radius*4)/4;
+
+        circlePoints(xCenter, yCenter, x, y, pix);
+        while (x < y) {
+            x++;
+            if (p < 0) {
+                p += 2*x+1;
+            } else {
+                y--;
+                p += 2*(x-y)+1;
+            }
+            circlePoints(xCenter, yCenter, x, y, pix);
+        }
+    }
+*/
 
 #define FONT_FIRST_CHAR 32
 #define FONT_LAST_CHAR 127

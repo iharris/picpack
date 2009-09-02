@@ -11,23 +11,47 @@
 #define SERIAL_RX_BUFFER_SIZE 4
 
 //#define SERIAL_DEBUG_ON
+//#define SERIAL_IDE_DEBUG
+#warning "CONFIG.H BEING READ"
 
 // - - - - - - - - - - - - - - - - - - - - 
-// sure 2416 defines
+// sure 6432 defines
 // - - - - - - - - - - - - - - - - - - - - 
 
 
-#define ht1632_cs1_port PORTA
-#define ht1632_cs1_pin  0
+#define sure_6432_en_port PORTC
+#define sure_6432_en_pin  5
 
-#define ht1632_data_port PORTA
-#define ht1632_data_pin  5
+#define sure_6432_r1_port PORTC
+#define sure_6432_r1_pin  4
 
-#define ht1632_wr_port PORTE
-#define ht1632_wr_pin  2
+#define sure_6432_r2_port PORTC
+#define sure_6432_r2_pin  3	
 
-#define ht1632_rd_port PORTE
-#define ht1632_rd_pin  1
+#define sure_6432_g1_port PORTB
+#define sure_6432_g1_pin  4
+
+#define sure_6432_g2_port PORTB
+#define sure_6432_g2_pin  5
+
+
+#define sure_6432_a_port PORTA
+#define sure_6432_a_pin  3
+
+#define sure_6432_b_port PORTA
+#define sure_6432_b_pin  2
+
+#define sure_6432_c_port PORTA
+#define sure_6432_c_pin  0
+
+#define sure_6432_d_port PORTA
+#define sure_6432_d_pin  1
+
+#define sure_6432_s_port PORTB
+#define sure_6432_s_pin  7
+
+#define sure_6432_l_port PORTB
+#define sure_6432_l_pin  6
 
 
 // - - - - - - - - - - - - - - - - - - - - 
@@ -35,18 +59,15 @@
 // - - - - - - - - - - - - - - - - - - - - 
 
 // y
-#define DRAW_PIXELS_HIGH 16
+#define DRAW_PIXELS_HIGH 32
 // x
-#define DRAW_PIXELS_WIDE 24
+#define DRAW_PIXELS_WIDE 64
 
-#define DRAW_BITS_PER_PIXEL 1
+#define DRAW_BITS_PER_PIXEL 2
 
 #define DRAW_HW_Y_ORIGIN TOP_LEFT
-// or BOTTOM_LEFT
 
-#define DRAW_HW_BUFFER_ORIENTATION VERTICAL
-// or HORIZONTAL
-
+#define DRAW_HW_BUFFER_ORIENTATION HORIZONTAL
 
 #define DRAW_DEBUG
 
@@ -77,8 +98,8 @@
 // - - - - - - - - - - - - - - -
 // General platform definitions
 // - - - - - - - - - - - - - - -
-#define PLATFORM_TYPE SURE_PICDEM_2
-#define PLATFORM_CLOCK 12000000
+#define PLATFORM_TYPE OLIMEX_BOARD
+#define PLATFORM_CLOCK 20000000
 
 
 #endif

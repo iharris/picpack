@@ -1,7 +1,7 @@
 #include "pic_utils.h"
 #include "draw\draw_screen_buffer.h"
 
- 
+
  
 #if DRAW_TOTAL_BUFFER_SIZE <= 256
 	uns8 draw_buffer0[DRAW_TOTAL_BUFFER_SIZE];

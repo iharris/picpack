@@ -25,8 +25,21 @@
 #include "sure_6432.h"
 #include "draw\draw_screen_buffer.h"
 
-// max and min temps
+long fpu_readLong(void)
+{
+    long t;
+    t =12345;
+    return t;
+}
 
+void flash() {
+long x;
+	x = fpu_readLong();
+	lata.0 = 1;
+	delay_ms(200);
+	lata.0 = 0;
+	delay_ms(200);
+}	
 
 // Interrupt routine - - - - - - - - - -
 void interrupt() {
@@ -62,18 +75,31 @@ void configure_system() {
 
 void main() {
 
-		
+	trisa = 0;
+	flash();
 	configure_system();
-
+	flash();
 	delay_ms(100);
 
-	serial_print_str("\n\nPicPack Sure 2416 Led display demo\n");
+	serial_print_str("\n\nPicPack Sure 6432 Led display demo\n");
 	serial_print_str( "\n<");
 	serial_print_str(__TIME__);
 	serial_putc(' ');
 	serial_print_str(__DATE__);
 	serial_print_str(">\n");
-	
+
+	serial_print_str("total buffer = ");
+	serial_print_int(DRAW_TOTAL_BUFFER_SIZE);
+	serial_print_nl();
+	serial_print_str("wide = ");
+	serial_print_int(DRAW_PIXELS_WIDE);
+	serial_print_nl();
+	serial_print_str("high = ");
+	serial_print_int(DRAW_PIXELS_HIGH);
+	serial_print_nl();
+	serial_print_str("ppb = ");
+	serial_print_int(DRAW_PIXELS_PER_BYTE);
+	serial_print_nl();
 	while (1) {
 		/*delay_ms(250);
 		
@@ -151,35 +177,27 @@ void main() {
 		
 		delay_s(1);*/
 		draw_clear_screen();
-
-		draw_rect(1, 1, 21, 13, 1);
-		draw_paint();
-		delay_s(1);
-		
-		draw_circle(12, 8, 5, 0);
-		draw_paint();
-		delay_s(1);
-		draw_clear_screen();
-		uns8 x, width, count, start_pos;
-		for (count = 0; count < 80; count++) {
-
-			if (count < 24) {
-				x = 23 - count;
-				width = count + 1;
-				start_pos  = 0;
-			} else {
-					start_pos = count - 23;
-					width = 24;
-					x = 0;
-			}	
-			draw_clear_screen();
-			draw_print_str(x, 7, width, start_pos, /* colour */ 1, "Hello there");
+		serial_print_str("Rectangle\n");
+		draw_rect(1, 1, DRAW_PIXELS_WIDE - 1 -1 , DRAW_PIXELS_HIGH - 1 - 1, 2);
+		/*draw_set_pixel(0,0,1);
+		draw_set_pixel(DRAW_PIXELS_WIDE - 1, 0, 1);
+		draw_set_pixel(DRAW_PIXELS_WIDE - 1, DRAW_PIXELS_HIGH - 1, 1);
+		draw_set_pixel(0, DRAW_PIXELS_HIGH - 1, 1);
+			*/	
+		uns16 countp;
+		for (countp = 0; countp < 200; countp++) {
 			draw_paint();
-			delay_ms(75);
-	
 		}	
-		delay_s(1);
+		
 		draw_clear_screen();
+		serial_print_str("Rectangle\n");
+		draw_rect(1, 1, 62, 30, 1);
+		draw_circle(31, 16, 15, 3);
+		for (countp = 0; countp < 1000; countp++) {
+			draw_paint();
+		}	
+		
+
 		
 
 	}
