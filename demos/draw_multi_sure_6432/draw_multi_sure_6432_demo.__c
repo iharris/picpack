@@ -1,0 +1,88 @@
+[Settings]
+Active Compiler=BoostC
+Target=PIC18F2620
+Type=0
+Warnings=2
+ClockRate=8000000
+Profiling=1
+Snapshot=0
+[Files]
+File0=..\..\pic_pack_lib\pic_utils.c
+Count=14
+File1=..\..\pic_pack_lib\pic_utils.h
+File2=config.h
+File3=..\..\pic_pack_lib\draw\draw.c
+File4=..\..\pic_pack_lib\draw\draw.h
+File5=..\..\pic_pack_lib\draw\draw_screen_buffer.h
+File6=..\..\pic_pack_lib\draw\draw_screen_buffer.c
+File7=..\..\pic_pack_lib\draw\draw_font_picpack_5x7.c
+File8=..\..\pic_pack_lib\pic_serial.c
+File9=..\..\pic_pack_lib\pic_serial.h
+File10=.\draw_sure_6432_demo.c
+File11=..\..\pic_pack_lib\draw\drv_sure_6432.c
+File12=..\..\pic_pack_lib\sure_6432.c
+File13=..\..\pic_pack_lib\sure_6432.h
+File14=.\draw_sure_6432_demo.c
+File15=..\..\pic_pack_lib\ht1632.h
+File16=..\..\pic_pack_lib\ht1632.h
+[Compiler]
+Extra=-I "..\..\pic_pack_lib" -obj ".\"  
+[Linker]
+Extra=-d ".\"
+[Tools]
+BoostDir=C:\Program Files\SourceBoost\
+Programmer=
+[Debugger]
+DebugFromMain=1
+[Bookmarks]
+Count=1
+F0=C:\Programming\PicPack\pic_pack_lib\draw\draw.c
+L0=158
+D0=0
+[Breakpoints]
+Count=1
+F0=C:\Programming\PicPack\pic_pack_lib\draw\draw.c
+L0=158
+D0=0
+UseCond0=0
+Cond0=
+CondMode0=0
+UseHit0=0
+HitVal0=0
+HitMode0=1
+[Plugins]
+Bcd=506F727442000100000001000000
+Button=00706F727462000000000000000000
+Button Block=706F72746200000000000000000000000000
+Led=706F72746200000000000000000000000000
+Led Block=506F727441000100000000000000
+Speed Tester=6B094201040000004E6F6E65
+7 Segment LED=00040000007F00000000000000000000000000000000000352413000000000000000000352413100000000000000000352413200000000000000000352413300000000000000000000000000000000000000000000000000000000000000000000000003524230035242310352423203524233035242340352423503524236035242370003526564FF191900
+[Tool State]
+compile=1
+link=1
+program=0
+[Watch]
+Count=7
+x_fmt=0
+y_fmt=0
+buffer_loc_fmt=0
+loc_byte_fmt=0
+loc_bit_fmt=0
+loc_in_buffer_fmt=0
+buffer_num_fmt=0
+Sym0=x
+Sym1=y
+Sym2=buffer_loc
+Sym3=loc_byte
+Sym4=loc_bit
+Sym5=loc_in_buffer
+Sym6=buffer_num
+[Watchpoint]
+Count=0
+[Register]
+Core=1
+Ports=1
+Interrupt=1
+Eeprom=1
+Misc=1
