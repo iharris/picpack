@@ -1,17 +1,16 @@
 //-----------------------------------------------------
 // Pic Pack library
 // 
-// draw_sure_2416.c
+// draw_multi_sure_6432.c
 //
 // Demonstration routines showing the draw library
-// used with the Sure Electronics 2416 board
+// used with the Sure Electronics 6432 board
 //
 // Ian Harris 2009
 // imharris [at] gmail.com
 //
 // Released under the "do whatever you like with this
-// but if you use it send me an email" license. Oh, and
-// if it breaks, you get to keep both pieces.
+// but if it breaks, you get to keep both pieces" license.
 //-----------------------------------------------------
 
 // Pic Pack includes
@@ -191,8 +190,8 @@ void main() {
 		
 		draw_clear_screen();
 		serial_print_str("Rectangle\n");
-		draw_rect(1, 1, 62, 30, 1);
-		draw_circle(31, 16, 15, 3);
+		draw_rect(1, 1, DRAW_PIXELS_WIDE - 1 -1, DRAW_PIXELS_HIGH - 1 - 1, 1);
+		draw_circle(31, 31, 30, 3);
 		for (countp = 0; countp < 1000; countp++) {
 			draw_paint();
 		}	

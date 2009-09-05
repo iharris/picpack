@@ -18,6 +18,27 @@
 // sure 6432 defines
 // - - - - - - - - - - - - - - - - - - - - 
 
+/*
+
+Here we define two displays that are aligned vertically,
+ie, one below the other.
+-------------
+|    Disp   | 
+|     1     |
+-------------
+-------------
+|    Disp   | 
+|     2     |
+-------------
+
+This makes a 64x64 pixel display.
+
+*/
+
+#define sure_6432_displays 2
+#define sure_6432_display_orientation VERTICAL
+
+
 
 #define sure_6432_en_port PORTC
 #define sure_6432_en_pin  5
@@ -36,16 +57,16 @@
 
 
 #define sure_6432_a_port PORTA
-#define sure_6432_a_pin  3
+#define sure_6432_a_pin  0
 
 #define sure_6432_b_port PORTA
-#define sure_6432_b_pin  2
+#define sure_6432_b_pin  1
 
 #define sure_6432_c_port PORTA
-#define sure_6432_c_pin  0
+#define sure_6432_c_pin  2
 
 #define sure_6432_d_port PORTA
-#define sure_6432_d_pin  1
+#define sure_6432_d_pin  3
 
 #define sure_6432_s_port PORTB
 #define sure_6432_s_pin  7
@@ -59,7 +80,9 @@
 // - - - - - - - - - - - - - - - - - - - - 
 
 // y
-#define DRAW_PIXELS_HIGH 32
+#define DRAW_PIXELS_HIGH 64
+// (32 x 2)
+
 // x
 #define DRAW_PIXELS_WIDE 64
 
