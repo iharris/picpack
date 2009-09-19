@@ -34,12 +34,14 @@ void set_draw_buffer(uns16 address, uns8 data);
 			extern uns8 draw_buffer2[DRAW_TOTAL_BUFFER_SIZE - 512];
 			#define DRAW_BUFFERS 3
 		#else
+			#warning "at least three"
 			extern uns8 draw_buffer2[256]; 
 			#if DRAW_TOTAL_BUFFER_SIZE <= 1024
+				#warning "4 draw buffers"
 				extern uns8 draw_buffer3[DRAW_TOTAL_BUFFER_SIZE - 768];
 				#define DRAW_BUFFERS 4
 			#else
-				#error "Display too big for Draw library.  Must be < 1024 bytes buffer at present"
+				#error "Display too big for Draw library.  Must be =< 1024 bytes buffer at present"
 			#endif
 		#endif
 	#endif

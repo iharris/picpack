@@ -27,55 +27,43 @@ uns8 x, y, inv_y;
 uns16 buffer_loc;
 uns8 byte_loc, bit_loc;
 uns8 data_upper, data_lower;
-uns16 count_upper, count_lower;
+uns8 count_byte;
 
 	
-	count_upper = 0;				// Start upper at the top
-	count_lower = 64 * 2 * 16 / 8;	// Start lower at the second half
+	count_byte = 0;				// Start upper at the top
+	
+//	count_lower = 64 * 2 * 16 / 8;	// Start lower at the second half
+	#if sure_6432_displays == 2
+		uns8 count_byte_disp2 = 0;
+		//uns16 count_upper_disp2, count_lower_disp2;
+	//	count_upper_disp2 = (64 * 2 * 16 / 8) * 2;
+	//	count_lower_disp2 = (64 * 2 * 16 / 8) * 3;
+	#endif
 	
 	for (y = 0; y < 16; y++) {
-		/*serial_print_str("upper:");
-		serial_print_int(count_upper);
-		serial_print_str(" lower: ");
-		serial_print_int(count_lower);
-		serial_print_nl();*/
+		
 		for (x = 0; x < 16; x++) {
-			data_upper = get_draw_buffer(count_upper);
-			//serial_print_str("du:");
-			//serial_print_int_hex(data_upper);
-			//serial_print_str(" ");
-			
-			data_lower = get_draw_buffer(count_lower);
-			//serial_print_str("l:");
-			//serial_print_int_hex(data_upper);
-			//serial_print_str(" ");
+			data_upper = draw_buffer0[count_byte];
+			data_lower = draw_buffer1[count_byte];
 			for (bit_loc = 0; bit_loc < 4; bit_loc++) {
 				if (data_upper.0) {
 					clear_pin(sure_6432_r1_port, sure_6432_r1_pin);
-					//serial_putc('1');
 				} else {
-					//serial_putc('0');
 					set_pin(sure_6432_r1_port, sure_6432_r1_pin);
 				}
 				if (data_upper.1) {
 					clear_pin(sure_6432_g1_port, sure_6432_g1_pin);
-					//serial_putc('1');
 				} else {
-					//serial_putc('0');
 					set_pin(sure_6432_g1_port, sure_6432_g1_pin);
 				}
 				if (data_lower.0) {
 					clear_pin(sure_6432_r2_port, sure_6432_r2_pin);
-					//serial_putc('1');
 				} else {
-					//serial_putc('0');
 					set_pin(sure_6432_r2_port, sure_6432_r2_pin);
 				}
 				if (data_lower.1) {
 					clear_pin(sure_6432_g2_port, sure_6432_g2_pin);
-					//serial_putc('1');
 				} else {
-					//serial_putc('0');
 					set_pin(sure_6432_g2_port, sure_6432_g2_pin);
 				}
 				
@@ -84,10 +72,50 @@ uns16 count_upper, count_lower;
 				clear_pin(sure_6432_s_port, sure_6432_s_pin);
 				set_pin  (sure_6432_s_port, sure_6432_s_pin);
 			}
-			count_upper++;
-			count_lower++;
+			count_byte++;
 		}	
+
+		#if sure_6432_displays == 2
+			for (x = 0; x < 16; x++) {
+				data_upper = draw_buffer2[count_byte_disp2];
+				data_lower = draw_buffer3[count_byte_disp2];
+				for (bit_loc = 0; bit_loc < 4; bit_loc++) {
+					if (data_upper.0) {
+						clear_pin(sure_6432_r1_port, sure_6432_r1_pin);
+	
+					} else {
+						set_pin(sure_6432_r1_port, sure_6432_r1_pin);
+					}
+					if (data_upper.1) {
+						clear_pin(sure_6432_g1_port, sure_6432_g1_pin);
+					} else {
+						set_pin(sure_6432_g1_port, sure_6432_g1_pin);
+					}
+					if (data_lower.0) {
+						clear_pin(sure_6432_r2_port, sure_6432_r2_pin);
+
+					} else {
+						//serial_putc('0');
+						set_pin(sure_6432_r2_port, sure_6432_r2_pin);
+					}
+					if (data_lower.1) {
+						clear_pin(sure_6432_g2_port, sure_6432_g2_pin);
+						//serial_putc('1');
+					} else {
+						//serial_putc('0');
+						set_pin(sure_6432_g2_port, sure_6432_g2_pin);
+					}
+					
+					data_upper = data_upper >> 2;
+					data_lower = data_lower >> 2;	
+					clear_pin(sure_6432_s_port, sure_6432_s_pin);
+					set_pin  (sure_6432_s_port, sure_6432_s_pin);
+				}
+				count_byte_disp2++;
+			}	
 		
+		#endif
+			
 		//serial_print_nl();
 		set_pin(sure_6432_en_port, sure_6432_en_pin);	// turn enable off
 		
@@ -118,7 +146,7 @@ uns16 count_upper, count_lower;
 		
 		// enable display of line
 		clear_pin(sure_6432_en_port, sure_6432_en_pin);
-		delay_us(200);
+		//delay_us(200);
 	}
 }	
 

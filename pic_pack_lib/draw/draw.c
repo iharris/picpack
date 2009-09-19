@@ -373,20 +373,58 @@ void draw_circle(int x_centre, int y_centre, int r, uns8 colour) {
 	x = 0;
 	y = r;
 	
-	draw_circle_points(x_centre, y_centre, x, y, colour);
-    
+	draw_circle_points(x_centre, y_centre, x, y, 2);
+
 	while (x < y) {
 		x++;
 		if (p < 0)
 			p += 2 * x + 1;
 		else {
 			y--;
-			p += 2 * (x - y) + 1;
+			p += 2 * (x - y + 1);
 		}
 		draw_circle_points (x_centre, y_centre, x, y, colour);
 	}
 
 }
+void draw_circle_points2 (int ctr_x, int ctr_y, int pt_x, int pt_y, uns8 colour) {
+	// the eight symmetric points
+	draw_set_pixel (ctr_x + pt_x + 1, ctr_y + pt_y +1, colour);
+	draw_set_pixel (ctr_x + pt_y + 1, ctr_y + pt_x +1, colour);
+
+	draw_set_pixel (ctr_x + pt_x + 1, ctr_y - pt_y, colour);
+	draw_set_pixel (ctr_x + pt_y + 1, ctr_y - pt_x, colour);
+
+	draw_set_pixel (ctr_x - pt_x, ctr_y - pt_y, colour);
+	draw_set_pixel (ctr_x - pt_y, ctr_y - pt_x, colour);
+
+	draw_set_pixel (ctr_x - pt_x, ctr_y + pt_y +1, colour);
+	draw_set_pixel (ctr_x - pt_y, ctr_y + pt_x +1, colour);
+	
+}
+void draw_circle2(int x_centre, int y_centre, int r, uns8 colour) {
+	int x, y;
+	int p = 1 - r;         // Initial value of decision parameter.
+	
+	x = 0;
+	y = r;
+	
+	draw_circle_points2(x_centre, y_centre, x, y, colour);
+    
+
+	while (x < y) {
+		x++;
+		if (p < 0)
+			p += 2 * x + 1;
+		else {
+			y--;
+			p += 2 * (x - y + 1);
+		}
+		draw_circle_points2 (x_centre, y_centre, x, y, colour);
+	}
+
+}
+
 
 /*
     private final void circlePoints(int cx, int cy, int x, int y, int pix)
