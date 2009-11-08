@@ -3,7 +3,7 @@ Active Compiler=BoostC
 Target=PIC18F2620
 Type=0
 Warnings=1
-ClockRate=8000000
+ClockRate=40000000
 [Files]
 File0=..\BoostBloader.c
 Count=4
