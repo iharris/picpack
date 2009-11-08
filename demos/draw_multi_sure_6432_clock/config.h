@@ -122,7 +122,7 @@ This makes a 64x64 pixel display.
 // General platform definitions
 // - - - - - - - - - - - - - - -
 #define PLATFORM_TYPE OLIMEX_BOARD
-#define PLATFORM_CLOCK 20000000
+#define PLATFORM_CLOCK 40000000
 
 
 #endif

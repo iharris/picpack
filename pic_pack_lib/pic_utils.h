@@ -238,8 +238,8 @@ void change_pin_var(uns8 port, uns8 pin, bit value);
 #endif
 
 
-#if PLATFORM_CLOCK == 4000000
-	#pragma CLOCK_FREQ 4000000
+#if PLATFORM_CLOCK == 40000000
+	#pragma CLOCK_FREQ 40000000
 	#define GOT_CLOCK
 #endif
 

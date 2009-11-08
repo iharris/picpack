@@ -3,7 +3,7 @@ Active Compiler=BoostC
 Target=PIC18F2620
 Type=0
 Warnings=2
-ClockRate=20000000
+ClockRate=40000000
 Profiling=1
 Snapshot=0
 [Files]
