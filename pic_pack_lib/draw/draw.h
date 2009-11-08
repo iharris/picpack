@@ -77,5 +77,6 @@ void drv_paint();
 #define drv_setup() drv_setup_io()
 void drv_setup_io();
 void drv_init();
+void drv_refresh();
 
 #endif

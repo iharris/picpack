@@ -21,9 +21,9 @@ File9=..\..\pic_pack_lib\pic_serial.h
 File10=..\..\pic_pack_lib\draw\drv_sure_6432.c
 File11=..\..\pic_pack_lib\sure_6432.c
 File12=..\..\pic_pack_lib\sure_6432.h
-File13=.\draw_multi_sure_6432_demo.c
-File14=..\..\pic_pack_lib\pic_timer.c
-File15=..\..\pic_pack_lib\pic_timer.h
+File13=..\..\pic_pack_lib\pic_timer.c
+File14=..\..\pic_pack_lib\pic_timer.h
+File15=.\draw_multi_sure_6432_clock.c
 File16=..\..\pic_pack_lib\ht1632.h
 [Compiler]
 Extra=-I "..\..\pic_pack_lib" -obj ".\"  

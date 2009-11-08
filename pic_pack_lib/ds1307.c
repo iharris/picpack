@@ -81,6 +81,6 @@ void rtc_set_month(uns8 month) {
 	i2c_write_eeprom(ds1307_device, ds1307_month_register, dec_to_bcd(month));
 }
 
-void rtc_setup() {
-	i2c_setup();
+void rtc_setup_io() {
+	i2c_setup_io();
 }	

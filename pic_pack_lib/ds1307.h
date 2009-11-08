@@ -224,7 +224,7 @@ void rtc_start_clock();
 	
 	Calls i2c_setup() to configure ports and pins ready for use 
 */	
-void rtc_setup();
-
+void rtc_setup_io();
+#define rtc_setup() rtc_setup_io()
 
 #endif

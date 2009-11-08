@@ -17,32 +17,30 @@
 #include "config.h"
 #include "pic_utils.h"
 #include "pic_serial.h"
+#include "pic_timer.h"
 #include "draw\draw.h"
 // System includes
 #include "string.h"
 #include "stdlib.h"
 #include "sure_6432.h"
+
 #include "draw\draw_screen_buffer.h"
 
-long fpu_readLong(void)
-{
-    long t;
-    t =12345;
-    return t;
-}
-
 void flash() {
-long x;
-	x = fpu_readLong();
+
 	lata.0 = 1;
 	delay_ms(200);
 	lata.0 = 0;
 	delay_ms(200);
-}	
+}
 
+void timer_0_callback() {
+	drv_refresh();
+}
+	
 // Interrupt routine - - - - - - - - - -
 void interrupt() {
-	
+	timer_handle_0_isr(); 
 	serial_handle_tx_isr();
 	serial_handle_rx_isr();
 }
@@ -57,6 +55,14 @@ void configure_system() {
 	kill_interrupts();	// turn off interrupts just in case
 
 	turn_analog_inputs_off();	// kill those pesky analogue inputs
+
+	#ifdef _PIC16
+		timer_setup_0(TIMER_8BIT_MODE, TIMER_PRESCALER_1_TO_4, 0xff - 250 - 1);
+	#endif
+
+	#ifdef _PIC18
+		timer_setup_0(TIMER_16BIT_MODE, TIMER_PRESCALER_OFF, 0xffff - 65000 -1);
+	#endif	 
 	
 	
 	serial_setup(BRGH_HIGH_SPEED, SPBRG_19200);
@@ -83,10 +89,10 @@ void draw_number_ticks() {
 		draw_set_pixel(46,	6,1);
 		draw_set_pixel(57,	17,1);
 
-		draw_set_pixel(31,31, 1);
-		draw_set_pixel(32,31, 1);
-		draw_set_pixel(31,32, 1);
-		draw_set_pixel(32,32, 1);
+		draw_set_pixel(31,31, 2);
+		draw_set_pixel(32,31, 2);
+		draw_set_pixel(31,32, 2);
+		draw_set_pixel(32,32, 2);
 }
 
 
@@ -216,7 +222,7 @@ rom char *minute_hand_x = {
 29,
 };
 
-rom char *hour_hand_y[] = {
+rom char *hour_hand_y = {
 14	,
 15	,
 15	,
@@ -279,7 +285,7 @@ rom char *hour_hand_y[] = {
 15	,
 };
 
-rom char *hour_hand_x[] = {
+rom char *hour_hand_x = {
 32	,
 33	,
 35	,
@@ -356,7 +362,7 @@ void draw_minute_hand(uns8 minutes) {
 	} else if (minutes < 31) {
 		startx = 32;
 		starty = 32;
-	} else if (minutes < 45) {
+	} else if (minutes < 46) {
 		startx = 31;
 		starty = 32;
 	} else {
@@ -368,24 +374,31 @@ void draw_minute_hand(uns8 minutes) {
 		
 }
 	
-void draw_hour_hand(uns8 minutes) {
+void draw_hour_hand(uns8 hours, uns8 minutes) {
 	uns8 startx, starty;
+	uns8 index;
 	
-	if (minutes < 16) {
+	index = hours * 5 + minutes / 12;
+	if (index < 16) {
 		startx = 32;
 		starty = 31;
-	} else if (minutes < 31) {
+	} else if (index < 31) {
 		startx = 32;
 		starty = 32;
-	} else if (minutes < 46) {
+	} else if (index < 46) {
 		startx = 31;
 		starty = 32;
 	} else {
 		startx = 31;
 		starty = 31;
 	}
-	
-	draw_line(startx, starty, minute_hand_x[minutes], minute_hand_y[minutes], 2);
+	/*serial_print_str("m:");
+	serial_print_int(minutes);
+	serial_putc(' ');
+	serial_print_int(hour_hand_x[minutes]);
+	serial_putc(' ');
+	serial_print_int(hour_hand_y[minutes]);*/
+	draw_line(startx, starty, hour_hand_x[index], hour_hand_y[index], 2);
 		
 }
 
@@ -419,7 +432,14 @@ void main() {
 	serial_print_str("ppb = ");
 	serial_print_int(DRAW_PIXELS_PER_BYTE);
 	serial_print_nl();
-	while (1) {
+	draw_clear_screen();
+			draw_clear_screen();
+			draw_number_ticks();
+
+			draw_circle2(31, 31, 31, 2);	
+	timer_start_0();	// kick that timer off...	
+	
+	for(;;){
 		/*delay_ms(250);
 		
 		draw_set_pixel(0,0,1);
@@ -544,26 +564,30 @@ void main() {
 		for (countp = 0; countp < 500; countp++) {
 			draw_paint();
 		}
-		*/	
-		uns8 minutes =0;
-		uns8 hours = 0;
+		*/
+		draw_clear_screen();
+		
+		uns8 minutes =59;
+		uns8 hours = 11;
 		for(;;) {
-			draw_clear_screen();
-		
-
-			draw_number_ticks();
-			draw_minute_hand(minutes);
-			draw_hour_hand(minutes);
-			draw_circle2(31, 31, 31, 2);
-
-		
-			for (countp = 0; countp < 20; countp++) {
-				draw_paint();
-			}	
 			minutes++;
 			if (minutes == 60) {
 				minutes = 0;
+				hours++;
+				if (hours == 12) {
+					hours = 0;
+				}
+					
 			}
+			draw_clear_screen();
+			draw_number_ticks();
+			draw_minute_hand(minutes);
+			draw_hour_hand(hours, minutes);
+			draw_circle2(31, 31, 31, 2);
+			draw_paint();
+			serial_putc('L');
+			delay_ms(100);	
+					
 		}
 
 	}

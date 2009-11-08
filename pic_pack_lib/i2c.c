@@ -180,6 +180,6 @@ void i2c_send_byte(uns8 data)
     delay_us(DELAY_AMOUNT);
 }
 
-void i2c_setup() {
+void i2c_setup_io() {
 	make_output(i2c_scl_port, i2c_scl_pin);   // output
 }

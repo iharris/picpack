@@ -51,60 +51,75 @@ DRAW_HW_BUFFER_ORIENTATION == VERTICAL
 void draw_clear_screen() {
 
 uns8 count;
-	
-	#if DRAW_TOTAL_BUFFER_SIZE < 256
+	#if DRAW_TOTAL_BUFFER_SIZE == 1024 | DRAW_TOTAL_BUFFER_SIZE == 768 | DRAW_TOTAL_BUFFER_SIZE == 512 | DRAW_TOTAL_BUFFER_SIZE == 256
 		count = 0;
 		do {
 			draw_buffer0[count] = 0;
-			count++;
-		} while (count < DRAW_TOTAL_BUFFER_SIZE);
-	#else
-		count = 0;
-		do {
-			draw_buffer0[count] = 0;
+			#if DRAW_TOTAL_BUFFER_SIZE > 256
+				draw_buffer1[count] = 0;
+				#if DRAW_TOTAL_BUFFER_SIZE > 512
+					draw_buffer2[count] = 0;
+					#if DRAW_TOTAL_BUFFER_SIZE > 768
+						draw_buffer3[count] = 0;
+					#endif
+				#endif
+			#endif
 			count++;
 		} while (count != 0);
-		#if DRAW_TOTAL_BUFFER_SIZE < 512
+	#else
+		#if DRAW_TOTAL_BUFFER_SIZE < 256
+			count = 0;
 			do {
-				draw_buffer1[count] = 0;
+				draw_buffer0[count] = 0;
 				count++;
-			} while (count < DRAW_TOTAL_BUFFER_SIZE - 256);
+			} while (count < DRAW_TOTAL_BUFFER_SIZE);
 		#else
+			count = 0;
 			do {
-				draw_buffer1[count] = 0;
+				draw_buffer0[count] = 0;
 				count++;
 			} while (count != 0);
-			#if DRAW_TOTAL_BUFFER_SIZE > 512
-				#if DRAW_TOTAL_BUFFER_SIZE < 768
-					do {
-						draw_buffer2[count] = 0;
-						count++;
-					} while (count < DRAW_TOTAL_BUFFER_SIZE - 512);
-				#else
-					// > 768
-					do {
-						draw_buffer2[count] = 0;
-						count++;
-					} while (count != 0);
-					
-					#if DRAW_TOTAL_BUFFER_SIZE < 1024
+			#if DRAW_TOTAL_BUFFER_SIZE < 512
+				do {
+					draw_buffer1[count] = 0;
+					count++;
+				} while (count < DRAW_TOTAL_BUFFER_SIZE - 256);
+			#else
+				do {
+					draw_buffer1[count] = 0;
+					count++;
+				} while (count != 0);
+				#if DRAW_TOTAL_BUFFER_SIZE > 512
+					#if DRAW_TOTAL_BUFFER_SIZE < 768
 						do {
-							draw_buffer3[count] = 0;
+							draw_buffer2[count] = 0;
 							count++;
-						} while (count < DRAW_TOTAL_BUFFER_SIZE - 768);
+						} while (count < DRAW_TOTAL_BUFFER_SIZE - 512);
 					#else
+						// > 768
 						do {
-							draw_buffer3[count] = 0;
+							draw_buffer2[count] = 0;
 							count++;
 						} while (count != 0);
-					#endif
-				#endif	
-			#endif
+						
+						#if DRAW_TOTAL_BUFFER_SIZE < 1024
+							do {
+								draw_buffer3[count] = 0;
+								count++;
+							} while (count < DRAW_TOTAL_BUFFER_SIZE - 768);
+						#else
+							do {
+								draw_buffer3[count] = 0;
+								count++;
+							} while (count != 0);
+						#endif
+					#endif	
+				#endif
+				
+			#endif		
 			
-		#endif		
-		
+		#endif
 	#endif
-	
 
 }
 
@@ -404,21 +419,28 @@ void draw_circle_points2 (int ctr_x, int ctr_y, int pt_x, int pt_y, uns8 colour)
 }
 void draw_circle2(int x_centre, int y_centre, int r, uns8 colour) {
 	int x, y;
-	int p = 1 - r;         // Initial value of decision parameter.
-	
+	//int p = 1 - r; // orig
+	//int p = 3 - 2*r;         // (a) Initial value of decision parameter.
+	//int p = 1-r; // (b)
+	int p = 1 -r; // (c) 5//4 - r  
 	x = 0;
 	y = r;
 	
 	draw_circle_points2(x_centre, y_centre, x, y, colour);
-    
 
 	while (x < y) {
 		x++;
 		if (p < 0)
-			p += 2 * x + 1;
+			//p += 2 * x + 2; // (orig)
+			//p = p + (4 * x) + 6; // (a)
+			//p = p + 2* x + 3; // (b)
+			p = p + 2* x + 1; // (c)
 		else {
 			y--;
-			p += 2 * (x - y + 1);
+			//p += 2 * (x - y + 1); // (orig)
+			// p = p + 4 * (x - y) + 10; // (a)
+			//p = p + 2 * (x - y) + 5;
+			p = p + 2*(x-y) + 1;
 		}
 		draw_circle_points2 (x_centre, y_centre, x, y, colour);
 	}
@@ -544,3 +566,71 @@ uns8 sliver, x_origin, y_origin, pixel;
 	}
 }    
 	
+/*
+orig:
+void draw_circle2(int x_centre, int y_centre, int r, uns8 colour) {
+	int x, y;
+	int p = 1 - r;         // Initial value of decision parameter.
+	
+	x = 0;
+	y = r;
+	
+	draw_circle_points2(x_centre, y_centre, x, y, colour);
+    
+
+	while (x < y) {
+		x++;
+		if (p < 0)
+			p += 2 * x + 2;
+		else {
+			y--;
+			p += 2 * (x - y + 1);
+		}
+		draw_circle_points2 (x_centre, y_centre, x, y, colour);
+	}
+
+}
+
+
+
+
+http://www.gamedev.net/reference/articles/article767.asp
+
+    d := 3 - (2 * RADIUS)
+    x := 0
+    y := RADIUS
+
+
+Now for each pixel we do the following operations:
+
+
+    Draw the 8 circle pixels
+    if d < 0 then
+        d := d + (4 * x) + 6
+    else
+      begin
+        d := d + 4 * (x - y) + 10
+        y := y - 1;
+      end;
+
+http://www.mandelbrot-dazibao.com/Bresen/Bresen.htm
+
+x% = 0
+y% = Rad%
+s% = 1 - Rad%
+
+DO WHILE x% < y%
+IF s% < 0 THEN
+s% = s% + 2 * x% + 3
+
+ELSE
+
+s% = s% + 2 * (x% - y%) + 5
+y% = y% - 1
+END IF
+
+x% = x% + 1
+Pset x%,y%
+LOOP
+
+*/

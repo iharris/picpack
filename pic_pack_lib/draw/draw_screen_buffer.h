@@ -21,20 +21,20 @@ void set_draw_buffer(uns16 address, uns8 data);
 	#warning "1 draw buffer"
 #else
 	extern uns8 draw_buffer0[256];
-	#warning "At least one"
+
 	#if DRAW_TOTAL_BUFFER_SIZE <= 512
 		extern uns8 draw_buffer1[DRAW_TOTAL_BUFFER_SIZE - 256];
 		#define DRAW_BUFFERS 2
 		#warning "2 draw buffers"
 	#else
 		extern uns8 draw_buffer1[256];
-		#warning "at least two"
+
 		#if DRAW_TOTAL_BUFFER_SIZE <= 768
 			#warning "3 draw buffers"
 			extern uns8 draw_buffer2[DRAW_TOTAL_BUFFER_SIZE - 512];
 			#define DRAW_BUFFERS 3
 		#else
-			#warning "at least three"
+
 			extern uns8 draw_buffer2[256]; 
 			#if DRAW_TOTAL_BUFFER_SIZE <= 1024
 				#warning "4 draw buffers"

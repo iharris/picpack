@@ -93,7 +93,8 @@ uns16 i2c_read_eeprom_16bit(uns8 device_address, uns8 mem_address);
 	
 	Set port and pins correctly for I2C communication 
 */
-void i2c_setup();
+void i2c_setup_io();
+#define i2c_setup() i2c_setup_io()
 
 #ifndef i2c_scl_port
 	#error "You haven't defined i2c_scl_port in your config.h!"
