@@ -1,0 +1,1 @@
+Fix #define checks in sure code
