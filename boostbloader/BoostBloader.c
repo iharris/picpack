@@ -69,8 +69,9 @@
 		#pragma DATA    _CONFIG3H, _MSSP_MSK7_3H & _PPMX_DEFAULT_3H & _ECCPMX_DEFAULT_3H & _CCP2MX_DEFAULT_3H
 
 	  #else
-		#if PLATFORM_CLOCK == 400000
-		   #pragma DATA    _CONFIG1H, _OSC_HSPLL_1H 
+		#if PLATFORM_CLOCK == 40000000
+			#warning "doing the fast clock thing"
+		   #pragma DATA    _CONFIG1H, _OSC_HSPLL_1H & _IESO_OFF_1H & _FCMEN_OFF_1H
 		   #pragma DATA    _CONFIG2L, _BOREN_SBORDIS_2L & _BORV_2_2L & _PWRT_ON_2L
 		   #pragma DATA    _CONFIG2H, _WDT_OFF_2H & _WDTPS_128_2H
 		   #pragma DATA    _CONFIG3H, _CCP2MX_PORTC_3H & _PBADEN_OFF_3H & _MCLRE_ON_3H
@@ -82,7 +83,6 @@
 		   #pragma DATA    _CONFIG7L, _EBTR0_OFF_7L & _EBTR1_OFF_7L & _EBTR2_OFF_7L & _EBTR3_OFF_7L
 		   #pragma DATA    _CONFIG7H, _EBTRB_OFF_7H
 		#else
-			//#pragma DATA    _CONFIG1H, _OSC_HS_1H //_OSC_HSPLL_1H //
 			#pragma DATA    _CONFIG1H, _OSC_HS_1H & _IESO_OFF_1H
 			#pragma DATA    _CONFIG2L, _BOREN_SBORDIS_2L & _BORV_2_2L & _PWRT_ON_2L
 			#pragma DATA    _CONFIG2H, _WDT_OFF_2H & _WDTPS_128_2H
