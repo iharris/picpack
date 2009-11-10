@@ -271,6 +271,16 @@ rom char *second_hand_x = {
 
 };
 	
+draw_test_hands() {
+	uns8 count;
+	
+	for (count=0;count++;count<60) {
+		draw_set_pixel(second_hand_x[count], second_hand_y[count],3);
+		draw_set_pixel(minute_hand_x[count], minute_hand_y[count],2);
+		draw_set_pixel(hour_hand_x[count],   hour_hand_y[count], 1);
+	}
+		
+}	
 
 void draw_second_hand(uns8 seconds) {
 
@@ -363,14 +373,17 @@ void main() {
 	timer_start_0();	// kick that timer off...	 
 
 	
+/*
+ General Run
+ 
 	for(;;){ 
 		check_time();
 
 		draw_clear_screen();
-		draw_print_str(0, 6, 16, 0, 3, "28\127");
+		draw_print_str(0, 6, 16, 0, 3, "28");
 		draw_print_str(54, 6, 11, 0, 3, "Mo");
 		draw_print_str(0,  63, 11, 0, 3, "08");
-		draw_print_str(51, 63,  16, 0, 3, "Feb"); //Ja Fe Mr Ap My Jn Jl Au Se Oc No De
+		draw_print_str(51, 63,  16, 0, 3, "Fb"); //Ja Fb Mr Ap My Jn Jl Au Se Oc No De
 		draw_circle2(31, 31, 31, 1); // outside
 		//draw_circle2(31, 31, 29, 2); seconds
 		//draw_circle2(31, 31, 27, 3);	// minutes
@@ -382,11 +395,29 @@ void main() {
 		draw_paint(); 
 		delay_ms(1);	 
 	} 
- 
+*/
+		draw_clear_screen();
+		draw_print_str(0, 6, 16, 0, 3, "28");
+		draw_print_str(54, 6, 11, 0, 3, "Mo");
+		draw_print_str(0,  63, 11, 0, 3, "08");
+		draw_print_str(51, 63,  16, 0, 3, "Fb"); //Ja Fb Mr Ap My Jn Jl Au Se Oc No De
+		
+		draw_circle2(31, 31, 31, 1); // outside
+		//draw_circle2(31, 31, 29, 2); seconds
+		//draw_circle2(31, 31, 27, 3);	// minutes
+		//draw_circle2(31, 31, 18, 2);	//hour
+		//draw_minute_hand(minutes); 
+		//draw_hour_hand(hours, minutes); 
+		draw_test_hands();
+		draw_number_ticks();
+		//draw_second_hand(seconds);
+		draw_paint(); 
+		//delay_ms(1);	 
+		for(;;) {};
 } 
 	  // void draw_print_str(uns8 x, uns8 y, uns8 width, uns8 start_pixel, uns8 colour, char *str)
 #define TEST_IT 2
 
 #if TEST_IT == 1 | TEST_IT == 2
-	#warning "test_it = 1!"
+	#warning "test_it = X!"
 #endif	
