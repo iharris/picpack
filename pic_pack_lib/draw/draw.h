@@ -68,6 +68,7 @@ void draw_circle(int x_centre, int y_centre, int r, uns8 colour);
 void draw_circle2(int x_centre, int y_centre, int r, uns8 colour);
 void draw_rect(uns8 x, uns8 y, uns8 width, uns8 height, uns8 colour);
 void draw_print_str(uns8 x, uns8 y, uns8 width, uns8 start_pixel, uns8 colour, char *str);
+uns16 draw_length_str(char *str);
 void draw_print_buffer();
 
 // driver routines

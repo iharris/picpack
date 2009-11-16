@@ -505,6 +505,20 @@ extern char PicPack5x7_bitmap_0[1];
 extern char PicPack5x7_bitmap_1[1];
 extern uns16 PicPack5x7_index[1];
 
+uns16 draw_length_str(char *str) {
+uns8 my_char;
+uns16 length;
+
+	length = 0;
+	while (*str != 0) {
+		my_char = *str;
+		my_char = my_char - 32;
+		length = length + (PicPack5x7_index[my_char + 1] - PicPack5x7_index[my_char]);
+		str++;
+	}
+	return length;
+}	
+
 void draw_print_str(uns8 x, uns8 y, uns8 width, uns8 start_pixel, uns8 colour, char *str) {
 
 uns8 my_char;
