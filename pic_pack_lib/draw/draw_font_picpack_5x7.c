@@ -12,7 +12,6 @@
 //};
 
 
-
 char PicPack5x7_bitmap_0[] = {
 0x00,
 0x5F,
