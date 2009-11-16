@@ -260,7 +260,8 @@ uns8 count_byte_disp1;
 		clear_pin(sure_6432_en_port, sure_6432_en_pin);
 		//delay_us(200);
 	} // y loop	
-	delay_us(200);
+	
+	for (uns8 count_delay=0; count_delay< 200; count_delay++);
 	set_pin(sure_6432_en_port, sure_6432_en_pin);
 }
 
