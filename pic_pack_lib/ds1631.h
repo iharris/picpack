@@ -29,7 +29,8 @@
 	\brief Setup ds1631 ports and pins
 	
 */
-void ds1631_setup(void);
+#define ds1631_setup() ds1631_setup_io()
+void ds1631_setup_io(void);
 
 /**
 	\brief Set ds1631 config register
