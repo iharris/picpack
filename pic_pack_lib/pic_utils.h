@@ -62,6 +62,7 @@
 	volatile uns8 port_array[NUMBER_PORTS] @PORTA;
 	volatile uns8 tris_array[NUMBER_PORTS] @TRISA;
 #else
+	volatile uns8 port_in_array[NUMBER_PORTS] @PORTA;
 	volatile uns8 port_array[NUMBER_PORTS] @LATA;
 	volatile uns8 tris_array[NUMBER_PORTS] @TRISA;
 #endif
@@ -178,7 +179,7 @@ void change_pin_var(uns8 port, uns8 pin, bit value);
      	
 
 #define test_pin(port, pin) \
-	 ((port_array[port - PORTA] & (1 << pin)) != 0)
+	 ((port_in_array[port - PORTA] & (1 << pin)) != 0)
 
 #define change_pin(port, pin, value) \
 	if (value) { \
