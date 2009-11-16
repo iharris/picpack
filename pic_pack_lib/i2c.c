@@ -61,7 +61,6 @@ uns8 data;
     delay_us(DELAY_AMOUNT);
 
     i2c_stop();
-    
     return(data);
 }
 
@@ -141,7 +140,6 @@ uns8 i2c_receive_byte(void)
     clear_pin(i2c_scl_port, i2c_scl_pin);
 
     i2c_read_sda();
-
     for(count = 0 ; count < 8 ; count++)
     {
         clear_pin(i2c_scl_port, i2c_scl_pin);
