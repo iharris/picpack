@@ -8,7 +8,7 @@ Profiling=1
 Snapshot=0
 [Files]
 File0=..\..\pic_pack_lib\pic_utils.c
-Count=16
+Count=24
 File1=..\..\pic_pack_lib\pic_utils.h
 File2=config.h
 File3=..\..\pic_pack_lib\draw\draw.c
@@ -24,7 +24,14 @@ File12=..\..\pic_pack_lib\sure_6432.h
 File13=..\..\pic_pack_lib\pic_timer.c
 File14=..\..\pic_pack_lib\pic_timer.h
 File15=.\draw_multi_sure_6432_clock.c
-File16=..\..\pic_pack_lib\ht1632.h
+File16=..\..\pic_pack_lib\ds1307.c
+File17=..\..\pic_pack_lib\ds1307.h
+File18=..\..\pic_pack_lib\i2c.c
+File19=..\..\pic_pack_lib\i2c.h
+File20=..\..\pic_pack_lib\ds1631.c
+File21=..\..\pic_pack_lib\ds1631.h
+File22=..\..\pic_pack_lib\convert.c
+File23=..\..\pic_pack_lib\convert.h
 [Compiler]
 Extra=-I "..\..\pic_pack_lib" -obj ".\"  
 [Linker]

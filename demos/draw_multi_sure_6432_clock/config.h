@@ -117,6 +117,22 @@ This makes a 64x64 pixel display.
 #define lcd_db4_port PORTD
 #define lcd_db4_pin 4
 
+// - - - - - - - - - - - - - - - - - - - - 
+// pic i2c defines
+// - - - - - - - - - - - - - - - - - - - - 
+
+#define i2c_scl_port PORTB
+#define i2c_sda_port PORTB
+#define i2c_scl_pin  1
+#define i2c_sda_pin  2
+
+// - - - - - - - - - - - - - - - - - - - - 
+
+// Interrupt once per second
+
+#define int_port PORTB
+#define int_pin  0
+
 
 // - - - - - - - - - - - - - - -
 // General platform definitions
